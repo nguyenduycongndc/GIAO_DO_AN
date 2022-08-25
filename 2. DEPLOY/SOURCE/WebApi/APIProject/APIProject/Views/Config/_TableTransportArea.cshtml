@@ -1,0 +1,90 @@
+﻿@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using Data.Utils
+@using Data.DB
+@using PagedList
+
+@model  List<ConfigTransportAreaModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Nội tỉnh</th>
+            <th>Từ (km)</th>
+            <th>Đến (km)</th>
+            <th>Loại vận chuyển</th>
+            <th>Tăng theo (km)</th>
+            <th>Giá tăng (VND)</th>
+            <th>Thời gian vận chuyển</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @if (Model.Count() <= 0)
+        {
+            <tr>
+                <td colspan="10">Không có dữ liệu !</td>
+            </tr>
+        }
+        else
+        {
+            int stt = 1;
+            foreach (var data in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@data.Name</td>
+
+                    @{
+                        if (data.IsProvince == 1)
+                        {
+                            <td>Có</td>
+                        }
+                        else
+                        {
+                            <td>Không</td>
+                        }
+                    }
+                    <td>@data.FromKm</td>
+                    <td>@data.ToKm</td>
+                    @{ 
+                        if(data.Type == 1)
+                        {
+                            <td>Tiêu chuẩn</td>
+                        }else
+                        {
+                            <td>Nhanh</td>
+                        }
+                    }
+                    <td>@data.PerKg</td>
+                    <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.Price))</td>
+                    <td>@data.TimeShip</td>
+                    <td>
+                        <a title="Chi tiết cửa hàng" class="cursor-pointer" onclick="loadModelTransportAreaDetail(@data.ID)" style="font-size:20px;">
+                            <i class="fa fa-arrow-circle-o-right"></i>
+                        </a>
+                        <a title="Cập nhật" id="clickEdit" class="cursor-pointer" onclick="loadModalEditTransportArea(@data.ID);">
+                            <i class="btnEdit fa fa-fw fa-edit"></i>
+                        </a>
+                        <a title="Xóa" class="cursor-pointer mr-2" onclick="deleteTransportArea(@data.ID)">
+                            <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                        </a>
+                    </td>
+                </tr>
+                stt++;
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $("#clickEdit").one('click', function (event) {
+            event.preventDefault();
+            //do something
+            $(this).prop('disabled', true);
+        });
+    });
+</script>

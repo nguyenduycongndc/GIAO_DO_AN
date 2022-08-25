@@ -1,0 +1,205 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@using APIProject.Resource
+@model IPagedList<CreateAgentInputModel>
+@{
+    List<int> listCheckbox = new List<int>();
+    if (Session["CheckboxAddMoney"] != null)
+    {
+        listCheckbox = (List<int>)Session["CheckboxAddMoney"];
+    }
+}
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white align-center bg-thead">
+        <tr>
+            <th>@Resources.No</th>
+            <th>
+                @Resources.Code
+            </th>
+            <th class="wrap">@Resources.Name</th>
+            <th class="wrap">@Resources.Phone</th>
+            <th>@Resources.Email</th>
+            <th>Rate</th>
+            <th>Level</th>
+            <th>@Resources.CreatedDate</th>
+            <th>@Resources.AcceptService</th>
+            <th>Status</th>
+            <th>Function</th>
+            <th><input type="checkbox" id="check-all-cus" onchange="checkaddcoupon();" /></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count <= 0)
+            {
+                <tr>
+                    <td colspan="15">@Resources.NoData.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var ag in Model)
+                {
+    <tr>
+        <td>@stt</td>
+        <td>@ag.Code</td>
+        <td>@ag.Name</td>
+        <td>@ag.Phone</td>
+        <td>@ag.Email</td>
+        <td>@ag.Rating</td>
+        <td>@ag.CommisstitonName</td>
+        <td>@ag.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+        <td>@ag.AcceptServiceStr</td>
+        <td>@ag.StatusStr</td>
+        <td class="width-9">
+            <a href="javascript:void(0);"  title="Edit" class="cursor-pointer">
+                <i class="btnWatch fa fa-fw fa-edit font-20" onclick="GetWasherDetailUpdate(@ag.ID);"></i>
+            </a>
+            <a href="javascript:void(0);"  title="@Resources.Detail." class="cursor-pointer">
+                <i class="btnEdit glyphicon glyphicon-upload" onclick="getWasherDetail(@ag.ID);"></i>
+            </a>
+            <a href="javascript:void(0);"  title="@Resources.Delete." class="cursor-pointer">
+                <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteWasher(@ag.ID);"></i>
+            </a>
+        </td>
+        <td class="idinputcheck"><input  type="checkbox" class=" checkboxcus " style="padding-left:15px" data-name="@ag.Name" data-phone="@ag.Phone " /></td>
+    </tr>
+                    stt++;
+                }
+            }
+        }
+
+    </tbody>
+    
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("Search", "Washer", new { Page = page, CodeOrName = ViewBag.CodeOrName, Phone = ViewBag.Phone, Email = ViewBag.Email, Status = ViewBag.Status, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListWasher", OnBegin = "LoadCheck", OnComplete = "LoadChecked" })
+        )
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".checkitem").click(function () {
+            var id = $(this).data('id');
+            if ($(this).prop("checked") == true) {
+                console.log("checked with id=", id);
+                $.ajax({
+                    url: '/Washer/SaveCheckbox',
+                    type: 'GET',
+                    data: { id: id, type: 1 },
+                    success: function () {
+                        console.log("success");
+                    }
+                })
+            }
+            else {
+                console.log("no checked with id=", id);
+                $.ajax({
+                    url: '/Washer/SaveCheckbox',
+                    type: 'GET',
+                    data: { id: id, type: 0 },
+                    success: function () {
+                        console.log("success");
+                    }
+                })
+            }
+        });
+        //$(".checkAll").click(function () {
+        //    if ($(this).prop("checked") == true) {
+        //        $.each($(".checkitem"), function () {
+        //            $(this).prop("checked", true);
+        //        });
+        //        $.ajax({
+        //            url: '/Washer/SaveCheckbox',
+        //            type: 'GET',
+        //            data: { id: null, type: 2 },
+        //            success: function () {
+        //                console.log("success");
+        //            }
+        //        })
+        //    }
+        //    else {
+        //        $.each($(".checkitem"), function () {
+        //            $(this).prop("checked", false);
+        //        });
+        //        $.ajax({
+        //            url: '/Washer/SaveCheckbox',
+        //            type: 'GET',
+        //            data: { id: null, type: 3 },
+        //            success: function () {
+        //                console.log("success");
+        //            }
+        //        })
+        //    }
+        //})
+    });
+    function checkaddcoupon() {
+        console.log($("#check-all-cus").prop("checked"));
+        if ($("#check-all-cus").prop("checked") == true) {
+            $.each($(".checkboxcus"), function () {
+                $(this).prop("checked", true);
+            })
+        }
+        else {
+            $.each($(".checkboxcus"), function () {
+                $(this).prop("checked", false);
+            })
+        }
+    };
+
+    function LoadCheck() {
+
+
+        var listtag = [];
+        var listcheckbox = $(".checkboxcus");
+        var Local = localStorage.getItem("ListCus") == "" ? null : localStorage.getItem("ListCus");
+        var ListLocal = Local != null ? Local.split(",") : [];
+        $.each(listcheckbox, function () {
+            var Name = $(this).attr("data-name").trim();
+            var Phone = $(this).attr("data-phone").trim();
+            if ($(this).prop("checked") == true) {
+                if (ListLocal.indexOf(Name + " - " + Phone) < 0) {
+                    ListLocal.push(Name + " - " + Phone);
+                }
+
+            } else {
+                if (ListLocal.indexOf(Name + " - " + Phone) >= 0) {
+                    ListLocal.splice(ListLocal.indexOf(Name + " - " + Phone), 1);
+                }
+            }
+
+        })
+
+
+        localStorage.setItem("ListCus", ListLocal);
+    }
+
+    function LoadChecked() {
+        var listcheckbox = $(".checkboxcus");
+        var Local = localStorage.getItem("ListCus") == "" ? null : localStorage.getItem("ListCus");
+        var ListLocal = Local != null ? Local.split(",") : [];
+        if (ListLocal.length > 0) {
+            for (i = 0; i < ListLocal.length; i++) {
+                var PhoneName = ListLocal[i].split("-");
+                $.each(listcheckbox, function () {
+                    if ($(this).attr("data-phone").trim() == PhoneName[1].trim()) {
+                        $(this).prop("checked", true);
+                    }
+                })
+
+            }
+        }
+
+    }
+</script>
+
+
+

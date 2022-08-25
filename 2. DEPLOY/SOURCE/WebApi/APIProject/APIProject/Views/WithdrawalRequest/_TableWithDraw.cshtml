@@ -1,0 +1,134 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<RequestWithdraw>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Tên người dùng</th>
+            <th>Số điện thoại</th>
+            <th>Số tiền</th>
+            <th>Ngân hàng</th>
+            <th>Chủ TK</th>
+            <th>Số TK</th>
+            <th>Trạng thái</th>
+            <th class="widthCreatedDate">Ngày tạo</th>
+            @*<th>Ảnh</th>*@
+        <th><input type="checkbox" id="checkAll" isCheck="" value="0" /></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @if (Model.Count() <= 0)
+        {
+            <tr>
+                <td colspan="10">Không có dữ liệu !</td>
+            </tr>
+        }
+        else
+        {
+            int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+            foreach (var data in Model)
+            {
+    <tr>
+        <td>@stt</td>
+        <td>@data.Shiper.Name</td>
+        <td>@data.Shiper.Phone</td>
+        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.Amount))</td>
+        <td>@data.BankMember.Bank.Name</td>
+        <td>@data.BankMember.Account</td>
+        <td>@data.BankMember.AccountOwner</td>
+
+        @{ switch (data.Status)
+                                {
+                                    case SystemParam.STATUS_REQUEST_WAITING:
+            <td>Đang chờ</td> break;
+                                    case SystemParam.STATUS_REQUEST_SUCCESS:
+            <td>Chấp nhận</td> break;
+                                    case SystemParam.STATUS_REQUEST_CANCEl:
+            <td>Từ chối</td> break;
+                                    case SystemParam.STATUS_REQUEST_COMPLETE:
+            <td>Hoàn thành</td> break;
+
+                                } }
+
+
+        <td>@data.CreaedDate.ToString("dd/MM/yyyy")</td>
+        @{ switch (data.Status)
+                                {
+                                    case SystemParam.STATUS_REQUEST_CANCEl:
+            <td></td> break;
+                                    case SystemParam.STATUS_REQUEST_WAITING:
+            <td>
+                <input class="icheck icheck_@stt" value="0" data-wds="@data.ID" id="txtchecked" type="checkbox" />
+            </td> break;
+                                    case SystemParam.STATUS_REQUEST_SUCCESS:
+            <td>
+                <input class="icheck icheck_@stt" value="0" data-wds="@data.ID" id="txtchecked" type="checkbox" />
+            </td> break;
+                                    case SystemParam.STATUS_REQUEST_COMPLETE:
+            <td></td> break;
+
+                                } }
+
+
+    </tr>
+                stt++;
+            }
+                        }
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page }),
+                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+                        {
+                            HttpMethod = "GET",
+                         UpdateTargetId = "TableWithdrawalRequest"
+                     })
+                 )
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+                            localStorage.removeItem('ListCus');
+                        });
+    $(".icheck").on('click', function () {
+
+                            var ID = $(this).attr("data-wds").trim();
+                            var Local = localStorage.getItem("ListCus") == "" ? null : localStorage.getItem("ListCus");
+                            var ListLocal = Local != null ? Local.split(",") : [];
+                            if ($(this).is(':checked', true)) {
+
+                                if (ListLocal.indexOf(ID) < 0) {
+                                    ListLocal.push(ID);
+                                }
+                            }
+        else {
+                                if (ListLocal.indexOf(ID) >= 0) {
+                                    ListLocal.splice(ListLocal.indexOf(ID), 1);
+
+                                }
+                            }
+                            localStorage.setItem("ListCus", ListLocal);
+                        })
+    $("#checkAll").on('click', function () {
+                            if ($(this).is(':checked', true)) {
+            $(".icheck").prop("checked", true);
+                                var shiperArea = [];
+            $('table > tbody  > tr > td > input').each(function (index, tr) {   
+                                    var i = tr.getAttribute('data-wds');
+                                    shiperArea.push(i);
+                                });
+                                localStorage.setItem("ListCus", shiperArea);
+                            }
+        else {
+            $(".icheck").prop("checked", false);
+            $("#checkAllCus").attr("ischeck", 0);
+                                localStorage.removeItem("ListCus");
+                            }
+    });
+</script>

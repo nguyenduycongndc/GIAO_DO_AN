@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Model.APIWeb
+@model List<CategoryViewModel>
+@using APIProject.Resource
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                    <h4 class="color-blue"> Product Management</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-3 col-xs-12">
+            <input type="text" class="form-control" id="txtName" placeholder="Enter name" />
+        </div>
+        <div class="col-md-3 col-xs-12">
+            <select class="form-control" id="sl_category">
+                <option value="0">Product category</option>
+                @{
+                    foreach (var item in Model)
+                    {
+                        <option value="@item.ID">@item.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-3 col-xs-12">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtFromDate" placeholder="@Resources.FromDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-3 col-xs-12">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtToDate" placeholder="@Resources.FromDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+    </div>
+    <div class="row pt-40">
+        <div class="col-md-12">
+            <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                <button class="btn btn-primary btn_search" id="btnSearch" style="width:115px;" onclick="SearchProduct()"><i class="fa fa-search"></i> @Resources.Search</button>
+            </div>
+            <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                <button class="btn btn-success" id="btnAdd" onclick="window.location='/Product/AddProduct'">Add</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="ListProduct">
+            @{
+                Html.RenderAction("Search", "Product",new { page=1,name="", categoryId= ViewBag.categoryId,fromDate= ViewBag.fromDate,toDate= ViewBag.toDate });
+            }
+        </div>
+    </div>
+</div>
+

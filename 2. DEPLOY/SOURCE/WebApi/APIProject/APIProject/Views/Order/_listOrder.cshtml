@@ -1,0 +1,64 @@
+﻿@using PagedList.Mvc
+@using Data.Utils
+@using Data.Model.APIWeb;
+@model  PagedList.IPagedList<OrderProductModel>
+@using APIProject.Resource
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white align-center bg-thead">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>@Resources.No</th>
+            <th>Code</th>
+            <th>Washer</th>
+            <th>Phone number</th>
+            <th>Total</th>
+            <th>Create date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="15">No data to display</td>
+                </tr>
+            }
+            else
+            {
+                int stt = (Model.PageNumber - 1) * Model.PageSize + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.Code</td>
+                        <td>@item.WasherName</td>
+                        <td>@item.WasherPhone</td>
+                        <td>@item.PriceStr</td>
+                        <td>@item.CreateDateStr</td>
+                        <td>@item.StatusStr</td>
+                        <td>
+                            <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="@Resources.Detail." class="cursor-pointer">
+                                <i class="fa fa-edit font-20" data-toggle="modal" data-target="#editOrder" onclick="GetOrderDetail(@item.ID);"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, name = "", fromDate ="", toDate = "" }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = "ListOrder"
+            })
+        )
+    </div>
+</div>
+

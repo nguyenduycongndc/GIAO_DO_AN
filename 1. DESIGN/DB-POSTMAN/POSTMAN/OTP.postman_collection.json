@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "c0dafd30-b59b-45d9-ab15-820eb7b3bea0",
+		"name": "OTP",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c24iOiJldmVyZ2xvd3ciLCJzaWQiOiI1MTRhODNkNS00M2Y1LTQ2YWMtOWQxYi03YTYwZmQwYzg2OTMiLCJvYnQiOiIiLCJvYmoiOiIiLCJuYmYiOjE1OTA0NjA0NDMsImV4cCI6MTU5MDQ2NDA0MywiaWF0IjoxNTkwNDYwNDQzfQ.DhRjrL1x0HlhtaUnlDWkZyNTZYXXopnbe1dgB35d2Ms",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"to\": \"0355441109\",\n    \"type\": 1,\n    \"from\": \"Carrect.vn\",\n    \"scheduled\" : \"\",\n    \"message\": \"Carrect - 123456 la ma xac nhan cua ban\",\n    \"requestId\": \"\",\n    \"useUnicode\": 0,\n    \"maxMt\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://api.brandsms.vn/api/SMSBrandname/SendSMS",
+					"protocol": "http",
+					"host": [
+						"api",
+						"brandsms",
+						"vn"
+					],
+					"path": [
+						"api",
+						"SMSBrandname",
+						"SendSMS"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

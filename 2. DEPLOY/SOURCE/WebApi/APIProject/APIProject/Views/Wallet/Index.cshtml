@@ -1,0 +1,182 @@
+﻿@using Data.Utils
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+<div class="col-md-12 col-md-12 col-sm-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="" id="View">
+
+                <div class="row ml-1 px-0 mt-3">
+                    <div class="col-md-6 col-12 text-dark ">
+                        <h4>Ví </h4>
+                    </div>
+                    <div class="col-md-6 col-12 mb-2">
+                        <div class="text-right ">
+                            <button id="btnSearch" class="btn btn-primary" onclick="search_Wallet()"><i class="fa fa-search"></i>Tìm kiếm</button>
+                            @{
+                                if (ViewBag.roleLoginWallet == 2 || ViewBag.roleLoginWallet == 3 || ViewBag.roleLoginWallet == 6 || ViewBag.roleLoginWallet == 7)
+                                {
+                                    <button hidden class="btn btn-primary btn_export" data-toggle="modal" data-target="" onclick="exportExcel()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary btn_export" data-toggle="modal" data-target="" onclick="exportExcel()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2 mt-1">
+                    <div class="col-md-6 col-12 ">
+                        <input type="text" id="txtNameWallet" class="form-control" placeholder="Nhập tên hoặc số điện thoại tài xế" />
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+                            <option value="">Tỉnh / Thành phố</option>
+                            @foreach (Data.DB.Province obj in ViewBag.Province)
+                            {
+                                <option value="@obj.ID">
+                                    @obj.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select class=" form-control" name="calc_shipping_district" id="slDistrict">
+                            <option value="">Quận / Huyện</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row mb-1 mt-1">
+                    <div class="col-md-3 offset-md-0">
+                        <select class="form-control" id="walletType">
+                            <option class="text-black-50" value="">Loại ví</option>
+                            <option value="1">Ví cọc</option>
+                            <option value="2">Ví thu nhập</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 offset-md-0">
+                        <select class="form-control" id="transactionType">
+                            <option class="text-black-50" value="">Loại giao dịch</option>
+                            <option value="@Constant.TYPE_TRANSACTION_WITHDRAW">Rút tiền</option>
+                            <option value="@Constant.TYPE_TRANSACTION_REFUND_WITHDRAW">Hoàn tiền khi yêu cầu rút tiền bị từ chối</option>
+                            <option value="@Constant.TYPE_TRANSACTION_TRANSFER_WALLET">Chuyển tiền sang ví cọc</option>
+                            <option value="@Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET">Nhận tiền sau khi hoàn thành đơn</option>
+                            <option value="@Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET_EXCHANGE">Nhận tiền từ ví thu nhập</option>
+                            <option value="@Constant.TYPE_TRANSACTION_RECHARGE">Nạp tiền từ hệ thống</option>
+                            <option value="@Constant.TYPE_TRANSACTION_RECHARGE_ADMIN">Cộng tiền từ Admin</option>
+                            <option value="@Constant.TYPE_TRANSACTION_ACCEPT_ORDER">Trừ tiền ví cọc khi nhận đơn</option>
+                            <option value="@Constant.TYPE_TRANSACTION_REFUND_ORDER_CANCLE">Hoàn tiền ví cọc khi đơn bị hủy</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-12 ">
+                        <input type="text" id="txtFromDates" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                    <div class="col-md-3 col-12 ">
+                        <input type="text" id="txtToDates" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+
+
+                </div>
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="ListWallet">
+                    @{
+                        Html.RenderAction("SearchWallet", "Wallet", new { page = 1 });
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".sidebar-scroll").scrollTop(2000);
+        $('#walletType').change(function (e) {
+            $('#transactionType').val('')
+            search_Wallet();
+                 $("#transactionType").empty();
+            $("#transactionType").append("<option class='text-black-50' value=''>Loại giao dịch</option>");
+            if ($('#walletType').val() == 1) {
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_REFUND_ORDER_CANCLE + "'>" + "Hoàn tiền ví cọc khi đơn bị hủy" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_ACCEPT_ORDER + "'>" + "Trừ tiền ví cọc khi nhận đơn" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_RECHARGE + "'>" + "Nạp tiền từ hệ thống" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET_EXCHANGE + "'>" + "Nhận tiền từ ví thu nhập"  + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_RECHARGE_ADMIN + "'>" + "Cộng tiền từ Admin" + "</option>");
+            } else {
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_WITHDRAW + "'>" + "Rút tiền" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_REFUND_WITHDRAW + "'>" + "Hoàn tiền khi yêu cầu rút tiền bị từ chối" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_WALLET + "'>" + "Chuyển tiền sang ví cọc" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET + "'>" + "Nhận tiền sau khi hoàn thành đơn"  + "</option>");
+            }
+        });
+         $('#txtNameWallet').change(function (e) {
+            search_Wallet();
+        });
+        $('#transactionType').change(function (e) {
+            search_Wallet();
+        });
+        $('#txtFromDates').change(function (e) {
+            search_Wallet();
+        });
+        $('#txtToDates').change(function (e) {
+            search_Wallet();
+        });
+         $('#slProvince').change(function (e) {
+            search_Wallet();
+        });
+        $('#slDistrict').change(function (e) {
+            search_Wallet();
+        });
+    })
+    //search Wallet
+    function search_Wallet() {
+        var _nameWallet = $('#txtNameWallet').val();
+         var fromDates = $('#txtFromDates').val();
+        var toDates = $('#txtToDates').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        var walletType = $('#walletType').val();
+        var transactionType = $('#transactionType').val();
+
+        $.ajax({
+            url: "/Wallet/SearchWallet",
+            type: 'POST',
+            data: {
+                page: 1,
+                searchKey: _nameWallet,
+                provinceID: provinceID,
+                districtID: districtID,
+                fromDate: fromDates,
+                toDate: toDates,
+                walletType: walletType,
+                transactionType: transactionType
+            },
+            success: function (result) {
+                $('#ListWallet').html(result);
+            }
+        });
+    }
+    function exportExcel() {
+        var searchKey = $("#txtNameWallet").val().trim();
+         var fromDates = $('#txtFromDates').val();
+        var toDates = $('#txtToDates').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        var walletType = $('#walletType').val();
+        var transactionType = $('#transactionType').val();
+        window.location.href = "/Wallet/WalletExecel?searchKey=" + searchKey + "&walletType=" + walletType + "&transactionType=" + transactionType + "&provinceID=" + provinceID + "&districtID=" + districtID + "&fromDate=" + fromDates + "&toDate=" + toDates;
+    }
+
+</script>
+
+

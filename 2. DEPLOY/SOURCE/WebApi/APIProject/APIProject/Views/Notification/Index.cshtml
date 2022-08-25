@@ -1,0 +1,180 @@
+﻿@using Data.DB
+@using Data.Utils
+@{ Layout = "~/Views/Shared/_Layout.cshtml"; }
+@using APIProject.Resource
+<link href="~/Content/jquery.tagsinput-revisited.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.tagsinput-revisited.js"></script>
+<div class="shipper">
+    <div class="card">
+        <div class="card-header sticky">
+            <div class="row ml-1">
+                <div class="col-md-8 col-sm-9 col-12 text-dark px-0 mt-3">
+                    <h4>Thông báo</h4>
+                </div>
+                <div class="col-md-4 col-sm-4 col-12 mt-3">
+                    <div class="text-right">
+                        <button class="btn btn-warning" id="btnMoneyShip" data-toggle="modal" data-target="#myModal">Thêm mới</button>
+                        <button class="btn btn-primary" onclick="searchNotification()">Tìm kiếm</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control" id="txt-title" placeholder="Tiêu đề" />
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <select id="val-type" class="form-control" onchange="searchNotification()">
+                        <option selected disabled hidden>--Loại người dùng--</option>
+                        <option value="">Tất cả</option>
+                        <option value="@Constant.CUSTOMER_ROLE">Khách hàng</option>
+                        <option value="@Constant.SHOP_ROLE">Cửa hàng</option>
+                        <option value="@Constant.SHIPER_ROLE">Tài xế</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control relative-icon-calendar date" id="txt-from-date" placeholder="Từ ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control relative-icon-calendar date" id="txt-to-date" placeholder="Đến ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="ListNotification">
+                    @{ Html.RenderAction("SearchNoti", "Notification", new { Page = 1 }); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title"> Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="frm-create-noti" enctype="multipart/form-data">
+                    <div class="col-md-12">
+                        <div class="row" style="margin-bottom: 20px">
+                            <div class="col-md-3">
+                                <label for="fname" style="margin-top: 7px">Loại người dùng</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control" name="type" id="type">
+                                    <option value="@SystemParam.TYPE_PUSH_ALL">Tất cả</option>
+                                    <option value="@Constant.CUSTOMER_ROLE">Khách hàng</option>
+                                    <option value="@Constant.SHOP_ROLE">Cửa hàng</option>
+                                    <option value="@Constant.SHIPER_ROLE">Tài xế</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-bottom: 20px">
+                            <div class="col-md-3">
+                                <label for="fname" style="margin-top: 7px">Tiêu đề</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control" placeholder="Nhập tiêu đề" id="txt-title-create" name="title" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="fname" style="margin-top: 7px">Nội dung</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-9">
+                                <textarea id="txt-content-create" class="form-control" name="content" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div style="">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 100px">Thoát</button>
+                    <button type="button" class="btn btn-success" style="width: 100px" onclick="SendNotification()">Gửi</button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    function searchNotification() {
+        var type = $("#val-type").val();
+        var searchKey = ReplaceSpace($("#txt-title").val());
+        var fromDate = ReplaceSpace($("#txt-from-date").val());
+        var toDate = ReplaceSpace($("#txt-to-date").val());
+        $.ajax({
+            url: '/Notification/SearchNoti',
+            type: 'GET',
+            data: {
+                page: 1,
+                searchKey: searchKey,
+                type: type,
+                fromDate: fromDate,
+                toDate: toDate
+            },
+            success: function (res) {
+                $("#ListNotification").html(res);
+            }
+        })
+    }
+
+    function SendNotification(type) {
+        var Title = ReplaceSpace($('#txt-title-create').val());
+        $('#txt-title-create').val(Title);
+        var Content = ReplaceSpace($('#txt-content-create').val());
+        $('#txt-content-create').val(Content);
+        if (Title.length == 0 || Content.length == 0) {
+            swal({
+                title: "Vui lòng nhập đầy đủ thông tin!",
+                icon: "warning"
+            })
+            return;
+        }
+
+        $.ajax({
+            url: '/Notification/CreateNoti',
+            type: 'POST',
+            data: $('#frm-create-noti').serialize(),
+            beforeSend: function () {
+                $('#modalLoad').modal('show');
+            },
+            success: function (res) {
+                $('#modalLoad').modal('hide');
+                swal({
+                    title: res.Message,
+                    icon:res.Status == 1 ? "success" : "error"
+                }).then((sc) => {
+                    if (sc && res.Status == 1)
+                        location.reload();
+                })
+            }
+        });
+    }
+
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            searchNotify();
+        }
+    });
+
+</script>
+
+
+
+<!-- end modal -->
+@*autocomplate*@

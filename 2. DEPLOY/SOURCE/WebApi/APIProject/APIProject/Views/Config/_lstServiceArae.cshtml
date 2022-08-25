@@ -1,0 +1,76 @@
+﻿@using Data.Model
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<ServiceAreaModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>NO</th>
+            <th>Province</th>
+            <th>District</th>
+            <th>Type</th>
+            <th>Create date</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody class="text-center">
+        @{
+            if (Model.Count() == 0)
+            {
+                <tr class="text-center">
+                    <td colspan="6">No data</td>
+                </tr>
+            }
+            else
+            {
+                int no = 1;
+                foreach (var dt in Model)
+                {
+                    <tr>
+                        <td class="idArea" id="@dt.ID">@no</td>
+                        <td class="provinceID" id="@dt.ProvinceID">@dt.ProvinceName</td>
+                        <td class="districtID"id="@dt.DistrictID">@dt.DistrictName</td>
+                        @{
+                            if (dt.IsActive.Equals(SystemParam.ACTIVE))
+                            {
+                                <td class="type" id="@dt.IsActive">Active</td>
+                            }
+                            else if (dt.IsActive.Equals(SystemParam.DEACTIVE))
+                            {
+                                <td class="type" id="@dt.IsActive">De active</td>
+                            }
+                        }
+                        <td>@dt.CreateDateStr</td>
+                        <td>
+                            <a  title="Detail" class="cursor-pointer showModalDetail" id="@dt.ID" onclick="loadServiceAreaToEdit($(this))">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a  title="Delete data" class="cursor-pointer" onclick="delServiceArea(@dt.ID)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    no++;
+                }
+            }
+        }
+
+    </tbody>
+
+
+</table>
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("SearchServiceArea", new { Page, ProvinceID = ViewBag.ProvinID, DistrictID = ViewBag.District }),
+     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+     {
+         HttpMethod = "GET",
+         UpdateTargetId = "tblServiceArea"
+     })
+     )
+    </div>
+</div>

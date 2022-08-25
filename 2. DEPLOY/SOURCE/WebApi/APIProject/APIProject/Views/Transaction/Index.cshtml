@@ -1,0 +1,258 @@
+﻿@using Data.DB
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.Model.APIApp
+@{
+    UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session["Login"];
+}
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="card">
+
+            <div class="card-header sticky">
+                <div class="row col-md-12">
+                    <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                        <h4>Đặt xe</h4>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-7 col-sm-6 mt-1">
+                        <div class="row">
+                            <div class="col-md-7 offset-md-0">
+                                <input type="text" class="form-control" id="txtTranName" placeholder="Nhập mã, SĐT, tên khách hàng" />
+                            </div>
+                            <div class="col-md-5 offset-md-0">
+                                <select class="form-control" id="slTranStatus">
+                                    <option class="text-black-50" value="">--Trạng thái--</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DENY">Đơn Shipper bị từ chối</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PENDING">Đơn Shipper chờ tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DELIVERY">Đơn Shipper đang tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PICK_UP">Đơn Shipper đã đón khách</option>
+                                    <option value="@SystemParam.ORDER_STATUS_FINISH">Đơn Shipper hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-6">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranFromdate" placeholder="Từ ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                            <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranTodate" placeholder="Đến ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-12 offset-md-0" style="text-align: end">
+                        @{
+                            if (ViewBag.roleLoginTran == 2 || ViewBag.roleLoginTran == 3 || ViewBag.roleLoginTran == 4 || ViewBag.roleLoginTran == 6 || ViewBag.roleLoginTran == 7)
+                            {
+                                <button hidden id="btnExport" class="btn btn-primary" onclick="exportExcelBookCar()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                            else
+                            {
+                                <button id="btnExport" class="btn btn-primary" onclick="exportExcelBookCar()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--modal addTransaction-->
+                <!--end modal-->
+                <div class="row">
+                    <div class="col-md-12" id="ListTransaction">
+                        @{
+                            Html.RenderAction("SearchTransaction", "Transaction", new { page = 1, });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#txtTranName').change(function (e) {
+            SearchTransaction();
+        });
+        $('#slTranStatus').change(function (e) {
+            SearchTransaction();
+        });
+        $('#dtTranFromdate').change(function (e) {
+            SearchTransaction();
+        });
+        $('#dtTranTodate').change(function (e) {
+            SearchTransaction();
+        });
+    });
+    function SearchTransaction() {
+        var _tranName = $('#txtTranName').val();
+        var _tranStatus = $('#slTranStatus').val();
+        var _fromDate = $('#dtTranFromdate').val();
+        var _toDate = $('#dtTranTodate').val();
+
+        $.ajax({
+            url: '/Transaction/SearchTransaction',
+            type: 'GET',
+            data: {
+                page: 1,
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+                //id: _id
+            },
+            success: function (result) {
+                $('#ListTransaction').html(result);
+            }
+        })
+    }
+    //xóa
+    function DeleteTranBookCar(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Transaction/DeleteTransactionBookCar',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        if (res) {
+                            swal({
+                                title: "",
+                                text: "Xóa bản ghi thành công",
+                                icon: "success"
+                            });
+                            SearchTransaction();
+                        }
+                        else {
+                            swal({
+                                title: "",
+                                //text: res.Exception,
+                                text: "Xóa bản ghi thất bại",
+                                icon: "error"
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+    //xuất excel
+    function exportExcelBookCar() {
+        var _tranName = $('#txtTranName').val();
+        var _tranStatus = $('#slTranStatus').val();
+        var _fromDate = $('#dtTranFromdate').val();
+        var _toDate = $('#dtTranTodate').val();
+        $.ajax({
+            type: "POST",
+            url: "/Transaction/ExportExcelTransactionBookCar",
+            cache: false,
+            data: {
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+            },
+            success: function (data) {
+                window.location = '/Transaction/Download';
+            },
+            error: function (data) {
+                swal({
+                    title: " Failed!",
+                    text: "Lưu thất bại",
+                    icon: "warning",
+                    button: "Close",
+                })
+            }
+        });
+    }
+</script>
+@*<script>
+        $(document).ready(function () {
+            GetListPackage();
+            history.replaceState(null, null, ' ');
+        });
+        function GetListPackage() {
+            $.ajax({
+                url: '/TRansaction/GetListService',
+                type: 'GET',
+                success: function (res) {
+                    $.each(res, function () {
+                        $("#package").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                    });
+                }
+            })
+        }
+    </script>*@
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAVKaTr6pjVc6Pa4QP8ZTuZ-dl349k_ZLE" type="text/javascript"></script>
+
+@*<script>
+        var input = document.getElementById('AddressCreate');
+        var autocomplete = new google.maps.places.Autocomplete(input, {
+            language: ["vi"],
+            input: ["hanoi"],
+        });
+        autocomplete.setComponentRestrictions(
+            { 'country': ['VN'] });
+        $(function () {
+
+            autocomplete.addListener('place_changed', fillInAddress);
+
+            $("#AddressCreate").focusin(function () {
+                $(document).keypress(function (e) {
+                    if (e.which == 13) {
+                        infowindow.close();
+
+                    }
+                });
+            });
+        });
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            var place = autocomplete.getPlace();
+            if (typeof place.geometry !== "undefined") {
+                $("#lati").val(place.geometry.location.lat());
+                $("#long").val(place.geometry.location.lng());
+            }
+        }
+        function exportExcel() {
+            var name = $("#txtname").val().trim();
+            var status = $("#SL_status").val();
+            var packageId = $("#package").val();
+            var fromDate = $("#dtFromdateIndex").val();
+            var toDate = $("#dtTodateIndex").val();
+            var AddService = $("#AddService_select").val();
+            console.log("package", packageId);
+            if (status == 6) {
+                status = null;
+            }
+            if (packageId == 0) {
+                packageId = null;
+            }
+            if (status == 0) {
+                status = null;
+            }
+            window.location.href = "/Transaction/ExportRequest?search=" + name + "&fromDate=" + fromDate + "&toDate=" + toDate + "&status=" + status + "&serviceID=" + packageId + "&AddService=" + AddService;
+        }
+    </script>*@
+
+
+

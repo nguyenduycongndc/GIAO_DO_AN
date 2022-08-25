@@ -1,0 +1,241 @@
+﻿@using Data.Model.APIWeb
+@model CreateAgentInputModel
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Washer Details</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Washer/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Washer Information</legend>
+            <div class="row mt-2">
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Full name</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p>@Model.Name</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Birthday</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    @{
+                        if (Model.DobDetail != null)
+                        {
+                            <p>@Model.DobDetail.Value.ToString("dd/MM/yyyy")</p>
+                        }
+                        else
+                        {
+                            <p>No data</p>
+                        }
+                    }
+
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Identity Number</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p>@Model.identification</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Phone</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p>@Model.Phone</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Email</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p>@Model.Email</p>
+                </div>
+            </div>
+            @*<div class="row mt-2">
+                    <div class="col-md-2 col-xs-6">
+                        <label class="font-weight-normal">Detailed address</label>
+                    </div>
+                    <div class="col-md-10 col-xs-6">
+                        <p>30 Nguyễn Trãi street, Thanh Xuân District, Hà Nội</p>
+                    </div>
+
+                </div>*@
+            <div class="row mt-2">
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Status</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p>@Model.StatusStr</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Accept Status</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p class="color-blue">@Model.AcceptServiceStr</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Review</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p class="color-blue">@Model.Rating</p>
+                </div>
+
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Profit wallet</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p class="color-money">@string.Format("{0:#,0}", Model.Cash) VND</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">Deposit Wallet</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <p class="color-money">@string.Format("{0:#,0}", Model.Deposit) VND</p>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    <label class="font-weight-normal">In House</label>
+                </div>
+                <div class="col-md-2 col-xs-6">
+                    @if (Model.IsInHouse == 1)
+                    {
+                        <p class="color-green">In house</p>
+                    }
+                    else
+                    {
+                        <p class="color-red">Out house</p>
+                    }
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-6">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Identity card</legend>
+            <div class="row mt-2">
+                <div class="col-md-2 col-sm-6 text-left">
+                    <span>Images:</span>
+                </div>
+                <div class="col-md-10 col-sm-6 col-6 text-left">
+                    @{
+                        if (Model.IdentityImage.Count() <= 0)
+                        {
+                            <span>The data has not been updated.</span>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.IdentityImage)
+                            {
+                                <img src="@item" width="85" height="85" class="inlineblock mr-5" />
+                            }
+                        }
+
+
+                    }
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Priority Area</legend>
+            <div class="row mt-2">
+                <div class="col-md-12 col-xs-12">
+                    <ol class="priority-are-ol">
+                        @{
+                            foreach (var item in Model.ListAreaPriority)
+                            {
+                                <li>@item.DistrictName , @item.ProvinceName</li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Bank account</legend>
+            <div class="row mt-2">
+                <div class="col-md-12 col-xs-12">
+                    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                        <thead class="text-center text-white">
+                            <tr>
+                                <th>No.</th>
+                                <th>Bank</th>
+                                <th>
+                                    Account
+                                </th>
+                                <th class="wrap">Name</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @{
+                                if (Model.ListBankAgent.Count() == 0)
+                                {
+                                    <tr>
+                                        <td colspan="5">The data has not been updated.</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var item in Model.ListBankAgent)
+                                    {
+                                        var stt = 1;
+                                        <tr>
+                                            <td>@stt</td>
+                                            <td>@item.BankName</td>
+                                            <td>@item.Account</td>
+                                            <td>@item.Name</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div>
+    @*<div class="pr-3 pb-2 mb-1 pull-right">
+        </div>*@
+    @*<button class="btn btn-warning btn-deactive" onclick="DeactiveWasher(@Model.ID);"><i class="fa fa-ban font-20 icon-deactive"></i> Deactive</button>*@
+
+    <div class="pr-3 pb-2 mb-1 pull-left">
+        @{
+            if (Model.Status == 1)
+            {
+                <button class="btn btn-warning btn-deactive" onclick="ChangeStatusWasher(@Model.ID,@Model.Status);"><i class="fa fa-ban font-20 icon-deactive"></i> Deactive</button>
+            }
+            else
+            {
+                <button class="btn btn-success btn-active" onclick="ChangeStatusWasher(@Model.ID,@Model.Status);"><i class="fa fa-check font-20 icon-deactive"></i> Active</button>
+            }
+        }
+    </div>
+    <div class="pr-3 pb-2 mb-1 pull-right">
+        <button class="btn btn-danger btn-back" onclick="backWasher()"> Back</button>
+    </div>
+</div>
+

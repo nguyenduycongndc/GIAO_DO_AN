@@ -1,0 +1,125 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.DB
+@using PagedList.Mvc
+@using Data.Utils
+@using Data.Model.APIWeb;
+@model  PagedList.IPagedList<ListCouponModel>
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+
+    <thead class="text-center text-white align-center bg-thead">
+
+    <thead class="text-center text-white bg-thead">
+
+        <tr>
+            <th>STT</th>
+            <th>Mã khuyến mại</th>
+            <th>Loại dịch vụ</th>
+            <th>Giá trị</th>
+            <th>Ngày bắt đầu</th>
+            <th>Ngày kế thúc</th>
+            <th>Số lượng</th>
+            <th>Đã dùng</th>
+            <th>Còn lại</th>
+            <th>Trạng thái</th>
+            <th>Hành động</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count <= 0)
+            {
+                <tr>
+                    <td colspan="15">Không có dữ liệu.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var data in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@data.Code</td>
+
+                        @{
+                            switch (data.Type)
+                            {
+                                case SystemParam.COUPON_TYPE_DRIVER:
+                                    <td>@SystemParam.COUPON_TYPE_DRIVER_STR</td>
+                                    break;
+                                case SystemParam.COUPON_TYPE_PACKAGE:
+                                    <td>@SystemParam.COUPON_TYPE_PACKAGE_STR</td>
+                                    break;
+                                case SystemParam.COUPON_TYPE_FOOD:
+                                    <td>@SystemParam.COUPON_TYPE_FOOD_STR</td>
+                                    break;
+                            }
+
+                        }
+                        @{
+                            if (data.TypeCoupon == Constant.COUPON_TYPE_PERCENT)
+                            {
+                                <td>@data.Percent %</td>
+                            }
+                            else
+                            {
+                                if (data.Discount == null)
+                                {
+                                    <td>0 VNĐ</td>
+                                }
+                                else
+                                {
+                                    <td>@String.Format("{0:n0}", data.Discount) VNĐ</td>
+                                }
+                            }
+                        }
+                        <td>@data.GetStrCreateDate</td>
+                        <td>@data.GetStrExpriceDate</td>
+                        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.QTY))</td>
+                        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.Redeme))</td>
+                        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.Remain))</td>
+                        @{
+                            if (data.Status == SystemParam.STATUS_COUPONS_ACTIVE)
+                            {
+                                <td>Hiện</td>
+                            }
+                            else
+                            {
+                                <td>Ẩn</td>
+                            }
+                        }
+
+                        <td>
+                            <a onclick="Detail(@data.ID);" title="Sửa khuyến mại" class="cursor-pointer">
+                                <i class="btnEdit glyphicon glyphicon-upload"></i>
+                            </a>
+                            <a onclick="DeleteCoupon(@data.ID);" title="Xóa khuyến mại" class="cursor-pointer">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+
+            }
+        }
+
+    </tbody>
+
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, Code = ViewBag.Code, Type = ViewBag.Type, Status = ViewBag.Status, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate }),
+                     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+                     {
+                         HttpMethod = "GET",
+                         UpdateTargetId = "ListPromocode"
+                     })
+                 )
+    </div>
+</div>
+
+
+

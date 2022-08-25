@@ -1,0 +1,227 @@
+﻿@using Data.Model.APIApp
+@using Data.Utils
+
+@model ReviewDetail
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Review details</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Reviews/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Washer Information</legend>
+            <div class="row mt-2">
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Washer Code:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <p>@Model.review.WasherCode</p>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Number of Reviews:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <p>@Model.review.NumberOfRating</p>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Full name:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <p>@Model.review.WasherName</p>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Average rating rate:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    @{
+                        for (int i = 0; i < Model.review.Rating; i++)
+                        {
+                            <label><i class="fa fa-star"></i></label>
+                        }
+                    }
+                    @*<label><i class="fa fa-star"></i></label>
+                        <label><i class="fa fa-star"></i></label>
+                        <label><i class="fa fa-star"></i></label>
+                        <label><i class="fa fa-star"></i></label>
+                        <label><i class="fa fa-star-half-full"></i></label>*@
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Latest review date:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <p>@Model.review.DateTimeStr</p>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <label class="font-weight-normal text-primary">Number of comments:</label>
+                </div>
+                <div class="col-md-3 col-xs-6">
+                    <p>@Model.review.NumberOfComment</p>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border">Rating of admin</legend>
+            <div class="row mt-2">
+
+                <div class="col-md-1 col-xs-2 pt-2">
+                    <span class="text-primary">Rate:</span>
+                </div>
+                <div class="col-md-2 col-xs-2">
+                    <div class="row mt-2">
+                        <div class="col-sm-2 col-md-2"><i class="fa fa-minus text-danger" id="minusRate"></i></div>
+                        <div class="col-sm-2 col-md-2"><label id="txtRate" class="text-dark">@Model.review.RatingOfAdmin</label></div>
+                        <div class="col-sm-2 c0l-md-2"><i class="fa fa-plus text-primary" id="plusRate"></i></div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Review Information</legend>
+            @{
+                foreach (var dt in Model.ListReviewInformation)
+                {
+                    <div class="row">
+                        <div class="col-md-6 col-xs-12">
+                            <div class="row mt-3">
+                                <div class="col-md-3 col-xs-6">
+                                    <span class="text-primary">Message from master:</span>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <span>@dt.washerNote</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3 col-xs-6">
+                                    <span class="text-primary">Customer name:</span>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <span>@dt.CustomerName</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3 col-xs-6">
+                                    <span class="text-primary">Customer phone number:</span>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    <span>@dt.PhoneSTR</span>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+
+                                <div class="col-md-3 col-xs-6">
+                                    <span class="text-primary">@dt.DateTimeStr</span>
+                                </div>
+                                <div class="col-md-3 col-xs-6">
+                                    @{
+                                        for (int i = 0; i < dt.Rating; i++)
+                                        {
+                                            <label><i class="fa fa-star"></i></label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-3 ">
+                                    <span class="text-primary">Comment:</span>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="border-gray p-10">
+                                        <span>@dt.Note</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-12">
+                            <div class="col-md-12 col-xs-12 mt-3">
+                                <span class="text-primary">Images:</span>
+                            </div>
+                            <div class="row">
+                                @{ foreach (var item in dt.listImage)
+                                    {
+                                        <div class="col-md-3 col-xs-6 col-sm-4 mt-3" >
+                                            <img src="@item.image" class="img-thumbnail" />
+                                        </div>
+                                    }}
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+        </fieldset>
+    </div>
+</div>
+
+<div class="row offset-md-10">
+    @*<div class="col-md-6 pr-3 pb-2 mb-1 d-flex justify-content-end">
+            <button class="btn btn-primary btn-back" onclick="backReviews()"><i class="fa fa-arrow-circle-left mr-1"></i> Back</button>
+        </div>*@
+    <div class=" col-md-6 pr-3 pb-2 mb-1 offset-md-6 d-flex justify-content-end">
+        <button class="btn btn-success btn-back" onclick="saveRatingOfAdmin(@Model.review.ID)"><i class="fa fa-save"></i> Save</button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#txtRate').on('input', function (e) {
+        $(this).val(formatCurrency(this.value.replace(/[,VNĐ]/g, '')));
+    }).on('keypress', function (e) {
+        if (!$.isNumeric(String.fromCharCode(e.which))) e.preventDefault();
+    }).on('paste', function (e) {
+        var cb = e.originalEvent.clipboardData || window.clipboardData;
+        if (!$.isNumeric(cb.getData('text'))) e.preventDefault();
+    });
+
+    function formatCurrency(number) {
+        var n = number.split('').reverse().join("");
+        var n2 = n.replace(/\d\d\d(?!$)/g, "$&,");
+        return n2.split('').reverse().join('');
+    }
+
+    $(function () {
+        var value = parseInt($('#txtRate').text());
+        if (isNaN(value)) {
+            value = 0;
+            $('#txtRate').text(value);
+        }
+        $('#plusRate').click(function () {
+            value++;
+            if (value > 5) {
+                value = 5;
+            }
+            $('#txtRate').text(value);
+        });
+
+        $('#minusRate').click(function () {
+            value--;
+            if (value < 0) {
+                value = 0;
+            }
+            $('#txtRate').text(value);
+        });
+
+    });
+</script>

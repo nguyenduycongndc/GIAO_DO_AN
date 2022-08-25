@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "AddRank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Add Rank</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<fieldset class="scheduler-border" style="background-color:#FFF;">
+    <legend class="scheduler-border">Information</legend>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Name</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="name" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>From point</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="fromPoint" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>To point</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="toPoint" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Profit</span>
+                </div>
+                <div class="col-md-5 position-relative">
+                    <input type="number" class="form-control" id="profit" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Status</span>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control" id="sl_status">
+                        <option>Active</option>
+                        <option>Deactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Description</label>
+            <textarea name="editor" class="form-control mb-3" id="txtContentCreate"></textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <span><b>Benefit</b></span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <span><b>Get point when pay by cash</b></span>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <input class="form-control" type="number" id="couponCash" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <span><b>Rank up gift</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Get point</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" class="form-control number" id="giftPoint" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Free service</span>
+                </div>
+                <div class="col-md-7 position-relative">
+                    <select class="form-control">
+                        <option>Sliver</option>
+                        <option>Gold</option>
+                        <option>Diamond</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-2 col-md-10">
+                    <table class="text-center">
+                        <thead>
+                            <tr>
+                                <th><b>Service</b></th>
+                                <th><b>Quantity</b></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sliver</td>
+                                <td class="pb-2"><input type="number" style="width:50%;" /></td>
+                                <td><i class="fa fa-times font-20 color-red"></i></td>
+                            </tr>
+                            <tr>
+                                <td>A/C Clean</td>
+                                <td class="pb-2"><input type="number" style="width:50%;" /></td>
+                                <td><i class="fa fa-times font-20 color-red"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <span><b>Get point when pay by VNpay</b></span>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <input class="form-control" type="number" id="couponVnpay" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <span><b>Birthday gift</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Get point</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" class="form-control number" id="birthdayPoint" />
+                    <span class="inside_input">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Free service</span>
+                </div>
+                <div class="col-md-7 position-relative">
+                    <select class="form-control">
+                        <option>Sliver</option>
+                        <option>Gold</option>
+                        <option>Diamond</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-2 col-md-10">
+                    <table class="text-center">
+                        <thead>
+                            <tr>
+                                <th><b>Service</b></th>
+                                <th><b>Quantity</b></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Sliver</td>
+                                <td class="pb-2"><input type="number" style="width:50%;" /></td>
+                                <td><i class="fa fa-times font-20 color-red"></i></td>
+                            </tr>
+                            <tr>
+                                <td>A/C Clean</td>
+                                <td class="pb-2"><input type="number" style="width:50%;" /></td>
+                                <td><i class="fa fa-times font-20 color-red"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Relegation policy</label>
+            <textarea name="editor1" class="form-control mb-3" id="txtContentCreate1"></textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+    </div>
+</fieldset>
+<div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-success plr-25 mr-3">Save</button>
+    <button class="btn btn-danger plr-25" onclick="window.location='/Rank/Index'">Back</button>
+</div>
+<script>
+    $(document).ready(function () {
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+
+        CKEDITOR.replace('editor', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('editor1', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+    });
+</script>
+

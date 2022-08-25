@@ -1,0 +1,481 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIApp
+@using Data.Model.APIWeb
+@model OrderServiceDetailOutputModel
+@{
+    UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session["Login"];
+}
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0" onclick="window.location = '/Transaction/Index';" style="cursor:pointer">
+                <h4 class="custom_title">Transaction</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Transaction/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<fieldset class="scheduler-border" style="background-color:#FFF;">
+    <legend class="scheduler-border">Information</legend>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-6">
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Code</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span class="color-blue font-weight-bold">@Model.Code</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-6">
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Service Status</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span class="color-red font-weight-bold">@Model.StatusStr</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <span><b>Washer Information</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Washer code</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span id="washercode">@Model.agentCode</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Washer Name</span>
+                </div>
+                @{
+                    int[] cansee = { Data.Utils.Constant.ORDER_STATUS_CANCEL, Data.Utils.Constant.ORDER_STATUS_COMPLETE, Data.Utils.Constant.ORDER_STATUS_CONFIRM_WASHING, Data.Utils.Constant.ORDER_STATUS_WASHING };
+                    if (!cansee.ToList().Contains(Model.Status))
+                    {
+                        <div class="col-md-6 col-xs-6">
+                            <select class="form-control" orderID="@Model.OrderServiceID" id="select-washer">
+                                @{
+                                    foreach (var item in ViewBag.listWasher)
+                                    {
+                                        <option value="@item.WasherID" code="@item.Code" phone="@item.Phone">@item.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-6 col-xs-6">
+                            <span id="washerName">@Model.AgentName</span>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Phone number</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span id="washerphone">@Model.AgentPhone</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Profit customer</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span id="washerphone">@String.Format("{0:n0}", Model.ProfitCustomer) VNĐ</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-2">
+                <div class="col-md-12 col-xs-12">
+                    <span><b class="font-16">Customer Information</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Customer</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.CustomerName</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Phone number</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.CustomerPhone</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5 pl-5">
+                    <span>Address</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.CustomerAddress</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Date of request service</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.CreateDateStr</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Actual Reservation Service time</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.BookDateStr</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Vehicle Information</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@Model.Car.CarModel (@Model.Car.LicensePlates)</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Commission</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    <span>@String.Format("{0:n0}", Model.Commission) VNĐ</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 col-xs-6 pl-5">
+                    <span>Payment Status</span>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                    @{
+                        if (Model.PaymentType == 2)
+                        {
+                            <span class="color-blue font-weight-bold">VNPay</span>
+                        }
+                        else if (Model.PaymentType == 1)
+                        {
+                            <span class="color-blue font-weight-bold">CASH</span>
+                        }
+                        else
+                        {
+                            <span class="color-blue font-weight-bold">Momo</span>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <fieldset class="scheduler-border" style="background-color:#FFF;">
+                <legend class="scheduler-border">Car scratches photo</legend>
+                <div class="row mb-2">
+                    <div class="col-6">
+                        <b>Note</b>
+                    </div>
+                    <div class="col-6">
+                        <b>Photo</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <b style="word-wrap: break-word;">@Model.CarNote.Note</b>
+                    </div>
+                    <div class="col-6 float-right" >
+                        @{foreach (var item in Model.CarNote.ListImage)
+                            {
+                                <img src="@item.image" style="margin-bottom:5px;margin-right:5px;float:right" width="85" height="85" onclick="LargeImage(event)" />
+                            }}
+
+                    </div>
+                </div>
+
+            </fieldset>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-2">
+                <div class="col-md-12 col-xs-12">
+                    <span><b class="font-16">Result</b></span>
+                </div>
+            </div>
+            <div class="row mt-2 pl-4">
+                <div class="col-md-12 col-xs-12">
+                    @{
+                        if (Model.listImageRequire.Count == 0)
+                        {
+                            <span>Photo has not been updated</span>
+                        }
+                        else
+                        {
+                            foreach (var item in Model.listImageRequire)
+                            {
+                                <div class="inlineblock">
+                                    <div class="mt-2">
+                                        <div class="col-md-12 col-xs-12">
+                                            <span>@item.Name</span>
+                                        </div>
+                                    </div><br />
+                                    <div class="mt-1">
+                                        <div class="">
+                                            <div class="inlineblock mr-2">
+                                                @{
+
+                                                }
+                                                @{
+                                                    if (item.before.DateStr.Length > 0)
+                                                    {
+                                                        <img src="@item.before.url" width="85" height="85" onclick="LargeImage(event)" /><br />
+                                                        <span>@item.before.DateStr.ToString()</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img width="85" height="85" /><br />
+                                                        <span>No image</span>
+                                                    }
+                                                }
+                                            </div>
+                                            <div class="inlineblock mr-5">
+                                                @{
+                                                    if (item.after.DateStr.Length > 0)
+                                                    {
+                                                        <img src="@item.after.url" width="85" height="85" onclick="LargeImage(event)" /><br />
+                                                        <span>@item.after.DateStr.ToString()</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <img width="85" height="85" /><br />
+                                                        <span>No image</span>
+                                                    }
+                                                }
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            }
+
+                        }
+                    }
+
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-2">
+                <div class="col-md-12 col-xs-12">
+                    <span><b class="font-16">Service</b></span>
+                </div>
+            </div>
+            <div class="row mt-2 pr-3">
+                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                    <thead class="text-center text-white">
+                        <tr>
+                            <th>No</th>
+                            <th>
+                                Service Package
+                            </th>
+                            <th class="wrap">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        @{
+                            int stt = 1;
+                            foreach (var item in Model.ListService)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@item.Name</td>
+                                    <td>@String.Format("{0:n0}", item.Price) VNĐ</td>
+                                </tr>
+                                stt++;
+                            }
+                            foreach (var item in Model.ListServiceExtra)
+                            {
+                                <tr>
+                                    <td>@stt</td>
+                                    <td>@item.Name (Extra)</td>
+                                    <td>
+                                        @String.Format("{0:n0}", item.Price) VNĐ - @{
+                                            if (Model.ExtraPaymentType == 2)
+                                            {
+                                                <span class="color-blue font-weight-bold">VNPay</span>
+                                            }
+                                            else if (Model.ExtraPaymentType == 1)
+                                            {
+                                                <span class="color-blue font-weight-bold">CASH</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="color-blue font-weight-bold">Momo</span>
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                                stt++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @{ if (Model.IsExportVAT == 1)
+                {
+                    <div class="row mt-2">
+                        <div class="col-md-12 col-xs-12">
+                            <span><b class="font-16">Invoice information</b></span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-xs-6">
+                            <span>Company name</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <span>@Model.OfficeName</span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-xs-6">
+                            <span>VAT</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <span>@Model.OfficeVAT</span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6 col-xs-6">
+                            <span>Address Office</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <span>@Model.OfficeAddress</span>
+                        </div>
+                    </div>
+                }
+            }
+            <div class="row mt-2">
+                <div class="col-md-6 offset-md-6">
+                    <div class="row mt-2">
+                        <div class="col-md-6 col-xs-6">
+                            <span>Price:</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <span><b>@String.Format("{0:n0}", Model.BasePrice) VND</b></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6 col-xs-6">
+                            <span>PromoteCode:</span>
+                        </div>
+                        @{
+                            if (Model.couponCode != "" && Model.couponCode != null)
+                            {
+                                <div class="col-md-6 col-xs-6">
+                                    <span><b>@Model.couponCode</b><br />(-@String.Format("{0:n0}", Model.CouponPoint) VND)</span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-6 col-xs-6">
+                                    <span>Not Applied</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6 col-xs-6">
+                            <span>Use point:</span>
+                        </div>
+                        @{
+                            if (Model.UsePoint > 0)
+                            {
+                                <div class="col-md-6 col-xs-6">
+                                    <span><b>@String.Format("{0:n0}", Model.UsePoint) VND</b></span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-6 col-xs-6">
+                                    <span>0 VND</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6 col-xs-6">
+                            <span>Total Price:</span>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <span><b class="color-red">@String.Format("{0:n0}", Model.TotalPrice) VNĐ</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center mt-3 mb-5">
+        <button class="btn btn-primary plr-25 mr-3" onclick="BackTransaction()">Back</button>
+
+        @{ if (ss.Role != (int)Data.Utils.RoleUser.Accountant)
+
+            {
+                @*<button class="btn btn-primary btn_exportAndSave plr-25 mr-3" style="background-color: #674ea7;">Export and Save</button>*@
+                <button class="btn btn-success plr-25 mr-3" onclick="SaveEditTransaction(@Model.OrderServiceID);">Save</button>
+            }
+
+        }
+    </div>
+</fieldset>
+<script>
+    function BackTransaction() {
+        window.location.href = "/Transaction/Index";
+    }
+    var listWahser = [];
+    $(document).ready(function () {
+        $("#select-washer").val(@Model.AgentID);
+        if (@ss.Role == 2) {
+            $("#select-washer").attr("disabled", true)
+        }
+        var listWasherTag = $("#select-washer").children("option");
+        $.each(listWasherTag, function () {
+            var obj = new Object();
+            obj.phone = $(this).attr("phone");
+            obj.name = $(this).text();
+            obj.code = $(this).attr("code");
+            obj.Id = $(this).val();
+            listWahser.push(obj);
+
+        })
+        $("#select-washer").change(function () {
+
+            var selectwasher = listWahser.find(x => x.Id == $(this).val());
+            console.log($("#washerphone"));
+            $("#washerphone").text(listWahser.find(x => x.Id == $(this).val()).phone);
+            $("#washercode").text(listWahser.find(x => x.Id == $(this).val()).code);
+        })
+    });
+</script>
+
+
+

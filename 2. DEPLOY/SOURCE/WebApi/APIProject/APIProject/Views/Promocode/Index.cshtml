@@ -1,0 +1,410 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Utils
+@using APIProject
+@{
+    var typeCoupon = "Product coupon";
+}
+@using Data.Model.APIWeb
+@model List<RankingViewModel>
+<div class="" id="View">
+    <div id="init-view" class="card">
+        <div class="card-header sticky">
+            <div class="col-md-12">
+                <div class="breadcrumb-holder">
+                    <div class="row mb-3 mt-3">
+                        <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                            <h4>Khuyến mại</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-md-7 col-sm-6 mt-1">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-0">
+                            <input type="text" class="form-control" id="txtCode" placeholder="Nhập mã khuyến mại" />
+                        </div>
+                        <div class="col-md-6 offset-md-0">
+                            <select class="form-control" id="couponType">
+                                <option class="text-black-50" value="">Loại hình ưu đãi</option>
+                                <option value="@SystemParam.COUPON_TYPE_DRIVER">@SystemParam.COUPON_TYPE_DRIVER_STR</option>
+                                <option value="@SystemParam.COUPON_TYPE_PACKAGE">@SystemParam.COUPON_TYPE_PACKAGE_STR</option>
+                                <option value="@SystemParam.COUPON_TYPE_FOOD">@SystemParam.COUPON_TYPE_FOOD_STR</option>
+                            </select>
+                        </div>
+
+                        @*<div class="col-md-4 offset-md-0">
+                                <select class="form-control" id="couponStatus">
+                                    <option class="text-black-50" value="">Trạng thái</option>
+                                    <option value="1">Hiện</option>
+                                    <option value="0">Ẩn</option>
+                                </select>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="col-md-5 col-sm-6">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                            <input type="text" class="form-control relative-icon-calendar date " id="txtCouponFromdate" placeholder="Từ ngày" />
+                            <i class="fa fa-calendar absolute-icon-calendar"></i>
+                        </div>
+                        <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                            <input type="text" class="form-control relative-icon-calendar date" id="txtCouponTodate" placeholder="Đến ngày" />
+                            <i class="fa fa-calendar absolute-icon-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="row pt-25">
+                        <div class="col-md-12 mt-1">
+                            @*<div class="mt-1  mb-1 pull-right pb-10 pr-10">
+                                    <button class="btn btn-primary btn_export" id="btnExport"> @Resources.Export</button>
+                                </div>*@
+                            <div class="mt-1 pull-right pr-10 ">
+                                <button class="btn btn-primary btn_search" id="btnSearch" onclick="searchCoupons()"><i class="fa fa-search"></i> Tìm kiếm</button>
+                            </div>
+                            @*<div class="mt-1 pull-right pr-10">
+                                <button onclick="ClearFilterCoupon()" class="btn btn-danger" id="btnFilter">Xóa</button>
+                            </div>*@
+                            <div class="mt-1 pull-right pr-10">
+                                <button class="btn btn-success" id="btnAdd" data-toggle="modal" data-target="#addPromocode" onclick="clearData()">Thêm</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="ListPromocode">
+                    @{
+                        Html.RenderAction("Search", "Promocode", new { Page = 1 });
+                    }
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<!-- start modal add counpon-->
+<div class="modal fade" id="addPromocode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Thêm khuyến mãi</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-2">
+                    <div class="col col-md-4 text-left">
+                        <span>Mã khuyến mãi</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8">
+                        <input type="text" id="txtPromoCode" class="form-control" placeholder="Nhập mã khuyến mãi" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <span>Tên khuyến mại</span><span style="color:red"> *</span>
+
+                    </div>
+                    <div class="col col-7">
+                        <input class="form-control" type="text" placeholder="Tên khuyến mại" id="txtName" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-md-4 text-left">
+                        <span>Mô tả</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8 col-12"><textarea style="height:75px" id="txtPaintedPromo" class="form-control" placeholder="Thêm mô tả"></textarea></div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-4 col-12 text-left">
+                        <span>Giá trị</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-5 col-12">
+                        <input type="text" class="form-control number-type number" id="txtPromoVal" placeholder="Nhập giá trị" />
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select class="form-control" id="slPromoVal">
+                            <option value="@Constant.COUPON_TYPE_DISCOUNT">VNĐ</option>
+                            <option value="@Constant.COUPON_TYPE_PERCENT">%</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-4"><span>Loại dịch vụ</span><span style="color:red"> *</span></div>
+                    <div class="col col-5">
+                        <select class="form-control" id="slType">
+
+                            <option class="text-black-50" value="">--Loại hình ưu đãi--</option>
+                            <option value="@SystemParam.COUPON_TYPE_DRIVER">@SystemParam.COUPON_TYPE_DRIVER_STR</option>
+                            <option value="@SystemParam.COUPON_TYPE_PACKAGE">@SystemParam.COUPON_TYPE_PACKAGE_STR</option>
+                            <option value="@SystemParam.COUPON_TYPE_FOOD">@SystemParam.COUPON_TYPE_FOOD_STR</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-4 text-left mt-2">
+                        <span>Loại khuyến mãi</span>
+                    </div>
+
+                    <div class="col col-md-8 col-12 mt-2">
+                        <input type="checkbox" id="cbTypePromo" onclick="opSelectDT()" />
+                        <span>Có thời hạn</span>
+                    </div>
+                    <!--datetime piker-->
+                </div>
+                <div id="slcDateTime" class="hidden">
+                    <div class="row mt-1">
+                        <div class="col-md-4 col-4"></div>
+                        <div class="col-md-8 col-8">
+                            <div class="row">
+                                <div class="col-6 mr-0">
+                                    <input type="text" class="form-control relative-icon-calendar date " id="dateFrom" placeholder="Từ ngày" />
+                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                </div>
+                                <div class="col-6 ml-0">
+                                    <input type="text" class="form-control relative-icon-calendar date " id="dateEnd" placeholder="Đến ngày" />
+                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                </div>
+
+                            </div>
+                            @*<div class="row mt-1">
+                                    <input type="text" class="form-control relative-icon-calendar date fa fa-calendar " id="dateEnd" placeholder="Đến ngày" />
+
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-4">
+                        <span>Gửi cho tất cả khách hàng</span>
+                    </div>
+                    <div class="col col-1">
+                        <input type="checkbox" id="cbSendall" onclick="slcAllCustomer()" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col rol-md-4 text-left">
+                        <span>Hạng thành viên</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8 col-12 text-left">
+                        <select class="form-control" id="slRank">
+                            <option hidden>--Chọn hàng thành viên--</option>
+                            @{
+                                foreach (var dt in ViewBag.CustomerRank)
+                                {
+                                    <option value="@dt.ID">@dt.Description</option>
+                                }
+                            }
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <div class="col col-md-4 text-left">
+                        <span>Số lượng</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8">
+
+                        <input class="form-control number-type" name="quantity" type="number" id="ipQuantum" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-success" onclick="CreatePromocode()">Lưu</button>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+<!--end model-->
+
+
+<div id="update_coupon"></div>
+
+<!--Modal edit promoco-->
+
+<script>
+    
+    function slcAllCustomer() {
+        if ($('#cbSendall').prop("checked")) {
+            $("#slRank").attr("disabled", "disabled");
+            $("#ipQuantum").attr("disabled", "disabled");
+        }
+        else {
+            $("#slRank").removeAttr("disabled");
+            $("#ipQuantum").removeAttr("disabled");
+        }
+    }
+    function opSelectDT() {
+        if ($('#cbTypePromo').prop("checked")) {
+            $("#slcDateTime").removeClass('hidden');
+        }
+        else {
+            $("#slcDateTime").addClass('hidden');
+        }
+
+    }
+    $(document).ready(function () {
+        //$.ajax({
+        //    url: '/Promocode/GetListService',
+        //    type: 'GET',
+        //    success: function (res) {
+        //        $.each(res, function () {
+        //            if (this.ServiceID != null) {
+        //                $("#package").append('<option value="' + this.ServiceID + '">' + this.ServiceName + '</option>');
+        //            }
+        //            else {
+        //                $("#package").append('<option value="' + -this.comboID + '">' + this.ServiceName + " (combo)" + '</option>');
+        //            }
+        //        });
+        //    }
+        //})
+        $("#checkallcustomer").change(function () {
+            if ($(this).prop("checked")) {
+                $("#txt_quantity").val(0);
+                $("#txt_quantity").attr("disabled", true);
+                $("#select-rank-promocode").attr("disabled", true);
+            } else {
+                $("#txt_quantity").attr("disabled", false);
+                $("#select-rank-promocode").attr("disabled", false);
+            }
+        })
+        $("#btnAdd").click(function () {
+            $("#text_typeCoupon").val("Service coupon");
+
+        })
+        $("#txt_typeCouponCreate").change(function () {
+
+            $.ajax({
+                url: "/Promocode/getListRank",
+                type: "GET",
+                data: {
+                    type: $(this).val()
+                },
+                success: function (res) {
+                    $("#select-rank-promocode").empty();
+                    $("#select-rank-promocode").html(res)
+                }
+            })
+
+            if ($(this).val() == 1) {
+                $("#all").text("All Washer");
+                $("#select-rank-promocode").val(-1);
+                $("#package").val(0);
+                $("#select-rank-promocode").attr("disabled", true);
+                $("#package").attr("disabled", true);
+            }
+            else {
+                $("#all").text("All Customer");
+                $("#select-rank-promocode").attr("disabled", false);
+                $("#package").attr("disabled", false);
+            }
+
+        })
+        $("#txt_typeCouponEdit").change(function () {
+            if ($(this).val() == 1) {
+                $("#select-rank-promocode").val(-1);
+                $("#package").val(0);
+                $("#select-rank-promocode").attr("disabled", true);
+                $("#package").attr("disabled", true);
+            }
+            else {
+                $("#select-rank-promocode-edit").attr("disabled", false);
+            }
+        })
+
+        $('#addPromocode').on('show.bs.modal', function (event) {
+
+        })
+    });
+
+    //Search promocode
+
+    function changeExpire() {
+        if ($("#expire").prop("checked") == true) {
+            $(".checkDisplay").removeClass("display-none");
+        }
+        else {
+            $(".checkDisplay").addClass("display-none");
+        }
+        //console.log($("#expire").prop("checked"));
+    }
+    $(document).ready(function () {
+        $("#couponType").on('change', function () {
+            $('.btnSearch').click();
+        })
+    })
+    function clearData() {
+        $('#txtPromoCode').val("");
+        $('#txtName').val("");
+        $('#txtPaintedPromo').val("");
+        $('#txtPromoVal').val("");
+        $('#slType').val("");
+        $('#cbTypePromo') = 0;
+        $('#dateFrom').val("");
+        $('#dateEnd').val("");
+        $('#cbSendall') = 0;
+        $('#ipQuantum').val("");
+    }
+    $(document).ready(function () {
+        $("#couponType").on('change', function () {
+            $('.btnSearch').click();
+        })
+    })
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        var config = {};
+        config.chooseFilesOnDblClick = false;
+        if ($("#add_logo_place").attr("data-id") != 0)
+            fider.popup(config);
+
+        $("#add_logo_place").attr("data-id", 1);
+    });
+</script>
+
+
+@*<script type="text/javascript">
+        function searchCoupons() {
+            var Code = $("#txtCode")
+            var CouponType = $("#cbCouponTye")
+            var CouponStatus = $("#cbCouponStatus")
+            var CouponFromdate = $("#txtCouponFromdate")
+            var CouponTodate = $("#txtCouponTodate")
+            $.ajax({
+                url: "Promocode/Search",
+                data: { code: Code, couponType: CouponType, couponStatus: CouponStatus, couponFromdate: CouponFromdate, couponTodate: CouponTodate },
+                success: ,
+            })
+        }
+    </script>*@

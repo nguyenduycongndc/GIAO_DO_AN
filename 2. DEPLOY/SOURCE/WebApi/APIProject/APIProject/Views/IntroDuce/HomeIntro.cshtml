@@ -1,0 +1,400 @@
+﻿@using Data.Model.APIWeb
+@using PagedList;
+@using PagedList.Mvc
+@using Data.Utils
+@using APIProject.Resource
+@model IPagedList<ListNewsWebOutputModel>
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+
+<!-- Preloader Start -->
+@*<a id="scrollUp2" style="position: fixed; z-index: 2147483647; display: block;"><i class="fab fa-facebook-messenger" style="font-size: 35px;padding-top:6px"></i></a>
+    <a id="scrollUp3" style="position: fixed; z-index: 2147483647; display: block;"><i class="fa fa-phone-volume" style="font-size: 35px;padding-top:6px"></i></a>*@
+
+<main>
+    <!-- Banner-->
+    <div class="banner">
+        <div>
+            <img src="~/Content/images/banner_weship.jpg" width="100%" />
+        </div>
+    </div>
+    <!-- End Banner-->
+    <!--? Services Start -->
+
+    <div class="padtop-0 mt-20 slider-1">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-tittle text-center mb-40">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:4%;">Tin tức</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="exampleSlider">
+                        <div class="MS-content">
+                            @foreach (ListNewsWebOutputModel news in (List<ListNewsWebOutputModel>)ViewBag.Display_New)
+                            {
+                                <div class="item">
+                                    <a href="/IntroDuce/NewsDetail?id=@news.ID">
+                                        <img src="@news.UrlImage" class="size-img" alt="">
+                                        <b>@news.Title</b>
+                                    </a>
+                                    <p class="promotion_content">@news.Description</p>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="MS-controls">
+                            <button class="MS-left"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                            <button class="MS-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="pricing-card-area section-bg" style="padding-top:2%">
+        <div class="container  mb-80">
+            <!-- Section Tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:3%; padding-bottom: 6%">Lý do nên dùng WESHIP</h2>
+
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="reason-choose">
+                    <div class="wrapper">
+                        <div>
+                            <img src="~/Content/images/clock.png" />
+                            <span>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </span>
+                        </div>
+                        <div>
+                            <img src="~/Content/images/clock.png" />
+                            <span>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </span>
+                        </div>
+                        <div>
+                            <img src="~/Content/images/clock.png" />
+                            <span>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </span>
+                        </div>
+                        <div>
+                            <img src="~/Content/images/clock.png" />
+                            <span>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </span>
+                        </div>
+                        <div>
+                            <img src="~/Content/images/clock.png" />
+                            <span>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </span>
+                        </div>
+                    </div>
+
+                </div>*@
+
+            <div class="row">
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock.png" />
+                            <div class="title_style">Quản trị đơn hàng</div>
+                        </div>
+                        @*<div class="col-lg-2 col-md-2 col-xs-6 col-sm-1">
+                            <img src="~/Content/images/clock.png" />
+                        </div>
+                        <div class="col-lg-7 col-md-10 col-xs-6 col-sm-11">
+                            <div class="title_style">Quản trị đơn hàng</div>
+                        </div>*@
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </p>
+                    </div>
+
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_1.png" />
+                            <div class="title_style">Đội ngũ nhân viên</div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Đội ngũ nhân viên thân thiện, nhiệt huyết, giao hàng nhanh chóng và tận tâm. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_2.png" />
+                            <div class="title_style">Dịch vụ tiện lợi </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Đặt đồ ăn, đồ uống  nhanh chóng, biết rõ nguồn gốc đảm bảo an toàn thực phẩm. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_3.png" />
+                            <div class="title_style">Đặt xe nhanh hơn</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Bắt xe nhanh, giá cước rẻ và được biết trước. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/roket1h.png" width="42px" />
+                            <span class="title_style">Mua sắm tiện ích</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Mua sắm tiện ích an toàn, nhiều mặt hàng thiết yếu với đời sống. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="Our-story-area story-padding" style=" background-color: #F8F8F8">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:2%; padding-bottom: 2%">Tải và cài ứng dụng</h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="story-caption background-img mb-40" style="background-image: url(/Content/images/iPhoneX.png);">
+                        @*<div class="story-details">
+                                <h4>The Proposal</h4>
+                                <p>Proin at sapien ipsum. Aenean placerat, quam ac tempor congue, orci est luctus ex, ut vestibulum ipsum nisl eu nisi.</p>
+                                <p>Proin at sapien ipsum. Aenean placerat, quam ac tempor.</p>
+                            </div>*@
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="story-img">
+                        @*<img class="story2" src="~/Content/assets/img/gallery/story1.jpg" alt="">*@
+                        <div class="story-details">
+                            <p style="padding-top: 10%; color: #019875; font-size: 25px;">Bước 1</p>
+                            <p style="color:black">Tải ứng dụng WESHIP từ App Store hoặc CH Play </p>
+                            <div>
+                                <a href="https://play.google.com/store/apps/details?id=vn.com.weshipcus" target="_blank" style="margin-right:5%"><img src="~/Content/images/Google_Play.png" style="width:35%" /></a>
+                                <a href="https://apps.apple.com/us/app/weship/id1552365856" target="_blank"><img src="~/Content/images/App_Store.png" style="width:35%" /></a>
+                            </div>
+                            <p style="padding-top: 10%; color: #019875; font-size: 25px;">Bước 2</p>
+                            <p style="color:black">Đăng ký tài khoản và đăng nhập</p>
+                            <p style="padding-top: 10%; color: #019875; font-size: 25px;">Website</p>
+                            <a href="www.weship.com.vn" style="color:black; font-size: 17px">www.weship.com.vn</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Our Story End -->
+    <!-- Gallery Area End -->
+    <!--? Gift Start -->
+    <section class="gift-area-home gift-padding fix" style=" background-image: url(/Content/images/banner_ship.jpg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="gift-caption text-center">
+                        <h2>Trở thành đối tác của chúng tôi</h2>
+                        <p>Kiếm thêm thu nhập từ 10.000.000 - 15.000.000/tháng</p>
+                        <p style="margin-bottom:5%">Từ WESHIP</p>
+                        <a href="#" onclick="window.location='/IntroDuce/DriverPartner'" class="btn-whit btn_1" style="color: white">Trở thành tài xế</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Gift End -->
+    <!--? Contact form Start -->
+    <!--<div class="contact-form section-padding30 fix">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-6 col-lg-6">
+                <div class="form-wrapper">
+                    <form id="contact-form" action="#" method="POST">-->
+    <!-- section tittle -->
+    <!--<div class="row ">
+            <div class="col-lg-12">
+                <div class="section-tittle tittle-form text-center mb-30">
+                    <h2>Are you attending?</h2>
+                    <img src="~/Content/assets/img/gallery/tittle_img2.png" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="form-box mb-30">
+                    <input type="text" name="name" placeholder="Name">
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-box subject-icon mb-30">
+                    <input type="Email" name="subject" placeholder="Email">
+                </div>
+            </div>
+            <div class="col-lg-12 mb-30">
+                <div class="select-itms">
+                    <select name="select" id="select2">
+                        <option value="">1 Guest</option>
+                        <option value="">2 Guest</option>
+                        <option value="">3 Guest</option>
+                        <option value="">4 Guest</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="form-box message-icon mb-30">
+                    <textarea name="message" id="message" placeholder="Your Message"></textarea>
+                </div>
+                <div class="submit-info">
+                    <button class="btn" type="submit">Confirm now</button>
+                </div>
+            </div>
+        </div>
+    </form>-->
+    <!-- Shape inner Flower -->
+    <!--<div class="shape-inner-flower">
+        <img src="~/Content/assets/img/gallery/shape2.png" class="shpe2" alt="">
+    </div>-->
+    <!-- Shape outer Flower -->
+    <!--<div class="shape-outer-flower">
+                            <img src="~/Content/assets/img/flower/from-top.png" class="outer-top" alt="">
+                            <img src="~/Content/assets/img/flower/from-bottom.png" class="outer-bottom" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <!-- Contact form End -->
+    <!--? Our Story Start -->
+    <div class="Our-story-area story-padding" style=" background-color: #F8F8F8">
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:2%; padding-bottom: 2%">Các bước đặt tài xế</h2>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="story-caption background-img mb-40" style="background-image: url(/Content/images/iPhoneX.png);"></div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="story-img">
+                        <img class="story2" src="~/Content/images/goi_xe.png" style="padding-top:10%; width:300px; height:400px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Gallery-2 img Start-->
+    @*<div class="gallery-area2 fix">
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="gallery-active owl-carousel">
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery01.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery02.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery03.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery04.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery05.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery06.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery07.png" alt=""></a>
+                            </div>
+                            <div class="gallery-img">
+                                <a href="#"><img src="~/Content/assets/img/gallery/gallery08.png" alt=""></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <!-- Gallery-2 img End-->
+    <!--? Start map Area-->
+    @*<section class="contact-sections">
+            <div class="d-area">
+                <div id="map" style="height: 235px; position: relative; overflow: hidden;"></div>
+                <script>
+                    function initMap() {
+                        var uluru = {
+                            lat: -25.363,
+                            lng: 131.044
+                        };
+                        var grayStyles = [{
+                            featureType: "all",
+                            stylers: [{
+                                saturation: -90
+                            },
+                            {
+                                lightness: 50
+                            }
+                            ]
+                        },
+                        {
+                            elementType: 'labels.text.fill',
+                            stylers: [{
+                                color: '#ccdee9'
+                            }]
+                        }
+                        ];
+                        var map = new google.maps.Map(document.getElementById('map'), {
+                            center: {
+                                lat: -31.197,
+                                lng: 150.744
+                            },
+                            zoom: 9,
+                            styles: grayStyles,
+                            scrollwheel: false
+                        });
+                    }
+                </script>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpfS1oRGreGSBU5HHjMmQ3o5NLw7VdJ6I&amp;callback=initMap">
+                </script>
+            </div>
+        </section>*@
+    <!--? End map Area -->
+</main>
+
+
+<!-- JS here -->

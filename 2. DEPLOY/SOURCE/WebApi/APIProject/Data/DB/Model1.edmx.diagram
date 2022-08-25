@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7931768d291842f48e693c7d3e8ee5c5" Name="Diagram1">
+        <EntityTypeShape EntityType="WE_SHIPModel.AppVersion" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Area" Width="1.5" PointX="5.25" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Bank" Width="1.5" PointX="16.5" PointY="24" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.BankMember" Width="1.5" PointX="18.75" PointY="38.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.CarShiper" Width="1.5" PointX="18.5" PointY="48.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Cart" Width="1.5" PointX="10.5" PointY="35.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.CategoryNew" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ComplainOrder" Width="1.5" PointX="18.75" PointY="34.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Config" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ConfigCommission" Width="1.5" PointX="9" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ConfigTime" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ConfigTransportArea" Width="1.5" PointX="14.25" PointY="22.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ConfigTransportCost" Width="1.5" PointX="16.5" PointY="63.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ConfigTransportWeight" Width="1.5" PointX="16.5" PointY="19.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Coupon" Width="1.5" PointX="5.25" PointY="26.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.CouponCustomer" Width="1.5" PointX="7.5" PointY="31.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Customer" Width="1.5" PointX="5.25" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.CustomerLocation" Width="1.5" PointX="7.5" PointY="45.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.CustomerRank" Width="1.5" PointX="3" PointY="35" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.District" Width="1.5" PointX="3" PointY="41.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.HistoryRankingPoint" Width="1.5" PointX="7.5" PointY="49.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Member" Width="1.5" PointX="13.5" PointY="34" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.MembersTransactionHistory" Width="1.5" PointX="21" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.News" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Notification" Width="1.5" PointX="15.75" PointY="48.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.OrderService" Width="1.5" PointX="16.5" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.OrderServiceDetail" Width="1.5" PointX="21.75" PointY="37.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.OrderServiceImage" Width="1.5" PointX="18.75" PointY="42.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.OrderServiceStatusHistory" Width="1.5" PointX="18.75" PointY="45.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Policy" Width="1.5" PointX="7.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Promotion" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Province" Width="1.5" PointX="0.75" PointY="33.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.QA" Width="1.5" PointX="4.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.RequestWithdraw" Width="1.5" PointX="24" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Service" Width="1.5" PointX="11.25" PointY="46.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ServiceImage" Width="1.5" PointX="15.75" PointY="27.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ServicePrice" Width="1.5" PointX="13.5" PointY="41.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Shiper" Width="1.5" PointX="11.25" PointY="23.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ShiperArea" Width="1.5" PointX="7.5" PointY="42" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ShiperImage" Width="1.5" PointX="13.5" PointY="27" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Shop" Width="1.5" PointX="8.25" PointY="35.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.ShopImage" Width="1.5" PointX="10.5" PointY="43.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.sysdiagram" Width="1.5" PointX="6.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Toping" Width="1.5" PointX="15.75" PointY="56.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.User" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.VehicleType" Width="1.5" PointX="14.25" PointY="59.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WE_SHIPModel.Wallet" Width="1.5" PointX="15.75" PointY="52.625" IsExpanded="true" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Area__DistrictID__00200768" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__AreaI__1CBC4616" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ShiperAre__AreaI__2DE6D218" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__BankMembe__BankI__01142BA1" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__BankMembe__Membe__02084FDA" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__RequestWi__BankM__405A880E" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__CarShiper__Shipe__02FC7413" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__CarShiper__Vehic__03F0984C" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Cart__ShopID__05D8E0BE" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_Cart_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_Cart_ServicePrice" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__CategoryN__Paren__07C12930" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__News__CategoryID__17036CC0" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ComplainO__Order__08B54D69" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Shiper__Commissi__2BFE89A6" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_ConfigTransportWeight_ConfigTransportArea" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_OrderService_ConfigTransportArea" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ConfigTra__Vehic__6991A7CB" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Coupo__1F98B2C1" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_Coupon_CustomerRank" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_CouponCustomer_Coupon" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_CouponCustomer_Customer" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__Custom__10566F31" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__Distri__0C85DE4D" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__Distri__0E6E26BF" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__Provin__0B91BA14" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__Provin__0D7A0286" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Customer__RefByI__0F624AF8" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__CustomerL__Custo__114A936A" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__HistoryRa__Custo__3F115E1A" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Member__Customer__123EB7A3" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Custo__19DFD96B" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Shop__DistrictID__69FBBC1F" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_District_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_OrderService_District" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Member__ShiperID__1332DBDC" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Member__ShopID__14270015" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__MembersTr__Membe__151B244E" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Notificat__Membe__18EBB532" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Wallet__MemberID__30C33EC3" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__MembersTr__Walle__160F4887" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__News__UserID__17F790F9" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Promotion__NewsI__25518C17" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__CarTy__4F12BBB9" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Order__208CD6FA" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Order__22751F6C" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Order__245D67DE" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Shipe__1BC821DD" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__ShopI__16CE6296" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_OrderService_Province" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__OrderServ__Servi__2180FB33" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Shop__ProvinceID__6AEFE058" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__RequestWi__Shipe__2645B050" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__Service__ParentI__282DF8C2" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ServicePr__Servi__2B0A656D" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_ServiceImage_ServicePrice" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ServicePr__ShopI__2A164134" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_Toping_ServicePrice" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ShiperAre__Shipe__2CF2ADDF" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ShiperIma__Shipe__2EDAF651" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK__ShopImage__ShopI__2FCF1A8A" ManuallyRouted="false" />
+        <AssociationConnector Association="WE_SHIPModel.FK_Shop_Shop" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

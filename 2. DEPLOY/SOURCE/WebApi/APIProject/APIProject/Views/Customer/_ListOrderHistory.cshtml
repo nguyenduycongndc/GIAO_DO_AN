@@ -1,0 +1,84 @@
+﻿@using Data.DB
+@using Data.Utils
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@using APIProject.Resource
+@model IPagedList<ListOrderHistory>
+
+<div class="col-md-12">
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th class="width-stt">@Resources.No</th>
+                <th>@Resources.OrderCode</th>
+                <th>@Resources.Customers</th>
+                <th>@Resources.Agents</th>
+                <th>@Resources.PhoneNumber</th>
+                <th>@Resources.Products</th>
+                <th>@Resources.TotalMoney</th>
+                <th>@Resources.Status</th>
+                <th>@Resources.OrderDate</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{
+                if (Model.Count() <= 0)
+                {
+                    <tr>
+                        <td colspan="10">@Resources.NoData.</td>
+                    </tr>
+                }
+                else
+                {
+                    int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                    foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@data.order.Code</td>
+                            <td>@data.customer.Name</td>
+                            <td>@data.customer.Name</td>
+                            <td>@data.customer.Phone</td>
+                            <td>@data.item.Name</td>
+                            <td>@String.Format("{0:0,0 vnđ}", @data.order.TotalPrice)</td>
+                            @{
+                                if (@data.order.Status == 0)
+                                {
+                                    <td class="text-warning">Chờ</td>
+                                }
+                                else if (@data.order.Status == 1)
+                                {
+                                    <td class="text-primary">@Resources.Confirm</td>
+                                }
+                                else if (@data.order.Status == 2)
+                                {
+                                    <td class="text-success">@Resources.Paid</td>
+                                }
+                                else if (@data.order.Status == 3)
+                                {
+                                    <td class="text-danger">@Resources.Cancel</td>
+                                }
+                            }
+                            <td>@data.order.CreateDate.ToString("dd/MM/yyyy")</td>
+                        </tr>
+                        stt++;
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<div class="col-md-12">
+    <div class="row float-right mr-1">
+        @*phân trang*@
+        @Html.PagedListPager(
+            Model,
+            page => Url.Action("searchOrderHistory", "Customer", new { Page = page, cusID = ViewBag.cusID, fromDate = ViewBag.FromDateOH, toDate = ViewBag.ToDateOH }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListOrderHistory" })
+            )
+    </div>
+</div>

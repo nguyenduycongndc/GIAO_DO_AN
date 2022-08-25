@@ -1,0 +1,172 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.DB
+@using Data.Utils
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-6 col-sm-6 col-6 text-info px-0">
+                <h4 class="mt-2">Báo cáo thanh toán</h4>
+            </div>
+            <div class="col-md-6 text-right mb-2">
+                <button id="btnClear" class="btn btn-danger" onclick=""><i></i>Dọn bộ lọc</button>
+                <button id="btnSearch" class="btn btn-primary btn_search" onclick="searchPaymentReport()"><i class="fa fa-search"></i>Tìm kiếm</button>
+                @{
+                    if (ViewBag.roleLoginStatisticPayment == 2 || ViewBag.roleLoginStatisticPayment == 3 || ViewBag.roleLoginStatisticPayment == 6 || ViewBag.roleLoginStatisticPayment == 7)
+                    {
+                        <button hidden class="btn btn-primary btn_export" id="btnExport" onclick="exportListPaymentReport()"><i class="fa fa-download mr-1"></i> Xuất excel</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary btn_export" id="btnExport" onclick="exportListPaymentReport()"><i class="fa fa-download mr-1"></i> Xuất excel</button>
+                    }
+                }
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+        <input type="text" id="txtCodeOrName" class="form-control" placeholder="Nhập tên hoặc số điện thoại khách hàng" />
+    </div>
+    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+       <select class="form-control" id="slPaymentStatus">
+           <option value="">--Loại giao dịch--</option>
+           <option value="@SystemParam.SHIP_DRIVER">@SystemParam.SHIP_DRIVER_STR</option>
+           <option value="@SystemParam.SHIP_PACKAGE">@SystemParam.SHIP_PACKAGE_STR</option>
+           <option value="@SystemParam.SHIP_FOOD">@SystemParam.SHIP_FOOD_STR</option>
+       </select>
+    </div>
+    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+        <input type="text" id="txtFromDate" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+        <input type="text" id="txtToDate" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+<div class="row mb-2 mt-1">
+    <div class="col-md-3 col-12">
+        <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+            <option value="">Tỉnh / Thành phố</option>
+            @foreach (Data.DB.Province obj in ViewBag.Province)
+            {
+                <option value="@obj.ID">
+                    @obj.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3 col-12">
+        <select class=" form-control" name="calc_shipping_district" id="slDistrict">
+            <option value="">Quận / Huyện</option>
+        </select>
+    </div>
+    <div class="col-md-3 offset-md-0 col-sm-4 mt-1">
+        <select class="form-control" id="slPaymentType">
+            <option value="">--Hình thức thanh toán--</option>
+            <option value="@SystemParam.PAYMENT_TYPE_ON_DELIVERY">@SystemParam.PAYMENT_TYPE_ON_DELIVERY_STR</option>
+            <option value="@SystemParam.PAYMENT_TYPE_VN_PAY">@SystemParam.PAYMENT_TYPE_VN_PAY_STR</option>
+        </select>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-12" id="tablePaymentReport">
+        @{
+            Html.RenderAction("SearchPaymentReport", "StatisticPayment", new { page = 1 });
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".sidebar-scroll").scrollTop(2000);
+    });
+    $('#tabStatisticPayment').addClass("active");
+    $('#ulStatistic').addClass("d-block");
+    $('#tabStatistic').addClass("active");
+
+
+    function exportListPaymentReport() {
+        var searchKeys = $('#txtCodeOrName').val();
+        var bookingTypes = $('#slPaymentStatus').val();
+        var paymentTypes = $('#slPaymentType').val();
+        var fromDates = $('#txtFromDate').val();
+        var toDates = $('#txtToDate').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        //swal({
+        //    title: "Vui lòng chờ...!",
+        //    text: "Việc này có thể kéo dài trong vài phút",
+        //    icon: "warning",
+        //    buttons: ["Cancel", "OK"],
+        //    dangerMode: true
+        //})
+        window.location.href = "/StatisticPayment/ExportListPayReport?searchKey=" + searchKeys + "&bookingType=" + bookingTypes + "&paymentType=" + paymentTypes  +"&provinceID="+ provinceID + "&districtID=" + districtID + "&fromDate=" + fromDates + "&toDate=" + toDates;
+    }
+    $('#btnClear').click(function () {
+        $('#txtCodeOrName').val("");
+        $('#slPaymentStatus').val("");
+        $('#slPaymentType').val("");
+        $('#txtFromDate').val("");
+        $('#txtToDate').val("");
+        $.ajax({
+            url: '/StatisticPayment/SearchPaymentReport',
+            type: 'POST',
+            data: {
+                page: 1,
+                code: "",
+                phone: "",
+                fDate: "",
+                tDate: "",
+            },
+            beforeSend: function () {
+                $("#modalLoad").modal("hide");
+            }
+            ,
+            success: function (res) {
+                $('#tableWasherReport').html(res);
+                $("#modalLoad").modal("hide");
+            }
+
+
+        })
+    });
+    function searchPaymentReport() {
+        var searchKeys =  $('#txtCodeOrName').val();
+        var bookingTypes = $('#slPaymentStatus').val();
+        var paymentTypes = $('#slPaymentType').val();
+        var fromDates = $('#txtFromDate').val();
+        var toDates = $('#txtToDate').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        $.ajax({
+            url: "/StatisticPayment/SearchPaymentReport",
+            data: {
+                page: 1,
+                searchKey: searchKeys,
+                bookingType: bookingTypes,
+                paymentType: paymentTypes,
+                fromDate: fromDates,
+                toDate: toDates,
+                provinceID: provinceID,
+                districtID : districtID
+            },
+            beforeSend: function () {
+                $("#modalLoad").modal("hide");
+            },
+            success: function (rs) {
+                $("#modalLoad").modal("hide");
+                $('#tablePaymentReport').html(rs);
+            }
+        })
+    }
+
+</script>

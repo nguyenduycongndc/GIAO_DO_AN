@@ -1,0 +1,197 @@
+{
+	"info": {
+		"_postman_id": "6bfa7fee-5848-40f1-a22b-08df34b7f19d",
+		"name": "GIAO_VAT",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "detail",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "F96F198E49C24CCC53DB1350A1AF146C",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:11111/api/shopApi/detail/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "11111",
+					"path": [
+						"api",
+						"shopApi",
+						"detail",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "LASDKJLASKDAL",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{local}}/ShopAPI/list?type=2",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"ShopAPI",
+						"list"
+					],
+					"query": [
+						{
+							"key": "serviceID",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "isActive",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "type",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateOrUpdateService",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "E02D9DC68533E2224DFD0F2A91029AEA",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/ANHLE/Desktop/140850658_2907780396122385_6704846076354108845_o.jpg"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/E:/imageCarRect/Uploads/00cedee63756f98bc5b775886c3af1dc.jpg"
+						},
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/E:/imageCarRect/Uploads/0a41101d3a0e4a14031c424c4e57e203.jpg"
+						},
+						{
+							"key": "Name",
+							"value": "Cơm nóng",
+							"type": "text"
+						},
+						{
+							"key": "Price",
+							"value": "1000000",
+							"type": "text"
+						},
+						{
+							"key": "BasePrice",
+							"value": "1000000",
+							"type": "text"
+						},
+						{
+							"key": "Discount",
+							"value": "1000000",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "Cơm rất nóng anh nhanh kẻo nguội",
+							"type": "text"
+						},
+						{
+							"key": "ServiceID",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "ServiceType",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "ID",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:11111/api/ShopAPI/CreateOrUpdateService",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "11111",
+					"path": [
+						"api",
+						"ShopAPI",
+						"CreateOrUpdateService"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ID\":1\r\n}\r\n    \r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local}}/ShopAPI/DeleteService",
+					"host": [
+						"{{local}}"
+					],
+					"path": [
+						"ShopAPI",
+						"DeleteService"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

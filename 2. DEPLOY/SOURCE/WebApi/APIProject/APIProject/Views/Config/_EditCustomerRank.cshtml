@@ -1,0 +1,186 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@model CustomerRank
+
+<div class="modal fade" id="EditCustomerRank" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Cập nhật hạng thành viên</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <h6 style="margin-bottom: 15px"><b>Thông tin hạng</b></h6>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="fname" style="margin-top: 7px">Tên hạng</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="Name" id="name" class="form-control" placeholder="Nhập tên hạng" value="@Model.Name" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="fname" style="margin-top: 7px">Cấp hạng</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" name="Level" id="level" placeholder="Tích điểm" value="@Model.Level" disabled />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="fname" style="margin-top: 7px">Từ</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="MinPoint" id="min_point" class="form-control number" placeholder="Nhập số điểm nhỏ nhất" value="@string.Format("{0:#,0}", Convert.ToDecimal( @Model.MinPoint))" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="fname" style="margin-top: 7px">Đến</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-8">
+                                <input type="text" name="MaxPoint" id="max_point" class="form-control number" placeholder="Nhập số điểm lớn nhất" value="@string.Format("{0:#,0}", Convert.ToDecimal( @Model.MaxPoint))" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="row" style="margin-bottom: 10px">
+                        <div class="col-md-2">
+                            <label for="fname" style="margin-top: 7px">Mô tả</label><span style="color:red"> *</span>
+                        </div>
+                        <div class="col-md-10">
+                            <textarea class="form-control" name="Description" id="desc_ranks" rows="2">@Model.Description</textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <h6><b>Quyền lợi</b></h6>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="fname" style="margin-top: 7px">Tích điểm thanh toán tiền mặt</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control number-type"  name="ProfitCash" id="profit_cash" placeholder="" value="@Model.ProfitCash" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="fname" style="margin-top: 7px">Tích điểm thanh toán VNPay</label><span style="color:red"> *</span>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control number-type" name="ProfitVPN" id="profit_vpn" placeholder="Tích điểm" value="@Model.ProfitVPN" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col-md-6">
+                        <div class="thumbnail-ranks">
+                            <strong>Quà tăng hạng</strong>
+                            <div class="row" style="margin-top: 10px; padding: 10px">
+                                <div class="col-md-4">
+                                    <label for="fname" style="margin-top: 7px">Điểm nhận</label><span style="color:red"> *</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control number" name="PointBonus" id="point_bonus" placeholder="Điểm nhận sau khi tăng hạng" value="@string.Format("{0:#,0}", Convert.ToDecimal( @Model.PointBonus))" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="thumbnail-ranks">
+                            <strong>Quà sinh nhật</strong>
+                            <div class="row" style="margin-top: 10px; padding: 10px">
+                                <div class="col-md-4">
+                                    <label for="fname" style="margin-top: 7px">Tích điểm</label><span style="color:red"> *</span>
+                                </div>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control number" name="ProfitExtraBirthDay" id="profit_birthday" placeholder="Tích điểm" value="@string.Format("{0:#,0}", Convert.ToDecimal( @Model.ProfitExtraBirthDay))" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div>
+                    <div class="col-md-6">
+                        <h6><b>Chính sách trụ hạng</b><span style="color:red"> *</span></h6>
+                    </div>
+                    <div class="col-md-12">
+                        @*<textarea class="form-control" name="Policy" id="policy_ranks" rows="3">@Model.Policy</textarea>*@
+                        @Html.TextAreaFor(m => m.Policy, new { @class = "form-control ", @id = "policy_ranks", @name = "Policy", @placeholder = "Nhập mô tả" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-stop-circle-o mr-1"></i>Hủy</button>
+                <button type="button" class="btn btn-success" onclick="updateCustomerRank(@Model.ID)"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //Fomat number
+    $('.number-type').keydown(function (e) {
+        if (e.keyCode == 69 || e.keyCode == 189 || e.keyCode == 188 || e.keyCode == 231)
+            return false;
+    });
+
+    $('.number').keyup(function () {
+        $val = cms_decode_currency_format($(this).val());
+        $(this).val(cms_encode_currency_format($val));
+    });
+
+    $(document).ready(function () {
+        CKEDITOR.replace('policy_ranks', {
+            height: 300,
+            disableObjectResizing: true,
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+
+    });
+</script>

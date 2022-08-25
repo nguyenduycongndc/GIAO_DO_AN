@@ -1,0 +1,201 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Model.APIWeb
+@using Data.Utils
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="" id="View">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="row">
+                            <h4><strong>Tin tức</strong></h4>
+                        </div>
+                    </div>
+                    <div class="row mt-3 ">
+                        <div class="col col-md-5 col-sm-7">
+
+                            <input type="text" id="newTitle" class="form-control pr-2" placeholder="Tiêu đề bài viết" />
+
+                        </div>
+                        <div class="col col-md-3 col-sm-5">
+
+                            <select id="newIsActive" class="form-control p-2">
+                                <option value="">Trạng thái</option>
+                                <option value="1">Đã đăng</option>
+                                <option value="2">Tin nháp</option>
+                            </select>
+
+                        </div>
+                        <div class="col col-md-2 col-sm-3">
+                            <button class="btn btn-primary" onclick="SearchNews();"><i class="fa fa-search"></i>Tìm kiếm</button>
+                        </div>
+                        <div class="col col-md-2">
+                            <button class="btn btn-dekko width-btn-create-batch" onclick="window.location='/News/CreateNews'">
+                                <i class="fa fa-fw fa-plus"></i> Thêm bài viết
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="TableNews">
+                    @{
+                        Html.RenderAction("SearchView", "News", new { page = 1 });
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //$(document).ready(function () {
+    //    $(".sidebar-scroll").scrollTop(2000);
+    //});
+    //$(document).on('keypress', function (e) {
+    //    if (e.which == 13) {
+    //        SearchNews();
+    //    }
+    //});
+    //Search New
+    function SearchNews() {
+        var _Title = $('#newTitle').val();
+        var _Status = $('#newIsActive').val();
+
+        $.ajax({
+            url: '/News/SearchView',
+            type: 'POST',
+            data: {
+                page: 1,
+                Title: _Title,
+                Status: _Status,
+            },
+            success: function (response) {
+                $('#TableNews').html(response);
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+
+    ///DeleteNews
+    function DeleteNews(id) {
+        //swal({
+        //    title: "Bạn có muốn xóa bản ghi này không?",
+        //    text: "",
+        //    icon: "warning",
+        //    buttons: ["Cancel", "OK"],
+        //    dangerMode: true,
+        //})
+        //    .then((isConFirm) => {
+        //        if (isConFirm) {
+        //            $.ajax({
+        //                url: '/News/DeleteNews',
+        //                data: { id: id },
+        //                success: function (result) {
+        //                    swal({
+        //                        title: res.Message,
+        //                        icon: res.Status == SUCCESS ? 'success' : 'error'
+        //                    }).then((rp) => {
+        //                        if (rp) {
+        //                            SearchNews();
+        //                        }
+        //                    })
+        //                }
+        //            });
+        //        }
+        //    })
+        swal({
+            title: "Bạn chắc chắn muốn xóa ?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((isConFirm) => {
+            if (isConFirm) {
+                $.ajax({
+                    url: '/News/DeleteNews',
+                    data: { id: id },
+                    type: "POST",
+                    //beforeSend: function () {
+                    //    //$('#modalLoad').modal('show');
+                    //},
+                    success: function (response) {
+                        //$('#modalLoad').modal('hide');
+
+                        swal({
+                            title: response.Message,
+                            icon: response.Status == SUCCESS ? "success" : "error"
+                        }).then((success) => {
+                            if (success) {
+                                SearchNews()
+                            }
+                        })
+                    },
+                    error: function (result) {
+                        console.log(result.responseText);
+                        SearchNews()
+                    }
+                });
+            }
+        })
+    }
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        var config = {};
+        config.chooseFilesOnDblClick = false;
+        if ($("#add_logo_place").attr("data-id") != 0)
+            fider.popup(config);
+
+        $("#add_logo_place").attr("data-id", 1);
+    });
+    $(document).ready(function () {
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+
+        CKEDITOR.replace('editor', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+
+    });
+
+</script>

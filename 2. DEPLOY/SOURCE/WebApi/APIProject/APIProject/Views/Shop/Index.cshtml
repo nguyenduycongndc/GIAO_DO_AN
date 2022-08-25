@@ -1,0 +1,112 @@
+﻿@using Data.Utils
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+@using Data.DB
+<div class="card">
+    <div class="card-header sticky">
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                        <h4><i class="fa fa-fw fa-shopping-basket"></i> Cửa hàng</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col col-md-3 offset-md-0 col-12" style="padding-right:0px">
+                <input type="text" class="form-control" placeholder="Mã, tên, email, SĐT cửa hàng" id="txt-search-key" />
+            </div>
+            <div class="col-md-3 col-12">
+                <select id="val-status" class="form-control" onchange="SearchShop()">
+                    <option selected disabled hidden>--Trạng thái--</option>
+                    <option value="@SystemParam.ACTIVE">Hoạt động</option>
+                    <option value="@SystemParam.DEACTIVE">Ngừng hoạt động</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-12">
+                <input type="text" class="form-control relative-icon-calendar date" id="txt-from-date" placeholder="Từ ngày" />
+                <i class="fa fa-calendar absolute-icon-calendar date"></i>
+            </div>
+            <div class="col-md-3 col-12">
+                <input type="text" class="form-control relative-icon-calendar date" id="txt-to-date" placeholder="Đến ngày" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-3 col-12">
+                <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+                    <option value="">Tỉnh / Thành phố</option>
+                    @foreach (Data.DB.Province obj in ViewBag.Province)
+                    {
+                        <option value="@obj.ID">
+                            @obj.Name
+                        </option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3 col-12">
+                <select class=" form-control" name="calc_shipping_district" id="slDistrict">
+                    <option value="">Quận / Huyện</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-12 ml-auto text-right mt-1 mb-2">
+                @{
+                    <button class="btn btn-primary" onclick="SearchShop()"><i class="fa fa-search"></i>Tìm kiếm</button>
+                    <button class="btn btn-dekko width-btn-create-batch showModalCreate" data-toggle="modal" data-target="#addShop" onclick="window.location='/Shop/Create'"><i class="fa fa-fw fa-plus"></i> Thêm cửa hàng</button>
+                    if (ViewBag.roleLoginShop == 2 || ViewBag.roleLoginShop == 3 || ViewBag.roleLoginShop == 4 || ViewBag.roleLoginShop == 7)
+                    {
+                        <button hidden class="btn btn-primary btn_export" id="btnExport" onclick="exportListShop()"><i class="fa fa-download mr-1"></i> Xuất excel</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary btn_export" id="btnExport" onclick="exportListShop()"><i class="fa fa-download mr-1"></i> Xuất excel</button>
+                    }
+                }
+            </div>
+        </div>
+
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12" id="TableShop">
+                @{ Html.RenderAction("Search", "Shop", new { Page = 1 });}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row" id="modalEditShop">
+
+</div>
+
+<script>
+    function exportListShop() {
+        var searchKeys = $('#txt-search-key').val();
+        var status = $('#val-status').val();
+        var fromDates = $('#txt-from-date').val();
+        var toDates = $('#txt-to-date').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        //swal({
+        //    title: "Vui lòng chờ...!",
+        //    text: "Việc này có thể kéo dài trong vài phút",
+        //    icon: "warning",
+        //    buttons: ["Cancel", "OK"],
+        //    dangerMode: true
+        //})
+        window.location.href = "/Shop/ExportListShop?searchKey=" + searchKeys + "&status=" + status + "&provinceID=" + provinceID + "&districtID=" + districtID + "&fromDate=" + fromDates + "&toDate=" + toDates;
+    }
+</script>
+
+
+@* OLD KEY : AIzaSyAVKaTr6pjVc6Pa4QP8ZTuZ-dl349k_ZLE*@
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=@SystemParam.GOOGLE_MAP_Key" type="text/javascript"></script>

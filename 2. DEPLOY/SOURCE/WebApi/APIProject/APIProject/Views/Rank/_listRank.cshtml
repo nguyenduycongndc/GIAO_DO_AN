@@ -1,0 +1,63 @@
+﻿@using PagedList.Mvc
+@using Data.Utils
+@using Data.Model.APIWeb;
+@model  PagedList.IPagedList<RankingViewModel>
+@using APIProject.Resource
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white align-center bg-thead">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>@Resources.No</th>
+            <th>Name</th>
+            <th>Point</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created date</th>
+            <th>Function</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="15">No date to display</td>
+                </tr>
+            }
+            else
+            {
+                int stt = (Model.PageNumber - 1) * Model.PageSize + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.Name</td>
+                        <td>@item.RangePoint</td>
+                        <td>@Html.Raw(item.Description)</td>
+                        <td>@item.StatusStr</td>
+                        <td>@item.CreatedDate.Value.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <a href="/Rank/EditRank?id=@item.ID"  title="@Resources.Detail." class="cursor-pointer">
+                                <i class="fa fa-edit font-20" ></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, name = ViewBag.name, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = "ListRank"
+            })
+        )
+    </div>
+</div>
+

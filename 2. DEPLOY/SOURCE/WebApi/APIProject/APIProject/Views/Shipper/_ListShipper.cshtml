@@ -1,0 +1,307 @@
+﻿@using Data.Model;
+@using PagedList.Mvc
+@model PagedList.IPagedList<ShipperOutputModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white align-center bg-thead">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Code</th>
+            <th>Tài xế</th>
+            <th>SĐT</th>
+            <th>Email</th>
+            <th>Loại tài xế</th>
+            <th>Đánh giá</th>
+            <th>Ngày tạo</th>
+            <th>Trạng thái</th>
+            <th width="130px"></th>
+            @{
+                if (ViewBag.roleLoginShipper == 2 || ViewBag.roleLoginShipper == 3 || ViewBag.roleLoginShipper == 6 || ViewBag.roleLoginShipper == 7)
+                {
+
+                }
+                else
+                {
+                    <th>
+                        <input type="checkbox" id="checkAll" isCheck="" value="0" />
+                    </th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @if (Model.Count() <= 0)
+        {
+            <tr>
+                <td colspan="11">Không có dữ liệu !</td>
+            </tr>
+        }
+        else
+        {
+            int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+            foreach (var dt in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    <td>@dt.Code</td>
+                    <td>@dt.Name</td>
+                    <td>@dt.Phone</td>
+                    <td>@dt.Email </td>
+                    @{ if (dt.IsVip == 1)
+                        {
+                            <td >VIP</td>
+                        }
+                        else
+                        {
+                            <td>Thường</td>
+                        } }
+                    <td>@(Math.Round(dt.Rating, 1))</td>
+                    <td>@dt.GetStringCreateDate</td>
+                    @{ if (dt.IsActive == 1)
+                        {
+                            <td style="color: blue">Hoạt động</td>
+                        }
+                        else
+                        {
+                            <td style="color: red">Ngừng hoạt động</td>
+                        } }
+                    <td>
+                        @{
+                            if (ViewBag.roleLoginShipper == 3 || ViewBag.roleLoginShipper == 6)
+                            {
+                                <a hidden data-toggle="tooltip" data-placement="top" style="font-size:20px; color:green;" class="cursor-pointer mr-2" onclick="window.location = '/Shipper/Edit?ID=@dt.ID'"><i class="fa fa-edit"></i></a>
+                            }
+                            else
+                            {
+                                <a data-toggle="tooltip" data-placement="top" style="font-size:20px; color:green;" class="cursor-pointer mr-2" onclick="window.location = '/Shipper/Edit?ID=@dt.ID'"><i class="fa fa-edit"></i></a>
+                            }
+                            <a data-toggle="tooltip" data-placement="top" class="cursor-pointer mr-2" style="font-size:20px; color:blue" onclick="window.location = '/Shipper/GetShipperDetail?id=@dt.ID'"><i class="fa fa-arrow-circle-o-right"></i></a>
+                            if (ViewBag.roleLoginShipper == 2 || ViewBag.roleLoginShipper == 3 || ViewBag.roleLoginShipper == 6 || ViewBag.roleLoginShipper == 7)
+                            {
+                                <a hidden data-toggle="tooltip" data-placement="top" class="cursor-pointer mr-2" style="font-size:20px; color:red" onclick="deleteShip(@dt.ID)"><i class="fa fa-trash"></i></a>
+                            }
+                            else
+                            {
+                                <a data-toggle="tooltip" data-placement="top" class="cursor-pointer mr-2" style="font-size:20px; color:red" onclick="deleteShip(@dt.ID)"><i class="fa fa-trash"></i></a>
+                            }
+                        }
+
+                    </td>
+                    @{
+                        if (ViewBag.roleLoginShipper == 2 || ViewBag.roleLoginShipper == 3 || ViewBag.roleLoginShipper == 6 || ViewBag.roleLoginShipper == 7)
+                        {
+
+                        }
+                        else
+                        {
+                            <td>
+                                <input class="icheck icheck_@stt" value="0" data-phone="@dt.Phone" data-name="@dt.Name" data-id="@dt.ID" id="txtchecked" type="checkbox" />
+                            </td>
+                        }
+                    }
+
+                </tr>
+                stt++;
+            }
+        }
+    </tbody>
+
+</table>
+
+<div class="col-md-12 text-right">
+    @*phân trang*@
+    @Html.PagedListPager(
+                        Model, page => Url.Action("Search", "Shipper", new { Page = page, Status = ViewBag.Status, Key = ViewBag.Key, provinceID = ViewBag.provinceID, districtID = ViewBag.districtID, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate , IsVip = ViewBag.IsVip }),
+                        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tableShipper", LoadingElementId = "modalLoad" })
+                        )
+</div>
+
+<script>
+    $(document).ready(function () {
+        localStorage.removeItem('ListShip');
+        $(".icheck").on('click', function () {
+
+            var Name = $(this).attr("data-name").trim();
+            var Phone = $(this).attr("data-phone").trim();
+            var ID = $(this).attr("data-id").trim();
+            var Local = localStorage.getItem("ListShip") == "" ? null : localStorage.getItem("ListShip");
+            var ListLocal = Local != null ? Local.split(",") : [];
+            if ($(this).is(':checked', true)) {
+
+                if (ListLocal.indexOf(Name + "-" + Phone + "-" + ID) < 0) {
+                    ListLocal.push(Name + "-" + Phone + "-" + ID);
+                }
+            }
+            else {
+                if (ListLocal.indexOf(Name + "-" + Phone + "-" + ID) >= 0) {
+                    ListLocal.splice(ListLocal.indexOf(Name + "-" + Phone + "-" + ID), 1);
+
+                }
+            }
+            localStorage.setItem("ListShip", ListLocal);
+        })
+    });
+
+    $("#checkAll").on('click', function () {
+        if ($(this).is(':checked', true)) {
+            $(".icheck").prop("checked", true);
+            var listName = [];
+            var listID = [];
+            var listPhone = [];
+            var object = {};
+            var Local = localStorage.getItem("ListShip") == "" ? null : localStorage.getItem("ListShip");
+            var ListLocal = Local != null ? Local.split(",") : [];
+            $(".icheck:checked").each(function (e) {
+                listID.push($(this).attr('data-id'));
+            });
+
+            $(".icheck:checked").each(function (e) {
+                listName.push($(this).attr('data-name'));
+            });
+
+            $(".icheck:checked").each(function (e) {
+                listPhone.push($(this).attr('data-phone'));
+            });
+            listID.forEach((key, i) => object[key] = listName[i] + "-" + listPhone[i] + "-" + listID[i]);
+            $.each(object, function (index, value) {
+                if (ListLocal.indexOf(value) < 0) {
+                    ListLocal.push(value);
+                }
+
+            });
+            localStorage.setItem("ListShip", ListLocal);
+        }
+        else {
+            $(".icheck").prop("checked", false);
+            var listName = [];
+            var listID = [];
+            var listPhone = [];
+            var object = {};
+            var Local = localStorage.getItem("ListShip") == "" ? null : localStorage.getItem("ListShip");
+            var ListLocal = Local != null ? Local.split(",") : [];
+            $(".icheck").each(function (e) {
+                listID.push($(this).attr('data-id'));
+            });
+
+            $(".icheck").each(function (e) {
+                listName.push($(this).attr('data-name'));
+            });
+
+            $(".icheck").each(function (e) {
+                listPhone.push($(this).attr('data-phone'));
+            });
+            listID.forEach((key, i) => object[key] = listName[i] + "-" + listPhone[i] + "-" + listID[i]);
+            $.each(object, function (index, value) {
+                if (ListLocal.indexOf(value) >= 0) {
+                    ListLocal.splice(ListLocal.indexOf(value), 1);
+                }
+            });
+            localStorage.setItem("ListShip", ListLocal);
+        }
+    });
+    $("#btnMoneyShip").on('click', function (e) {
+        var listName = [];
+        var listID = [];
+        var object = {};
+
+        var Local = localStorage.getItem("ListShip") == "" ? null : localStorage.getItem("ListShip");
+        var ListLocal = Local != null ? Local.split(",") : [];
+        $('#txtListIdPoint').tagsinput('removeAll');
+        if (ListLocal.length > 0) {
+            for (i = 0; i < ListLocal.length; i++) {
+                var PhoneName = ListLocal[i].split("-");
+                listID.push($(this).attr(PhoneName[2].trim()));
+                listName.push($(this).attr(PhoneName[0].trim()));
+                listID.forEach((key, i) => object[key] = listName[i]);
+                $('#txtListIdPoint').tagsinput('add', { id: PhoneName[2].trim(), text: PhoneName[0].trim() });
+            }
+        }
+    });
+    function AddMoneyShiper() {
+        if (!navigator.onLine) {
+            swal({
+                title: "Kiểm tra kết nối internet!",
+                text: "",
+                icon: "warning"
+            })
+            return;
+        }
+        var listIdPoint = $('#txtListIdPoint').val().trim();
+        var res = $('#txtPoint').val().trim();
+        var point = parseInt(res.replace(/,/g, ""));
+        var content = $('#txtContent').val().trim();
+        if (point % 1 != 0) {
+            swal({
+                title: "Thông báo",
+                text: "Số điểm phải là số nguyên!",
+                icon: "warning"
+            })
+            return;
+        }
+
+        if (listIdPoint == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng chọn người gửi!",
+                icon: "warning"
+            })
+            return;
+        }
+
+        if (point == "" || content == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập đầy đủ thông tin!",
+                icon: "warning"
+            })
+            return;
+        }
+
+        if (point <= 0) {
+            swal({
+                title: "Thông báo",
+                text: "Số điểm phải > 0 !",
+                icon: "warning"
+            })
+            return;
+        }
+
+        $.ajax({
+            url: '/Shipper/AddPointShip',
+            data: {
+                Content: content,
+                Point: point,
+                ListIdPoint: listIdPoint
+            },
+            type: 'POST',
+            beforeSend: function () {
+                $("#modalLoad").modal('show');
+            },
+            success: function (response) {
+                if (response == SUCCESS) {
+                    $("#modalLoad").modal('hide');
+                    $("#mdAddPointCus").modal("hide");
+
+                    swal({
+                        title: "Thành công",
+                        text: "",
+                        icon: "success"
+                    })
+                        .then((isConFirm) => {
+                            window.location.reload();
+                        });
+                } else {
+                    swal({
+                        title: "Lỗi",
+                        text: "Hệ thống đang bảo trì! Vui lòng thử lại",
+                        icon: "warning"
+                    })
+                }
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        });
+    }
+</script>

@@ -1,0 +1,172 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+
+<body style="font-family:'Open Sans'">
+    <main>
+        @*<section class="image-style fix" style="background-image: url(/Content/images/contact.png);">
+            <br />
+            <div style="float: right" class="float-lg-right mr-200">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card-body mb-80" style="background: #FFFFFF; box-shadow: 2px 6px 10px rgba(0, 0, 0, 0.12); border-radius: 10px; height: auto;">
+                        <div class="col-md-12">
+                            <h4>Điểm dịch vụ Thành phố Hà Tĩnh</h4>
+                            <p class="contact_txt">Địa chỉ: 244 Nguyễn Du, Thành phố Hà Tĩnh.</p>
+                            <p class="contact_txt">Tel: 02396.567.567</p>
+                            <p class="contact_txt">Email: Cskh.weship@gmail.com</p>
+                        </div>
+                        <div class="col-md-12">
+                            <h4>Điểm dịch vụ Thành phố Hà Tĩnh</h4>
+                            <p class="contact_txt">Địa chỉ: Phường Kỳ Liên, Thị xã Kỳ Anh, Hà Tĩnh</p>
+                            <p class="contact_txt">Tel: 02396.567.567</p>
+                            <p class="contact_txt">Email: Cskh.weship@gmail.com</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>*@
+
+
+
+        <!-- Banner-->
+        <div class="banner">
+            <div>
+                <img src="~/Content/images/contact.png" width="100%" />
+            </div>
+        </div>
+        <!-- End Banner-->
+
+
+        <div style="float: right; margin-top: -32%;" class="float-lg-right mr-210">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card-body mb-80" style="background: #FFFFFF; box-shadow: 2px 6px 10px rgba(0, 0, 0, 0.12); border-radius: 10px; height: auto;">
+                    <div class="contact-card">
+                        <div class="col-md-12">
+                            <h4>Điểm dịch vụ Thành phố Hà Tĩnh</h4>
+                            <p>Địa chỉ: 244 Nguyễn Du, Thành phố Hà Tĩnh.</p>
+                            <p>Tel: 02396.567.567</p>
+                            <p>Email: Cskh.weship@gmail.com</p>
+                        </div>
+                        <hr />
+                        <div class="col-md-12">
+                            <h4>Điểm dịch vụ Thị xã Kỳ Anh</h4>
+                            <p>Địa chỉ: Phường Kỳ Liên, Thị xã Kỳ Anh, Hà Tĩnh</p>
+                            <p>Tel: 02396.567.567</p>
+                            <p>Email: Cskh.weship@gmail.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<section class="image-style fix" style="background-image: url(/Content/images/contact.png);">
+            <br />
+            <div style="float: right" class="float-lg-right mr-200">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card-body mb-80" style="background: #FFFFFF; box-shadow: 2px 6px 10px rgba(0, 0, 0, 0.12); border-radius: 10px; height: auto;">
+                        <div class="col-md-12">
+                            <div class="title_style text-center">Liên hệ với chúng tôi</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="order_subtitle">Họ tên</label>
+                            <input type="text" class="contact-inputform" placeholder="Nhập họ tên của bạn" id="contact_name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="order_subtitle">Số điện thoại</label>
+                            <input type="number" class="contact-inputform number-type" placeholder="Nhập số điện thoại của bạn" id="contact_phone" min="1" />
+                        </div>
+                        <div class="form-group">
+                            <label class="order_subtitle">Email</label>
+                            <input type="text" class="contact-inputform" placeholder="Nhập email của bạn" id="contact_email" />
+                        </div>
+                        <div class="form-group">
+                            <label class="order_subtitle">Lời nhắn</label>
+                            <input type="text" class="contact-inputform" placeholder="Nhập lời nhắn" id="contact_message" />
+                        </div>
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <button class="btn btn-sm2 mb-20 mt-20" onclick="Send_Contact()">Gửi</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>*@
+
+        <div class="Contact">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center mb-80">
+                            <h2 style="font-size: 20px; padding-top:13%;">VĂN PHÒNG TỔNG CÔNG TY</h2>
+                            <p class="cont-text">Ngõ 14 Phan Đình Phùng, Phường Kỳ Long, Thị xã Kỳ Anh, Hà Tĩnh. </p>
+                            <p class="cont-text">Tel: 02396.567.567</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    @*<div class="col-xl-6 col-lg-6 col-xs-12 col-md-6 col-sm-12 text-center">
+                        <div>
+                            <div class="section-tittle mb-110">
+                                <h2 style="font-size: 20px; margin-bottom: 15px">Điểm dịch vụ Thành phố Hà Tĩnh</h2>
+                                <p class="contact_txt">Địa chỉ: 244 Nguyễn Du, Thành phố Hà Tĩnh.</p>
+                                <p class="contact_txt">Tel: 02396.567.567</p>
+                                <p class="contact_txt">Email: Cskh.weship@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-6 col-lg-6 col-xs-12 col-md-6 col-sm-12 text-center">
+                        <div>
+                            <div class="section-tittle mb-110">
+                                <h2 style="font-size: 20px; margin-bottom: 15px">Điểm dịch vụ Thị xã Kỳ Anh</h2>
+                                <p class="contact_txt">Địa chỉ: Phường Kỳ Liên, Thị xã Kỳ Anh, Hà Tĩnh</p>
+                                <p class="contact_txt">Tel: 02396.567.567</p>
+                                <p class="contact_txt">Email: Cskh.weship@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                        <div>
+                            <div class="section-tittle mb-110">
+                                <h2 style="font-size: 20px; margin-bottom: 15px">VP WESHIP HÀ NỘI</h2>
+                                @*<p class="contact_subtitle">KHỐI KINH DOANH HÀNH CHÍNH SỰ NGHIỆP</p>
+                                <p class="contact_txt">Tầng 04, Tòa nhà Vạn Tường, 174 Lê Đình Lý, P. Hòa Thuận Tây, Q. Hải Châu, Tp. Đà Nẵng</p>
+                                <p class="contact_txt">Tel: 0243 762 7891 (Máy lẻ 9)</p>
+                                <p class="contact_txt">Email: sales@weship.com.vn</p>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                        <div>
+                            <div class="section-tittle mb-110">
+                                <h2 style="font-size: 20px; margin-bottom: 15px">VP WESHIP HỒ CHÍ MINH</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                        <div>
+                            <div class="section-tittle mb-110">
+                                <h2 style="font-size: 20px; margin-bottom: 15px">VP WESHIP ĐÀ NẴNG</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </main>
+</body>
+

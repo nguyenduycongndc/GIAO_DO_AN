@@ -1,0 +1,468 @@
+﻿@using APIProject;
+@using Quobject.SocketIoClientDotNet.Client;
+@using Data.Utils
+@using Data.Model.APIWeb
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title class="title-tab">WeShip</title>
+    <link rel="icon" href="~/Content/images/Group4.png" />
+    @*@Styles.Render("~/layout/css")*@
+    @Styles.Render("~/dekko/css")
+    @Scripts.Render("~/layout/js")
+    @Scripts.Render("~/dekko/js")
+    @*@Scripts.Render("~/bundle/js")*@
+    <link rel="stylesheet" href="~/Content/assets/css/adminstyle.css" />
+    <link rel="stylesheet" href="~/Content/assets/css/star-rating-svg.css" />
+</head>
+<body ng-app="appDekko" ng-controller="controllerDekko">
+    @{ UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session[SystemParam.SESSION_LOGIN];
+        if (ss == null)
+        {
+            Response.Redirect("/Home/Login");
+        }
+
+    }
+
+
+    <input type="hidden" id="txtRole" />
+    <div id="wrapper">
+        @*top bar*@
+        <nav class="navbar navbar-inverse navbar-fixed-top bg-layout" @*style="background-color:#353535"*@>
+            <div class="container-fluid">
+                <div class="navbar-header col-8 text-center">
+                    <div class="row">
+                        <div class="col-2 col-md-1" style="padding:17px 17px 0px 0px; text-align:left">
+                            <button type="button" class="btn bg-layout" id="leftbarClick">
+                                <i class="fa fa-bars" style="color:aliceblue"></i>
+                            </button>
+
+                        </div>
+                        <div class="col-10 pl-0 pt-2" style="text-align:left">
+                            <a class="navbar-brand" href="/Home/Index"><img src="~/Content/images/logo-weship.png" alt="Dekko Logo" class="img-responsive logo" style="width:100%;max-width:200px; background-size:cover; text-align:center" /></a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="col-4" style="padding: 12px">
+                    <ul class="nav navbar-nav text-right" style="margin-right:0px;">
+                        <li class="float-right">
+                            <div class="btn-group">
+                                <a class="btn " data-toggle="dropdown" style="color:#fff;">
+                                    <i class="fa fa-user-circle"></i> <label class="btn" id="txtNameAdmin"></label>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item btn" data-toggle="modal" data-target="#mdShowInformation" onclick="showModalInfor();">
+                                        Thông tin cá nhân
+                                    </a>
+                                    <a class="dropdown-item btn" data-toggle="modal" data-target="#mdChangePassword" onclick="showModalChange();">
+                                        Đổi mật khẩu
+                                    </a>
+
+                                    <a class="dropdown-item btn" onclick="logout();">
+                                        Đăng xuất
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+
+
+
+            </div>
+        </nav>
+
+        @*left sider bar*@
+        <div id="left-sidebar" class="sidebar" style="left: 0px !important;">
+            <div class="sidebar-scroll bg-layout">
+                <div class="tab-content p-l-0 p-r-0">
+                    <div class="tab-pane active">
+                        <nav class="sidebar-nav mt-2">
+                            <ul class="main-menu metismenu custom_left_menu">
+                                <li id="tabHome">
+                                    <a href="/Home/Index"><i class="fa fa-tachometer"></i>Tổng quan</a>
+                                </li>
+                                <li id="tabWasher">
+                                    <a href="/Customer/Index"><i class="fa fa-user-o"></i>Khách hàng</a>
+                                </li>
+                                <li id="tabShipper">
+                                    <a href="/Shipper/Index"><i class="fa fa-bicycle "></i>Tài xế</a>
+                                </li>
+                                <li id="tabProduct">
+                                    <a href="/Shop/Index"><i class="fa fa-puzzle-piece"></i>Cửa hàng</a>
+                                </li>
+                                <li id="tabServiceCategory">
+                                    <a href="/ServiceCategory/Index"><i class="fa fa-sitemap"></i>Danh mục sản phẩm</a>
+                                </li>
+                                <li id="tabTransaction">
+                                    <a href="#" class="has-arrow"><i class="fa fa-exchange"></i>Giao dịch</a>
+                                    <ul id="ulTransaction">
+                                        <li id="tabBookCar"><a href="/Transaction/Index"><i class="fa fa-cab"></i>Đặt xe</a></li>
+                                        <li id="tabFood"><a href="/TransactionFood/Index"><i class="fa fa-cutlery"></i>Đồ ăn</a></li>
+                                        <li id="tabDelivery"><a href="/TransactionDelivery/Index"><i class="fa fa-bolt" style="font-size: 24px !important; margin: -5px 19px 0px 5px;"></i>Siêu tốc nội thành</a></li>
+                                        <li id="tabDeliveryNation"><a href="/TransactionDeliveryNation/Index"><i class="fa fa-ship" style="font-size: 22px !important;margin: -4px 12px 0px -4px;"></i>Giao hàng toàn quốc</a></li>
+
+                                    </ul>
+                                </li>
+                                <li id="tabPromocode">
+                                    <a href="/Promocode/Index"><i class="fa fa-ticket"></i>Khuyến mại</a>
+                                </li>
+                                <li id="tabWithdrawalRequest">
+                                    <a href="/WithdrawalRequest/Index"><i class="fa fa-check-circle-o"></i>Yêu cầu rút tiền</a>
+                                </li>
+
+
+
+                                <li id="tabGrade">
+                                    <a href="/Wallet/Index"><i class="fa fa-money"></i>Quản lý ví</a>
+                                </li>
+
+                                <li id="tabNotify">
+                                    <a href="/Notification/Index"><i class="fa fa-bell"></i>Thông báo</a>
+                                </li>
+
+
+
+
+
+
+                                <li id="tabStatistic">
+                                    <a href="#" class="has-arrow"><i class="fa fa-warning"></i>Báo cáo</a>
+                                    <ul id="ulStatistic">
+                                        <li id="tabStatisticCustomer"><a href="/StatisticCustomer/Index"><i class="fa fa-users" aria-hidden="true"></i>Khách hàng</a></li>
+                                        <li id="tabStatisticWasher"><a href="/StatisticShiper/Index"><i class="fa fa-motorcycle" aria-hidden="true"></i>Đối tác</a></li>
+                                        <li id="tabStatisticPayment"><a href="/StatisticPayment/Index"><i class="fa fa-money"></i>Thanh toán</a></li>
+                                    </ul>
+                                </li>
+
+
+                                <li id="tabNews">
+                                    <a href="/News/Index"><i class="fa fa-newspaper-o"></i>Tin tức</a>
+                                </li>
+                                <li id="tabRank">
+                                    <a href="/Complain/Index"><i class="fa fa-flag"></i>Khiếu nại</a>
+                                </li>
+
+                                <li id="tabConfig">
+                                    <a href="/Config/Index"><i class="fa fa-gears"></i>Cài đặt</a>
+                                </li>
+
+                                <li id="tabUser">
+                                    <a href="/User/Index"><i class="fa fa-user-secret"></i>Tài khoản</a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="main-content">
+            <div class="container-fluid">
+
+                <div class="mt-1">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Thông tin cá nhân-->
+    <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="mdShowInformation">
+        <div class="modal-dialog">
+            <div class="content">
+                <div class="modal-header" style="background-color:red;color:aliceblue">
+                    <h4>Thông tin cá nhân</h4>
+                    <button style="background-color:red; color:#fff; border:none; height:200%; width:auto" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="background-color:antiquewhite; color:black">
+                    <div class="row">
+                        <div class="col-6">
+                            <label>Tên người dùng:</label>
+                        </div>
+                        <div class="col-6">
+                            <span id="txtName"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <label>Số điện thoại:</label>
+                        </div>
+                        <div class="col-6">
+                            <span id="txtPhone"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <label>E-mail:</label>
+                        </div>
+                        <div class="col-6">
+                            <span id="txtEmail"></span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-12 text-center">
+                        <a class="btn" style="background-color:orangered; color:#fff;" data-dismiss="modal">Đóng</a>
+                    </div>
+                    <hr />
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal đổi mật khẩu-->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" id="mdChangePassword">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:red;color:aliceblue">
+                    <h4 class="modal-title custom_title">Đổi mật khẩu</h4>
+                    <button type="button" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body" style="background-color:antiquewhite; color:black">
+                    <div class="row">
+                        <div class="col-6">
+                            <span>Mật khẩu cũ</span>
+                        </div>
+                        <div class="col-6">
+                            <input type="password" class="form-control" id="txtCurrentPassword" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <span>Mật khẩu mới</span>
+                        </div>
+                        <div class="col-6">
+                            <input type="password" class="form-control" id="txtNewPassword" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <span>Mật nhập lại mật khẩu mới</span>
+                        </div>
+                        <div class="col-6">
+                            <input type="password" class="form-control" id="txtConfirmPassword" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="col-12 text-center">
+                        <a class="btn" style="background-color:orangered; color:#fff" onclick="changePassword()">Đổi mật khẩu</a>
+                    </div>
+
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+<script src="~/Scripts/socket/socket.io.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $(".btn-navigation").click(function () {
+            $("#left-sidebar").toggleClass("display-none");
+            if ($("#left-sidebar").css('display') == 'none') {
+                $("#main-content").css('width', '100%');
+            }
+            else {
+                $("#main-content").css('width', 'calc(100% - 250px)');
+            }
+        });
+        $("#txtConfirmPassword").on("keyup", function () {
+            var password = $('#txtNewPassword').val();
+            var confirmPassword = $('#txtConfirmPassword').val();
+            if (password == confirmPassword) {
+                $('.iconChangePassword').show();
+            } else {
+                $('.iconChangePassword').hide();
+            }
+        });
+        //socket();
+    });
+    var audio = new Audio('../Content/mp3/swiftly.mp3');
+    var MAIN_SERVER = ["http://118.27.192.110", "http://carrect.winds.vn", "http://api.carrect.vn"];
+    var SERVER_TEST_WINDSOFT = ["http://carrectv2.winds.vn", "http://carrectv1.winds.vn", "http://localhost"];
+    var SERVER_TEST_CARRECT = ["http://winds.hopto.org"];
+    var type = 0;
+    var url = "http://" + window.location.hostname;
+    if (MAIN_SERVER.includes(url))
+        type = "1";
+    if (SERVER_TEST_WINDSOFT.includes(url))
+        type = "2";
+    if (SERVER_TEST_CARRECT.includes(url))
+        type = "3";
+    //function socket() {
+    //    var socket = io.connect('http://118.27.192.110:3001',
+    //        {
+    //            reconnect: true,
+    //            forceWebsockets: true
+    //        });
+    //    socket.on('disconnect', () => {
+    //        console.log("disconnect");
+    //    });
+    //    socket.on('newOder', (msg) => {
+    //        console.log("newOder", msg);
+    //        if (msg.type == type) {
+    //            audio = null;
+    //            audio = new Audio('../Content/mp3/swiftly.mp3');
+    //            toastr.options = {
+    //                "debug": false,
+    //                "positionClass": "toast-bottom-right",
+    //                "fadeIn": 300,
+    //                "fadeOut": 1000,
+    //                "timeOut": 6000,
+    //                "extendedTimeOut": 1000,
+    //                "progressBar": true
+    //            }
+    //            if (msg.orderId != null) {
+    //                toastr.options.onclick = function () { window.location.href = "/Transaction/Index" }
+    //                toastr.info(msg.content, 'Notification');
+    //                var count = $(".custom-noti").text();
+    //                //$(".custom-noti").css('padding', '4px 4px 4px 4px');
+    //                if (count == "") {
+    //                    count = 1;
+    //                }
+    //                else {
+    //                    count = parseInt(count) + 1;
+    //                }
+    //                $(".custom-noti").text(count);
+    //                $(".title-tab").text('(' + count + ') CARRECT');
+    //                audio.play();
+    //            }
+    //            else if (msg.addCar != null) {
+    //                toastr.options.onclick = function () { window.location.href = "/AddCar/Index" }
+    //                toastr.info(msg.content, 'Notification');
+    //                var count = $(".car-noti").text();
+    //                //$(".custom-noti").css('padding', '4px 4px 4px 4px');
+    //                if (count == "") {
+    //                    count = 1;
+    //                }
+    //                else {
+    //                    count = parseInt(count) + 1;
+    //                }
+    //                $(".car-noti").text(count);
+    //                audio.play();
+    //            }
+    //            else if (msg.transaction != null) {
+    //                toastr.options.onclick = function () { window.location.href = "/Request/Index" }
+    //                toastr.info(msg.content, 'Notification');
+    //                var count = $(".master-noti").text();
+    //                //$(".master-noti").css('padding', '4px 4px 4px 4px');
+    //                if (count == "") {
+    //                    count = 1;
+    //                }
+    //                else {
+    //                    count = parseInt(count) + 1;
+    //                }
+    //                $(".master-noti").text(count);
+    //                audio.play();
+    //            }
+    //            else if (msg.confirmID != null) {
+    //                var count = $(".custom-noti").text();
+    //                //$(".custom-noti").css('padding', '4px 4px 4px 4px');
+    //                if (count == "") {
+    //                }
+    //                else {
+    //                    count = parseInt(count) - 1;
+    //                    if (count > 0) {
+    //                        $(".custom-noti").text(count);
+    //                        $(".title-tab").text('(' + count + ') CARRECT');
+    //                    }
+    //                    else {
+    //                        $(".custom-noti").text("");
+    //                        $(".title-tab").text('CARRECT');
+    //                    }
+    //                    audio.play();
+    //                }
+    //            }
+
+    //        }
+    //    });
+    //}
+
+
+    //var app = angular.module("appDekko", []);
+    //app.controller("controllerDekko", function ($scope) { });
+    //$('#tabStatistic').click(function () {
+
+    //    $('#ulStatistic').removeClass('d-block');
+    //})
+</script>
+
+
+
+@*modal loading *@
+<div class="modal" id="modalLoad" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content text-center py-3">
+            <div class="modal-body text-center">
+                <i class="fa fa-spinner text-success fa-spin" style="font-size: 40px;"></i>
+                <div class="col-md-12 text-center mt-2">
+                    <span>Đang xử lý...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="showImage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" id="custom-dialog" role="document" style="max-width:625px;">
+        <div class="modal-content">
+            <div class="modal-body bg-modal" style="background-color:black;">
+                <button type="button" class="close btn_close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color:white">&times;</span>
+                </button>
+                <div class="row mt-2">
+                    <div class="col-md-12 col-xs-12 divShowImg" style="padding: 20px 39px 20px 45px;">
+                    </div>
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"> <i class="fa fa-close"></i> Đóng</button>
+                </div>*@
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.dropdown-item').on('click', function () {
+            if ($(this).attr('href')) {
+                alert('redirect to ' + $(this).attr('href'));
+                window.location.replace($(this).attr('href'));
+
+            }
+
+        });
+    });
+    function showModalChange() {
+        $('#mdChangePassword').modal('show');
+
+    }
+
+    function showModalInfor() {
+
+        $('#mdShowInformation').modal('show');
+    }
+    //đóng mở leftabbar
+    $(document).ready(function () {
+        $('#leftbarClick').click(function () {
+
+        })
+    })
+
+    $(document).ready(function () {
+        $("#leftbarClick").click(function () {
+            $("#left-sidebar").toggle();
+        });
+    });
+
+</script>

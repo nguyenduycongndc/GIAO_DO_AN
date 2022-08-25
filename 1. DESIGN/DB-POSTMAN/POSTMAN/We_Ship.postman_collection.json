@@ -1,0 +1,1140 @@
+{
+	"info": {
+		"_postman_id": "789710dd-44b3-4ee2-97fa-6f6600818346",
+		"name": "We_Ship",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "App_Shiper",
+			"item": [
+				{
+					"name": "CreateMemberBank",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"BankID\":4,\r\n    \"Account\":\"BUI THANH\",\r\n    \"AcountOwner\":\"0351001001001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/api/Service/CreateMemberBank",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"api",
+								"Service",
+								"CreateMemberBank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "WithDraw",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bankID\":5,\r\n    \"owner\":\"0351001028054\",\r\n    \"account\":\"ThanhBV\",\r\n    \"amount\":50000,\r\n    \"content\":\"Rút tiền\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}api/Service/WithDraw",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"WithDraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListWalletHistory",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}api/Service/GetListWalletHistory?page=1&limit=20&type=2",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"GetListWalletHistory"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "type",
+									"value": "2",
+									"description": "1- ví cọc,2-ví thu nhập"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListBankOfShiper",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}api/Service/GetListBankOfShiper",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"GetListBankOfShiper"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RechargeMoneyToDepositWallet",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\":\"100000\",\r\n    \"content\":\"Chuyển để nhận hàng\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}api/Service/RechargeMoneyToDepositWallet",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"RechargeMoneyToDepositWallet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListBankName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}api/Service/GetListBankName",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"GetListBankName"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBankMember",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"BankIDShiper\":1,\r\n    \"AcountOwner\":\"0351001028055\",\r\n    \"Account\":\"BUI VAN THANH\",\r\n    \"BankID\":4\r\n}\r\n\r\n//BankID-id của ngân hàng,BankIDShiper-id tài khoản ngân hàng của shiper",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}api/Service/UpdateBankMember",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"UpdateBankMember"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpadateShiperLocation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"lati\":20.9758453,\r\n    \"Longi\":105.8172996\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}api/Service/UpadateShiperLocation",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"UpadateShiperLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListQA",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server}}api/Service/GetListQA?page=1&limit=20&searchKey=\"Làm sao để có người yêu\"",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"GetListQA"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "searchKey",
+									"value": "\"Làm sao để có người yêu\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateAcceptServcieStatus",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}api/Service/UpdateAcceptServcieStatus",
+							"host": [
+								"{{server}}api"
+							],
+							"path": [
+								"Service",
+								"UpdateAcceptServcieStatus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "App_Shop",
+			"item": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Phone\":\"0393789346\",\r\n    \"PassWord\":\"123456\",\r\n    \"deviceID\":\"abc\",\r\n    \"role\":1\r\n}\r\n\r\n\r\n//role 1- đằn nhập với app customer\r\n//role 2- đăng nhập với app shop hoặc shiper",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server1}}api/Service/Login",
+					"host": [
+						"{{server1}}api"
+					],
+					"path": [
+						"Service",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phone\":\"0393789346\",\r\n    \"email\":\"abahihhh@gmail.com\",\r\n    \"name\":\"Phạm Văn Trường\",\r\n    \"password\":\"123456\",\r\n    \"deviceID\":\"3a7b7b83-819c-41eb-84bd-429ff43b3c4c\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server1}}api/Service/Register",
+					"host": [
+						"{{server1}}api"
+					],
+					"path": [
+						"Service",
+						"Register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateMemberInfo",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Phone\":\"0979353663\",\r\n    \"Email\":\"datnd168@gmail.com\",\r\n    \"dobStr\":\"06/01/1998\",\r\n    \"Sex\":1,\r\n    \"Address\":\"Ở đâu đó trong Hà Nội\",\r\n    \"Name\":\"Thành nè\"\r\n}\r\n\r\n\r\n//sex 1-nam,0-nữ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/UpdateMemberInfo",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"UpdateMemberInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdatePassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"newPass\":\"123456a@\",\r\n    \"oldPass\":\"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/UpdatePassword",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"UpdatePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListNews",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetListNews?page=1&limit=20&type",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetListNews"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "type",
+							"value": null,
+							"description": "loại bài viết. truyền lên 0 để lấy tất cả"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNewsDetail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetNewsDetail?id=2",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetNewsDetail"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListServiceCategory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetListServiceCategory?lati=20.9758453&longi=105.8172996",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetListServiceCategory"
+					],
+					"query": [
+						{
+							"key": "lati",
+							"value": "20.9758453"
+						},
+						{
+							"key": "longi",
+							"value": "105.8172996"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListServicePrice",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetListServicePrice?page=1&limit=20&searchKey&cateID=0&shopID=5&status=1",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetListServicePrice"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "searchKey",
+							"value": null,
+							"description": "Tìm theo tên dịch vụ"
+						},
+						{
+							"key": "cateID",
+							"value": "0",
+							"description": "Tìm theo danh mục. Truyền 0- để lấy tất cả"
+						},
+						{
+							"key": "shopID",
+							"value": "5",
+							"description": "Lấy các gói dịc vụ theo shop"
+						},
+						{
+							"key": "status",
+							"value": "1",
+							"description": "1- hoạt động, 0 - ngừng hoạt động"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetServicePriceDetail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetServicePriceDetail?id=1",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetServicePriceDetail"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNotify",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/api/Service/GetNotify?type",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetNotify"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": null,
+							"description": "Lấy theo loại bài viết"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetHomeScreen",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetHomeScreen",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetHomeScreen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetUserInfo",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}api/Service/GetUserInfo",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetUserInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListOrder",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}api/Service/GetListOrder?page=1&limit=20&type=0",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetListOrder"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "type",
+							"value": "0",
+							"description": "Type booking"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetOderServiceDetail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetOderServiceDetail?orderID=436",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetOderServiceDetail"
+					],
+					"query": [
+						{
+							"key": "orderID",
+							"value": "436"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LogoutApp",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}api/Service/LogoutApp",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"LogoutApp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FogotPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"thanhstone98@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/FogotPassword",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"FogotPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckOtpCode",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"thanhstone98@gmail.com\",\r\n    \"otp\":\"7991\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/CheckOtpCode",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"CheckOtpCode"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ResetPassword",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"email\":\"thanhstone98@gmail.com\",\r\n   \"password\":\"123456aA@\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/ResetPassword",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"ResetPassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetlistShopByCategory",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetlistShopByCategory?type=1&limit=20&page=1&cateID=34&lati=20.9758352&longi=105.8172885",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetlistShopByCategory"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "cateID",
+							"value": "34"
+						},
+						{
+							"key": "lati",
+							"value": "20.9758352"
+						},
+						{
+							"key": "longi",
+							"value": "105.8172885"
+						},
+						{
+							"key": "longi",
+							"value": "105.8172885",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetShopDetail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetShopDetail?shopID=24&lati=20.9758453&longi=105.8172996",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetShopDetail"
+					],
+					"query": [
+						{
+							"key": "shopID",
+							"value": "24"
+						},
+						{
+							"key": "lati",
+							"value": "20.9758453"
+						},
+						{
+							"key": "longi",
+							"value": "105.8172996"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMenuByShop",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}/api/Service/GetMenuByShop",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetMenuByShop"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetReviewShop",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetReviewShop?shopID=26",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetReviewShop"
+					],
+					"query": [
+						{
+							"key": "shopID",
+							"value": "26"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangeAvatar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/thanh/Desktop/21.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{server}}api/Service/ChangeAvatar",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"ChangeAvatar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListRank",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}/api/Service/GetListRank",
+					"host": [
+						"{{server}}"
+					],
+					"path": [
+						"api",
+						"Service",
+						"GetListRank"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetListHistoryPointMember",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{server}}api/Service/GetListHistoryPointMember?page=1&limit=20",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetListHistoryPointMember"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "OrderReview",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "token",
+						"value": "{{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"orderID\":300,\r\n    \"rateValue\":3,\r\n    \"type\":1,\r\n    \"noteRate\":\"Nhiệt tình, chu đáo\"\r\n//1-đánh giá shiper,2-đánh giá shop\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{server}}api/Service/OrderReview",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"OrderReview"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "{{server}}api/Service/GetListShopByFood?page=1&limit=24&lati=20.9758453&longi=105.8172996&searchKey=Bún",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{server}}api/Service/GetListShopByFood?page=1&limit=24&lati=20.9758453&longi=105.8172996&searchKey=Bún",
+					"host": [
+						"{{server}}api"
+					],
+					"path": [
+						"Service",
+						"GetListShopByFood"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "24"
+						},
+						{
+							"key": "lati",
+							"value": "20.9758453"
+						},
+						{
+							"key": "longi",
+							"value": "105.8172996"
+						},
+						{
+							"key": "searchKey",
+							"value": "Bún"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

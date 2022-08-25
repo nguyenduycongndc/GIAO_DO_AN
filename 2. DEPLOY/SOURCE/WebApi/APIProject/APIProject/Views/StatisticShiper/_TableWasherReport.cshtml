@@ -1,0 +1,65 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using APIProject.Resource
+@model  PagedList.IPagedList<ShiperReportOuputModel>
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th>STT</th>
+                <th>Họ và Tên</th>
+                <th>Số điện thoại</th>
+                <th>Giao dịch</th>
+                <th>Hoa hồng</th>
+                <th>GD Hoàn thành</th>
+                <th>KH hủy giao dịch</th>
+                <th>Tài xế hủy giao dịch</th>
+         
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{
+
+                if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="15">Không có dữ liệu</td>
+                    </tr>
+                }
+                else
+                {
+
+                    int stt = ((Model.PageNumber - 1) * Model.PageSize) +1;
+                    foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@data.name</td>
+                            <td>@data.phone</td>
+                            <td>@data.countTransasction</td>
+                            <td>@data.shiperCommission</td>
+                            <td>@data.countCompleteYet</td>
+                            <td>@data.countCustomerCancel</td>
+
+                            <td>@data.countShiperCancel</td>
+                        </tr>
+                        stt++;
+                    }
+                }
+
+            }
+        </tbody>
+    </table>
+<input type="hidden" id="txtPageCurrent" value="@ViewBag.PageCurrent" class="txtPageCurrent" />
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(Model, Page => Url.Action("SearchShiperReport", new { Page, searchKey = ViewBag.searchKey,provinceID = ViewBag.provinceID,districtID = ViewBag.districtID, fromDate = ViewBag.fromDate, toDate =ViewBag.toDate }),
+            PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+            {
+                HttpMethod = "GET",
+                UpdateTargetId = "tableWasherReport",
+                LoadingElementId = "modalLoad"
+            })
+            )
+    </div>
+</div>

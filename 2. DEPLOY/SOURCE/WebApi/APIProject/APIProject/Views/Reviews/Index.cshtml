@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                    <h4> Reviews Management</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-md-3">
+            <input type="text" class="form-control" id="txtName" placeholder="Enter code or name" />
+        </div>
+        <div class="col-md-3 offset-md-0">
+            <input type="number" class="form-control" id="txRate" placeholder="Enter average rate" onkeydown="javascript: return event.keyCode == 69 ? false : true" />
+        </div>
+        <div class="col-md-3 offset-md-0 col-sm-3">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="@Resources.FromDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-3 offset-md-0 col-sm-3">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="@Resources.ToDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="row pt-40">
+                <div class="col-md-12">
+                    <div class="mt-1  mb-1 pull-right pb-10 pr-10">
+                        <button class="btn btn-primary btn_export" id="btnExport" onclick="exportListReviews()"><i class="fa fa-download mr-1"></i> @Resources.Export</button>
+                    </div>
+                    <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                        <button class="btn btn-primary btn_search" id="btnSearch" onclick="searchReviewInfo()"><i class="fa fa-search"></i> @Resources.Search</button>
+                    </div>
+                    <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                        <button class="btn btn-danger" id="btnFilter" onclick="window.location = '/Reviews/Index';">@Resources.ClearFilter</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="ListReviews">
+            @{
+                Html.RenderAction("Search", "Reviews", new { searchRating = 0 });
+            }
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".sidebar-scroll").scrollTop(2000);
+        history.replaceState(null, null, ' ');
+    });
+    function exportListReviews() {
+        var codeOrName = $.trim($('#txtName').val());
+        var rateNumber = $('#txRate').val();
+        var fromDate = $.trim($('#dtFromdateIndex').val());
+        var toDate = $.trim($('#dtTodateIndex').val());
+        if (rateNumber.length > 0) {
+            if (parseFloat(rateNumber) > 5 || isNaN(rateNumber) || parseFloat(rateNumber) < 0) {
+                swal({
+                    title: "Average rate number must be less than 5 and must be a positive number!",
+                    text: "",
+                    icon: "warning"
+                })
+                return;
+            }
+
+            else {
+                window.location.href = "/Reviews/ExportListReviews?searchKey=" + codeOrName + "&FromDate=" + fromDate + "&toDate=" + toDate + "&rateNumber=" + rateNumber;
+            }
+        }
+        else {
+            window.location.href = "/Reviews/ExportListReviews?searchKey=" + codeOrName + "&FromDate=" + fromDate + "&toDate=" + toDate + "&rateNumber=" + 0;
+        }
+    }
+
+</script>

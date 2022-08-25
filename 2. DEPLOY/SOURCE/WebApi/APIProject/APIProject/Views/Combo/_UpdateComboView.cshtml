@@ -1,0 +1,639 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Model.APIWeb
+
+@model ComboDetailModel
+@using APIProject.Resource
+@{
+    var mainImage = "";
+    var thumbnail = "";
+    List<ImageService> listImgOrther = new List<ImageService>();
+    foreach (var item in Model.ListIamge)
+    {
+        if (item.Type == 1)
+        {
+            if (item.url == null)
+            { mainImage = "/Uploads/files/add_img.png"; }
+
+            else
+            { mainImage = item.url; }
+
+
+        }
+        else if (item.Type == 3)
+        {
+            if (item.url == null)
+            {
+                thumbnail = "/Uploads/files/add_img.png";
+            }
+            else
+            { thumbnail = item.url; }
+
+        }
+        else
+        {
+            listImgOrther.Add(item);
+        }
+    }
+
+    if (mainImage == "")
+    {
+        mainImage = "/Uploads/files/add_img.png";
+    }
+    if (thumbnail == "")
+    {
+        thumbnail = "/Uploads/files/add_img.png";
+    }
+    if (Model.Icon == null)
+    {
+        Model.Icon = "/Uploads/files/add_img.png";
+    }
+}
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title"> Update combo</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Combo/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-12">
+        @*<div class="row mt-2">
+            <div class="col-md-4 col-xs-6">
+                <span>Combo Code:</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <input type="text" class="form-control" id="code" value="@Model.Code" />
+            </div>
+        </div>*@
+        <div class="row mt-2">
+            <div class="col-md-4 col-xs-6">
+                <span>Combo Name English:</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <input type="text" class="form-control" id="name" value="@Model.NameEN" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4 col-xs-6">
+                <span>Combo Name Vietnam:</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <input type="text" class="form-control" id="nameVn" value="@Model.NameVN" />
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4 col-xs-6">
+                <span>Description VietNam:</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <textarea class="form-control height-150" id="description">@Model.Description</textarea>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4 col-xs-6">
+                <span>Description English:</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <textarea class="form-control height-150" id="descriptionEN">@Model.DescriptionEN</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12 divImage">
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <div class="inlineblock mr-3">
+                    <div class="mb-2">
+                        <span>Main Image</span>
+                    </div>
+                    <div class="article position-relative" id="AddMain">
+                        <img id="AddImgMain" src="@mainImage" class="border-dekko contentImg-Pack max-wh-150 " alt="your image" onclick="ChangeImageMain($(this))" /><i title="Xóa" onclick="DeleteSingleImage(1);" class="fa fa-2x fa-remove remove-mainImg display-none" data="img1" style="position:absolute;top:-8px;right:1px;color: #ff0000;"></i>
+                        @*<img id="AddImgMain" src="/Uploads/files/add_img.png" class="contentImg-Pack" alt="your image" />*@
+                    </div>
+                </div>
+                <div class="inlineblock mr-3">
+                    <div class="mb-2">
+                        <span>Thumbnail</span>
+                    </div>
+                    <div class="article position-relative" id="AddThumbnail">
+                        <img id="AddImgThumbnail" src="@thumbnail" class="border-dekko contentImg-Pack max-wh-150" alt="your image" onclick="ChangeImageThumb($(this));" /><i title="Xóa" onclick="DeleteSingleImage(2);" class="fa fa-2x fa-remove remove-imgThumb display-none" data="img1" style="position:absolute;top:-8px;right:1px;color: #ff0000;"></i>
+                        @*<img id="AddImgThumbnail" src="/Uploads/files/add_img.png" class="contentImg-Pack" alt="your image" />*@
+                    </div>
+                </div>
+                <div class="inlineblock mr-3">
+                    <div class="mb-2">
+                        <span>Icon</span>
+                    </div>
+                    <div class="article position-relative" id="AddIcon">
+                        <img id="AddImgIcon" src="@Model.Icon" class="border-dekko contentImg-Pack max-wh-150" alt="your image" onclick="ChangeImageThumb($(this));" /><i title="Xóa" onclick="DeleteSingleImage(3);" class="fa fa-2x fa-remove remove-imgIcon " data="img1" style="position:absolute;display:none ;top:-8px;right:1px;color: #ff0000;"></i>
+                        @*<img id="AddImgThumbnail" src="/Uploads/files/add_img.png" class="contentImg-Pack" alt="your image" />*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-md-12 col-xs-12">
+                <div class="mb-2">
+                    <span>Orther images</span>
+                </div>
+                <div onclick="AddIMGother();" class="text-bold mb-3 inlineblock mr-1" id="_addImg">
+                    <img id="Imgtag" src="/Uploads/files/add_img.png" width="80" height="80" alt="Chọn" />
+                </div>
+                <div class="imgShop inlineblock">
+                    <div class="article inlineblock" id="_divAddImg">
+                        @{
+                            if (listImgOrther.Count() == 0)
+                            {
+                                <span>No image to display</span>
+                            }
+                            else
+                            {
+                                foreach (var item in listImgOrther)
+                                {
+                                    <div class="Imgs mr-2" style="box-sizing:border-box;display:inline-block;margin-top:10px;position: relative;"><img class="_lstImage max-wh-130" src="@item.url" /><i title="Xóa" onclick="DeleteImage(event);" class="fa fa-2x fa-remove icon-remove display-none" style="position:absolute;top:-14px;right:1px;color: #ff0000;"></i></div>
+                                }
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <span class="custom_title font-16">Price</span>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                    <thead class="text-center text-white">
+                        <tr>
+                            <th>Type car</th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                USDPrice
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center tbody-addprice">
+                        @{
+                            if (Model.ListComboServicePrice.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="10">No data to display</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.ListComboServicePrice)
+                                {
+                                    <tr>
+                                        <td class="segName" data-id="@item.SegmentID">@item.SegmentName</td>
+                                        <td><input type="text" class="number priceValue text-center" value="@item.PriceStr" /></td>
+                                        <td><input type="text" class="number USDprice text-center" value="@item.USDBasePriceStr" /></td>
+                                    </tr>
+                                }
+                            }
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <span class="custom_title font-16">Package service</span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-5">
+                <select class="form-control" id="package">
+                    <option class="text-black-50" value="0">Package Service</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="number" id="amount" class="form-control" placeholder="Amount" />
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-primary" onclick="addPackageService()">Add</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                    <thead class="text-center text-white">
+                        <tr>
+                            <th>Package Service</th>
+                            <th>
+                                Amount
+                            </th>
+                            <th>Order</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center tbody-addpackageservice">
+                        @{
+                            if (Model.ListPackageService.Count() == 0)
+                            {
+                                <tr>
+                                    <td colspan="10">No data to display</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var item in Model.ListPackageService)
+                                {
+                                    <tr>
+                                        <td class="psName" data-id="@item.ServiceID">@item.Name</td>
+                                        <td><input type="number" class="amountValue form-control text-center" value="@item.Count" /> </td>
+                                        <td><input type="number" class="displayOrder form-control text-center" value="@item.DisplayOrder" /></td>
+                                        <td>
+                                            <a href="javascript:void(0);"  title="@Resources.Delete." class="cursor-pointer">
+                                                <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-3">
+                <span class="custom_title font-16">
+                    Promote
+                </span>
+            </div>
+            <div class="col-md-3">
+                <input type="number" id="promote" class="form-control" value="@Model.Discount" />
+            </div>
+            <div class="col-md-3 pl-0 pt-1">
+                <span class="font-20">%</span>
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-md-3">
+                <span>Status:</span>
+            </div>
+            <div class="col-md-4 offset-md-1">
+                <select class="form-control" id="typePromote" style=" margin-left: -50px;">
+                    <option value="1">Active</option>
+                    <option value="2">Deactive</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <span class="custom_title font-16">Additional service</span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6">
+                <select class="form-control" id="addService">
+                </select>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-primary" onclick="addAdditionalSer()">Add</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                    <thead class="text-center text-white">
+                        <tr>
+                            <th>Additional Service</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center tbody-addaddservice">
+                        @{
+                            if (Model.AdditionService == null)
+                            {
+                                <tr>
+                                    <td colspan="10" id="nodata" data-id="0">No data to display</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                foreach (var data in Model.AdditionService)
+                                {
+                                    <tr>
+                                        <td class="addSerName" data-id="@data.ServiceID">@data.Name</td>
+                                        <td>
+                                            <a href="javascript:void(0);" data-id="@data.ServiceID"  title="@Resources.Delete." class="cursor-pointer">
+                                                <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-danger plr-25 mr-3" onclick="backCombo()">Cancel</button>
+    <button class="btn btn-success plr-25 mr-3" onclick="UpdateCombo(@Model.ID);">Save</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#typePromote").val(@Model.IsActive);
+        loadSegment();
+        loadPackageService();
+        loadAdditionalService();
+        $('.number').keyup(function () {
+            $val = cms_decode_currency_format($(this).val());
+            $(this).val(cms_encode_currency_format($val));
+        });
+        $("#AddMain").mouseover(function () {
+            if ($("#AddImgMain").attr('src')!="/Uploads/files/add_img.png")
+            $(this).find(".remove-mainImg").show();
+        });
+        $("#AddMain").mouseout(function () {
+            $(this).find(".remove-mainImg").hide();
+        });
+        $("#AddThumbnail").mouseover(function () {
+            if ($("#AddImgThumbnail").attr('src') != "/Uploads/files/add_img.png")
+            $(this).find(".remove-imgThumb").show();
+        });
+        $("#AddThumbnail").mouseout(function () {
+            $(this).find(".remove-imgThumb").hide();
+        });
+        $("#AddIcon").mouseover(function () {
+            if ($("#AddImgIcon").attr('src') != "/Uploads/files/add_img.png")
+            $(this).find(".remove-imgIcon").show();
+        });
+        $("#AddIcon").mouseout(function () {
+            $(this).find(".remove-imgIcon").hide();
+        });
+        $(".Imgs").mouseover(function () {
+
+            $(this).find(".icon-remove").show();
+        });
+        $(".Imgs").mouseout(function () {
+            $(this).find(".icon-remove").hide();
+        });
+    });
+
+    function addPackageService() {
+        var PackageService = $("#package option:selected").text();
+        var packId = $("#package").val();
+        var Amount = $("#amount").val();
+        var checkDuplicate = false;
+        if ($("#package").val() == 0 || Amount == "") {
+            swal({
+                title: "",
+                text: "Please fill in required fields",
+                icon: "warning"
+            });
+        }
+        else {
+            if ($(".tbody-addpackageservice > tr").length == 0) {
+                $(".tbody-addpackageservice").append('<tr><td class="psName" data-id="' + packId + '">' + PackageService + '</td><<td > <input type="number" class="form-control amountValue text-center" value="' + Amount + '" /><td><input type="text" class="displayOrder text-center" class="form-control" class="order"/></td>' + '<td><a href="javascript:void(0);"  data-placement="top" title="@Resources.Delete." class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i></a></td></tr>')
+            }
+            else
+            {
+                $.each($(".psName"), function () {
+                    if ($(this).text() == PackageService) {
+                    checkDuplicate = true;
+                    }
+                });
+                if (checkDuplicate == false) {
+                    $(".tbody-addpackageservice").append('<tr><td class="psName" data-id="' + packId + '">' + PackageService + '</td><<td > <input type="number" class="form-control amountValue text-center" value="' + Amount + '" /><td><input type="text" class="displayOrder text-center" class="form-control" class="order"/></td>' + '<td><a href="javascript:void(0);" data-placement="top" title="@Resources.Delete." class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i></a></td></tr>')
+            }
+            else {
+                    swal({
+                        title: "",
+                        text: "This package was selected",
+                        icon: "warning"
+                    })
+                }
+            }
+        }
+
+    }
+    var listid = [];
+    var listtr = $(".tbody-addaddservice").children("tr").children("td");
+    console.log(listtr)
+    $.each(listtr, function (key, val) {
+        listid.push($(this).attr("data-id"));
+    })
+    function addAdditionalSer() {
+        var additionSer = $("#addService option:selected").text();
+        var additionId = $("#addService").val();
+        var checkDuplicate = false;
+        console.log($("#nodata"));
+        if ($("#nodata").attr("data-id") == 0 || $("#nodata").attr("data-id") == undefined) {
+            $("#nodata").remove();
+        }
+        if ($("#addService").val() == 0) {
+            swal({
+                title: "",
+                text: "Please select additional service!",
+                icon: "warning"
+            });
+        }
+        else {
+            if (listid.find(u => u == additionId) == undefined) {
+                listid.push(additionId);
+                $(".tbody-addaddservice").append('<tr><td class="addSerName" data-id="' + additionId + '">' + additionSer + '</td>' + '<<td><a href="javascript:void(0);"  data-id=' + additionId + ' data-placement="top" title="@Resources.Delete." class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i></a></td></tr>')
+            }
+            else {
+
+                swal({
+                    title: "",
+                    text: " Addition service areally exist!",
+                    icon: "warning"
+                });
+            }
+        }
+    }
+    function loadSegment() {
+        $.ajax({
+            url: '/Combo/GetSegmentList',
+            type: 'GET',
+            success: function (res) {
+                //$("#txtGrade").empty();
+                //$("#txtGrade").append('<option class="text-black-50" value="0">Provinces</option>');
+                $.each(res, function () {
+                    $("#txtGrade").append('<option value="' + this.ID + '">' + this.NameEN + '</option>')
+                });
+            }
+        })
+    }
+    function loadPackageService() {
+        $.ajax({
+            url: '/Combo/GetMainServiceList',
+            type: 'GET',
+            success: function (res) {
+                //console.log(res);
+                $.each(res.Result, function () {
+                    $("#package").append('<option value="' + this.ID + '">' + this.Name + '</option>')
+                });
+            }
+        })
+    }
+    function loadAdditionalService() {
+        $.ajax({
+            url: '/Combo/GetAdditionServiceList',
+            type: 'GET',
+            success: function (res) {
+                $.each(res.Result, function () {
+                    $("#addService").append('<option value="' + this.ID + '">' + this.Name + '</option>')
+                });
+            }
+        })
+    }
+    $("#AddImgMain").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgMain").attr("src", fileUrl);
+        }
+        fider.popup();
+    });
+    //ADD THUMBNAIL IMAGE
+
+    //CHANGE MAIN IMAGE
+    function ChangeImageMain($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                $url.attr('src', fileUrl)
+            }
+        }
+        fider.popup();
+    }
+    function ChangeImageThumb($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                $url.attr('src', fileUrl);
+            }
+        }
+        fider.popup();
+
+    }
+    function ChangeImageIcon($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#_txturlImage').val();
+                $('#_txturlImage').val(str.replace(url_old, fileUrl));
+            }
+        }
+        fider.popup();
+
+    }
+    function DeleteSingleImage(type) {
+        if (type == 1) {
+            $('#AddImgMain').attr('src', "/Uploads/files/add_img.png");
+        }
+        else if (type == 2) {
+            $('#AddImgThumbnail').attr('src', "/Uploads/files/add_img.png");
+        }
+        else if (type == 3) {
+
+            $('#AddImgIcon').attr('src', "/Uploads/files/add_img.png");
+
+
+        }
+
+    }
+    function AddIMGother() {
+
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#_divAddImg").append('<div class="Imgs mr-2" style ="box-sizing:border-box;display:inline-block;margin-top:10px;position: relative;"><img class="_lstImage max-wh-130" src="' + fileUrl + '" /><i  title ="Xóa" onclick="DeleteImage(event);" src="' + fileUrl + '" class="fa fa-2x fa-remove icon-remove display-none" style="position:absolute;top:-14px;right:1px;color: #ff0000;"></i></div>');
+            var listUrl = $("#_txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#_txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#_txturlImage").val(url);
+            }
+            $(".Imgs").mouseover(function () {
+                $(this).find(".icon-remove").show();
+            });
+            $(".Imgs").mouseout(function () {
+                $(this).find(".icon-remove").hide();
+            });
+        }
+        fider.popup();
+    }
+    //Add multiple
+    //$("#_addImg").off('click').on('click', function (e) {
+    //    e.preventDefault();
+
+    //    var fider = new CKFinder();
+    //    fider.selectActionFunction = function (fileUrl) {
+    //        $("#_divAddImg").append('<div class="Imgs mr-2" style ="box-sizing:border-box;display:inline-block;margin-top:10px;position: relative;"><img class="_lstImage max-wh-130" src="' + fileUrl + '" /><i  title ="Xóa" onclick="DeleteImage(event);" src="' + fileUrl + '" class="fa fa-2x fa-remove icon-remove display-none" style="position:absolute;top:-14px;right:1px;color: #ff0000;"></i></div>');
+    //        var listUrl = $("#_txturlImage").val();
+    //        if (listUrl == "") {
+    //            listUrl = fileUrl;
+    //            $("#_txturlImage").val(listUrl);
+    //        }
+    //        else {
+    //            var url = listUrl + "," + fileUrl;
+    //            $("#_txturlImage").val(url);
+    //        }
+    //        $(".Imgs").mouseover(function () {
+    //            $(this).find(".icon-remove").show();
+    //        });
+    //        $(".Imgs").mouseout(function () {
+    //            $(this).find(".icon-remove").hide();
+    //        });
+    //    }
+    //    fider.popup();
+    //});
+    function DeleteImage(event) {
+        $(event.target).closest("div").remove();
+    }
+    function DeleteAddional(event) {
+        var id = $(event.target).parent().attr("data-id");
+        if (listid.find(u => u == id) != undefined) {
+            listid.splice(listid.indexOf(id), 1);
+        }
+        $(event.target).closest("tr").remove();
+    }
+
+</script>

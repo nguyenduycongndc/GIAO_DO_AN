@@ -1,0 +1,88 @@
+﻿@using Data.Utils
+@using Data.Model.APIWeb
+@using APIProject.Resource
+@model ListNewsWebOutputModel
+
+@{
+    ViewBag.Title = "NewsDetail";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+
+<div class="hr1"></div>
+<body style="font-family:'Open Sans'">
+    <main>
+        <div class="Hot_news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-sm-12 col-xs-12">
+                        <div class="section-tittle mb-20">
+                            <h2 class="news-detail-title">@Model.Title</h2>
+                        </div>
+                        <p>@Model.CreateDate</p>
+                        <div>
+                            <img src="@Model.UrlImage" width="100%">
+                        </div>
+                        <div class="new-desc">
+                            @Html.Raw(Model.Content)
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-12 col-sm-12">
+                        <div class="section-tittle mb-20">
+                            <h4 class="news-detail-subtitle">Có thể bạn quan tâm</h4>
+                        </div>
+                        @foreach (var dt in Model.ListAdvertisement)
+                        {
+                            <div>
+                                <a href="/IntroDuce/NewsDetail?id=@dt.ID">
+                                    <img src="@dt.Image" width="100%">
+                                    <h5>@dt.Title</h5>
+                                    
+                                </a>
+                                <p>@dt.Description</p>
+                            </div>
+                            <hr />
+                        }
+                    </div>
+                </div>
+                <hr />
+
+                <div class="padtop-0 mt-20 slider-1 mb-80">
+                    <div class="container">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-lg-8">
+                                <div class="section-tittle text-center mb-40">
+                                    <h2 style="color:orangered; font-size: 30px; padding-top:4%;">Tin liên quan</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div id="exampleSlider">
+                                    <div class="MS-content">
+                                        @foreach (var dt in Model.ListNewsRelate)
+                                        {
+                                            <div class="item">
+                                                <a href="/IntroDuce/NewsDetail?id=@dt.ID">
+                                                    <img src="@dt.Image" class="size-img" alt="">
+                                                    <b>@dt.Title</b>
+                                                </a>
+                                                <p class="promotion_content">@dt.Description</p>
+                                            </div>
+                                        }
+
+                                    </div>
+                                    <div class="MS-controls">
+                                        <button class="MS-left"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                                        <button class="MS-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>

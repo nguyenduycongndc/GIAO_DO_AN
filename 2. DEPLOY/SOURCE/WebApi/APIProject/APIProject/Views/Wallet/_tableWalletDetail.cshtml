@@ -1,0 +1,131 @@
+﻿
+@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<TransactionHistoryWalletModel>
+@using APIProject.Resource
+@using Data.Utils
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white align-center bg-thead">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Loại ví</th>
+            <th>Loại giao dịch</th>
+            <th>Số điểm</th>
+            <th>Ví dư</th>
+            <th>Ngày tạo</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @if (Model.Count() <= 0)
+        {
+            <tr>
+                <td colspan="6">No data</td>
+            </tr>
+        }
+        else
+        {
+            int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+            foreach (var dt in Model)
+            {
+                <tr>
+                    <td>@stt</td>
+                    @{
+                        if (dt.WalletType == Constant.WALLET_NO_WITHDRAW)
+                        {
+                            <td>Ví cọc</td>
+                        }
+                        else if (dt.WalletType == Constant.WALLET_WITHDRAW)
+                        {
+                            <td>Ví thu nhập</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                        @*}*@
+                        switch (@dt.MemTransactionType)
+                        {
+                            case Constant.TYPE_TRANSACTION_WITHDRAW:
+                                <td>Rút tiền</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_REFUND_WITHDRAW:
+                                <td>Hoàn tiền khi yêu cầu rút tiền bị từ chối</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_TRANSFER_WALLET:
+                                <td>Chuyển tiền sang ví cọc</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET:
+                                <td>Nhận tiền sau khi hoàn thành đơn</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_RECHARGE:
+                                <td>Nạp tiền từ hệ thống</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_RECHARGE_ADMIN:
+                                <td>Cộng tiền từ Admin</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET_EXCHANGE:
+                                <td>Nhận tiền từ ví thu nhập</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_ACCEPT_ORDER:
+                                <td>Trừ tiền ví cọc khi nhận đơn</td>
+                                break;
+                            case Constant.TYPE_TRANSACTION_REFUND_ORDER_CANCLE:
+                                <td>Hoàn tiền ví cọc khi đơn bị hủy</td>
+                                break;
+                            default:
+                                <td></td>
+                                break;
+                        }
+
+                        if (dt.MemType == 1)
+                        {
+
+                            <td>
+                                +@string.Format("{0:#,0}", Convert.ToDecimal(@dt.MemPoint))
+                            </td>
+                        }
+                        else if (dt.MemType == 0)
+                        {
+                            <td>-@string.Format("{0:#,0}", Convert.ToDecimal(@dt.MemPoint))</td>
+                        }
+                        else
+                        {
+                            <td></td>
+                        }
+                    }
+
+                    <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.MemAfterBalance))</td>
+                    <td>@dt.CreateDate.ToString("dd/MM/yyyy")</td>
+
+
+                </tr>
+                stt++;
+            }
+        }
+    </tbody>
+
+
+</table>
+
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("ListTransactionHistory", "Wallet", new { page, id = ViewBag.ID, memType = ViewBag.MemType, memTransactionType = ViewBag.MemTransactionType, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tableTransact" })
+        )
+    </div>
+</div>
+
+<script>
+
+    function backWallet() {
+        window.location.href = "/Wallet/Index";
+    }
+</script>
+

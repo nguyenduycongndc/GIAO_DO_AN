@@ -1,0 +1,2210 @@
+{
+	"info": {
+		"_postman_id": "3b1d1a65-799a-451e-877b-a3e00676cbce",
+		"name": "WE_SHIP_BOOKING",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "App Khách Hàng",
+			"item": [
+				{
+					"name": "Giỏ hàng",
+					"item": [
+						{
+							"name": "Lấy danh sách giỏ hàng trong shop",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{serverReal}}/BookingAPI/GetShopCart?ShopID=4",
+									"host": [
+										"{{serverReal}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetShopCart"
+									],
+									"query": [
+										{
+											"key": "ShopID",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Thêm vào giỏ hàng",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"ServicePriceID\":165,\r\n    \"TopingID\":[],\r\n    \"Quantity\":3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/AddCart",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"AddCart"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cập nhật số lượng giỏ hàng",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"CartID\":325,\r\n    \"Quantity\":2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/UpdateCartQuantity",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"UpdateCartQuantity"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Cập nhật ghi chú giỏ hàng",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"CartID\":6,\r\n    \"Note\":\"Ít cơm \"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/UpdateCartNote",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"UpdateCartNote"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Xóa giỏ hàng",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/BookingAPI/RemoveCart",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"RemoveCart"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Đăt đơn ",
+					"item": [
+						{
+							"name": "Test",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "BAB7B26E2A3AD25605220D278DA76C14",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Amount\":135000\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:11111/VnPay/Index?vnp_Amount=1000000&vnp_BankCode=TECHCOMBANK&vnp_BankTranNo=&vnp_CardType=ATM&vnp_OrderInfo=Thanh toan don dat xeDX63454773857 .So tien 10.000 VND&vnp_PayDate=20210504174657&vnp_ResponseCode=00&vnp_TmnCode=WESHIP01&vnp_TransactionNo=46443237&vnp_TxnRef=282&vnp_SecureHashType=SHA256&vnp_SecureHash=48854463cd0d18e680f4b85bc45edfc76a3a9e13c100e95dcb69d2fc8e892c52",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "11111",
+									"path": [
+										"VnPay",
+										"Index"
+									],
+									"query": [
+										{
+											"key": "vnp_Amount",
+											"value": "1000000"
+										},
+										{
+											"key": "vnp_BankCode",
+											"value": "TECHCOMBANK"
+										},
+										{
+											"key": "vnp_BankTranNo",
+											"value": ""
+										},
+										{
+											"key": "vnp_CardType",
+											"value": "ATM"
+										},
+										{
+											"key": "vnp_OrderInfo",
+											"value": "Thanh toan don dat xeDX63454773857 .So tien 10.000 VND"
+										},
+										{
+											"key": "vnp_PayDate",
+											"value": "20210504174657"
+										},
+										{
+											"key": "vnp_ResponseCode",
+											"value": "00"
+										},
+										{
+											"key": "vnp_TmnCode",
+											"value": "WESHIP01"
+										},
+										{
+											"key": "vnp_TransactionNo",
+											"value": "46443237"
+										},
+										{
+											"key": "vnp_TxnRef",
+											"value": "282"
+										},
+										{
+											"key": "vnp_SecureHashType",
+											"value": "SHA256"
+										},
+										{
+											"key": "vnp_SecureHash",
+											"value": "48854463cd0d18e680f4b85bc45edfc76a3a9e13c100e95dcb69d2fc8e892c52"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "test2",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/Service/vnp_ipn",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"Service",
+										"vnp_ipn"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "test3",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server}}/Service/GetListShopByFood?page=1&limit=15&lati=20.985983609238442&longi=105.8123538841004&searchKey=shop",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"Service",
+										"GetListShopByFood"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "15"
+										},
+										{
+											"key": "lati",
+											"value": "20.985983609238442"
+										},
+										{
+											"key": "longi",
+											"value": "105.8123538841004"
+										},
+										{
+											"key": "searchKey",
+											"value": "shop"
+										},
+										{
+											"key": "toDate",
+											"value": "05/06/2021",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetListServiceCategory",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/Service/GetListServiceCategory?longi=106.402412&lati=18.0314638",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"Service",
+										"GetListServiceCategory"
+									],
+									"query": [
+										{
+											"key": "longi",
+											"value": "106.402412"
+										},
+										{
+											"key": "lati",
+											"value": "18.0314638"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetListServicePrice",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/Service/GetListServicePrice?page=1&limit=15&shopID=2&status=1",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"Service",
+										"GetListServicePrice"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "15"
+										},
+										{
+											"key": "searchKey",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "shopID",
+											"value": "2"
+										},
+										{
+											"key": "status",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy vị trí gợi ý khách hàng",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server}}/BookingAPI/GetCustomerLocation?Type=1",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetCustomerLocation"
+									],
+									"query": [
+										{
+											"key": "Type",
+											"value": "1",
+											"description": "1: Đặt xe , 2: Giao hàng , 3: Giao đồ ăn"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy vị trí tài xế lân cận",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetNearShippers?Longtitude=105.810133&Latitude=20.9858584&Radius=1000",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetNearShippers"
+									],
+									"query": [
+										{
+											"key": "Longtitude",
+											"value": "105.810133"
+										},
+										{
+											"key": "Latitude",
+											"value": "20.9858584"
+										},
+										{
+											"key": "Radius",
+											"value": "1000",
+											"description": "mét"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy danh sách đặt xe",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{server}}/BookingAPI/GetListVehicle?origin=20.980829090103654,105.78518296021174&destination=21.007156842086932,105.842849760767",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetListVehicle"
+									],
+									"query": [
+										{
+											"key": "origin",
+											"value": "20.980829090103654,105.78518296021174",
+											"description": "{latitude},{longitude}"
+										},
+										{
+											"key": "destination",
+											"value": "21.007156842086932,105.842849760767",
+											"description": "{latitude},{longitude}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy phí ship giao hàng",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/BookingAPI/GetPackageDeliveryPrice?origin=20.986034,105.81235388449284&destination=20.9974011,105.8113071&weight=7",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetPackageDeliveryPrice"
+									],
+									"query": [
+										{
+											"key": "origin",
+											"value": "20.986034,105.81235388449284"
+										},
+										{
+											"key": "destination",
+											"value": "20.9974011,105.8113071"
+										},
+										{
+											"key": "weight",
+											"value": "7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy phí ship giao hàng VIP",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server}}/BookingAPI/GetPackageDeliveryPriceVIP?origin=20.986034,105.81235388449284&destination=20.9974011,105.8113071&weight=7&type=4",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetPackageDeliveryPriceVIP"
+									],
+									"query": [
+										{
+											"key": "origin",
+											"value": "20.986034,105.81235388449284"
+										},
+										{
+											"key": "destination",
+											"value": "20.9974011,105.8113071"
+										},
+										{
+											"key": "weight",
+											"value": "7"
+										},
+										{
+											"key": "type",
+											"value": "4",
+											"description": "4: Siêu tốc nội thành , 5 : giao hàng nhanh nội thành và toàn quốc"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy phí ship giao đồ ăn",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetFoodDeliveryPrice?ShopID=22&destination=37.785834,-122.406417",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetFoodDeliveryPrice"
+									],
+									"query": [
+										{
+											"key": "ShopID",
+											"value": "22"
+										},
+										{
+											"key": "destination",
+											"value": "37.785834,-122.406417"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy danh sách mã giảm giá",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetListCoupon?Type=2",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetListCoupon"
+									],
+									"query": [
+										{
+											"key": "Used",
+											"value": "1",
+											"description": "null: Tất cả ; 0 là chưa sử dụng ; 1 là đã sử dụng",
+											"disabled": true
+										},
+										{
+											"key": "Type",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy điểm tích lũy khách hàng",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetCustomerPoint",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetCustomerPoint"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy thông tin đặt xe khi tiếp nhận cho khách hàng",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetOrderServiceCustomer?OrderServiceID=262",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetOrderServiceCustomer"
+									],
+									"query": [
+										{
+											"key": "OrderServiceID",
+											"value": "262"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy thông tin giao hàng khi tiếp nhận cho khách hàng",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetOrderServicePackageCustomer?OrderServiceID=418",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetOrderServicePackageCustomer"
+									],
+									"query": [
+										{
+											"key": "OrderServiceID",
+											"value": "418"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy thông tin giao hàng khi tiếp nhận cho khách hàng VIP",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/GetOrderServicePackageVIPCustomer?OrderServiceID=418",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetOrderServicePackageVIPCustomer"
+									],
+									"query": [
+										{
+											"key": "OrderServiceID",
+											"value": "418"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Lấy thông tin giao đồ ăn khi tiếp nhận cho khách hàng",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server}}/BookingAPI/GetOrderServiceFoodCustomer?OrderServiceID=659",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"GetOrderServiceFoodCustomer"
+									],
+									"query": [
+										{
+											"key": "OrderServiceID",
+											"value": "659"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Áp dụng mã giảm giá",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    //321586\r\n    \"CouponCode\":\"TX021AD\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/ApplyCoupon",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"ApplyCoupon"
+									],
+									"query": [
+										{
+											"key": null,
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Đặt xe",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"vehicleID\": 1,\r\n    \"couponID\": null,\r\n    \"point\": 0,\r\n    \"paymentMethod\": 1,\r\n    \"longiFrom\": 106.4003534,\r\n    \"latiFrom\": 18.0262318,\r\n    \"longiTo\": 106.3896137,\r\n    \"latiTo\": 18.0357646,\r\n    \"addressFrom\": \"Vietcombank, Kỳ Long, Kỳ Anh, Hà Tĩnh, Việt Nam\",\r\n    \"addressTo\": \"X9XR+FW4, Kỳ Long, Kỳ Anh\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{serverReal}}/BookingAPI/FindDriver",
+									"host": [
+										"{{serverReal}}"
+									],
+									"path": [
+										"BookingAPI",
+										"FindDriver"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Đặt đơn giao hàng",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "LatiFrom",
+											"value": "20.98603369515573",
+											"type": "text"
+										},
+										{
+											"key": "LongiFrom",
+											"value": "105.81235388449284",
+											"type": "text"
+										},
+										{
+											"key": "AddressFrom",
+											"value": "Số 3, Kim Giang",
+											"type": "text"
+										},
+										{
+											"key": "LatiTo",
+											"value": "21.037869094288535",
+											"type": "text"
+										},
+										{
+											"key": "LongiTo",
+											"value": "105.79678536369309",
+											"type": "text"
+										},
+										{
+											"key": "AddressTo",
+											"value": "Phố Chùa Hà, Dịch Vọng, Cầu Giấy, Hà Nội 122405, Việt Nam",
+											"type": "text"
+										},
+										{
+											"key": "AddressToDetail",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "SenderName",
+											"value": "Phạm Văn Trường",
+											"type": "text"
+										},
+										{
+											"key": "SenderPhone",
+											"value": "0327764411",
+											"type": "text"
+										},
+										{
+											"key": "ReceiverName",
+											"value": "Trying Pham",
+											"type": "text"
+										},
+										{
+											"key": "ReceiverPhone",
+											"value": "2432453242",
+											"type": "text"
+										},
+										{
+											"key": "CouponID",
+											"value": "null",
+											"type": "text"
+										},
+										{
+											"key": "Point",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "PaymentMethod",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "TransportType",
+											"value": "3",
+											"description": "1: Giao tiêu chuẩn , 2:Giao nhanh , 3:Wesen",
+											"type": "text"
+										},
+										{
+											"key": "CODFee",
+											"value": "580000",
+											"type": "text"
+										},
+										{
+											"key": "PackageType",
+											"value": "Ahihi",
+											"type": "text"
+										},
+										{
+											"key": "Weight",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "PackageFee",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "Note",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "IsPaymentReceiver",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "images",
+											"type": "file",
+											"src": [
+												"/C:/Users/H/Pictures/house-1.png",
+												"/C:/Users/H/Pictures/house-2.png",
+												"/C:/Users/H/Pictures/house-3.png",
+												"/C:/Users/H/Pictures/house-4.png"
+											]
+										},
+										{
+											"key": "images",
+											"type": "file",
+											"src": "/C:/Users/H/Pictures/Logos.jpg",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/FindDriverPackage",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"FindDriverPackage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Đặt đơn giao hàng VIP",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "LatiFrom",
+											"value": "20.98603369515573",
+											"type": "text"
+										},
+										{
+											"key": "LongiFrom",
+											"value": "105.81235388449284",
+											"type": "text"
+										},
+										{
+											"key": "AddressFrom",
+											"value": "Số 3, Kim Giang",
+											"type": "text"
+										},
+										{
+											"key": "LatiTo",
+											"value": "21.037869094288535",
+											"type": "text"
+										},
+										{
+											"key": "LongiTo",
+											"value": "105.79678536369309",
+											"type": "text"
+										},
+										{
+											"key": "AddressTo",
+											"value": "Phố Chùa Hà, Dịch Vọng, Cầu Giấy, Hà Nội 122405, Việt Nam",
+											"type": "text"
+										},
+										{
+											"key": "AddressToDetail",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "SenderName",
+											"value": "Phạm Văn Trường",
+											"type": "text"
+										},
+										{
+											"key": "SenderPhone",
+											"value": "0327764411",
+											"type": "text"
+										},
+										{
+											"key": "ReceiverName",
+											"value": "Trying Pham",
+											"type": "text"
+										},
+										{
+											"key": "ReceiverPhone",
+											"value": "2432453242",
+											"type": "text"
+										},
+										{
+											"key": "Point",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "PaymentMethod",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "TransportType",
+											"value": "4",
+											"description": "4: Siêu tốc nội thành , 5:Đi bộ , 6:Đi bay",
+											"type": "text"
+										},
+										{
+											"key": "CODFee",
+											"value": "580000",
+											"type": "text"
+										},
+										{
+											"key": "PackageType",
+											"value": "Ahihi",
+											"type": "text"
+										},
+										{
+											"key": "Weight",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "PackageFee",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "Note",
+											"value": "",
+											"type": "text"
+										},
+										{
+											"key": "IsPaymentReceiver",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "images",
+											"type": "file",
+											"src": [
+												"/C:/Users/H/Pictures/house-1.png",
+												"/C:/Users/H/Pictures/house-2.png",
+												"/C:/Users/H/Pictures/house-3.png",
+												"/C:/Users/H/Pictures/house-4.png"
+											]
+										},
+										{
+											"key": "Width",
+											"value": "30",
+											"description": "cm",
+											"type": "text"
+										},
+										{
+											"key": "Length",
+											"value": "120",
+											"description": "cm",
+											"type": "text"
+										},
+										{
+											"key": "Height",
+											"value": "10",
+											"description": "cm",
+											"type": "text"
+										},
+										{
+											"key": "ProvinceID",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "DistrictID",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/FindDriverPackageVIP",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"FindDriverPackageVIP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Đặt đơn giao đồ ăn",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"type": "text",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"shopID\": 4,\r\n    \"couponID\": null,\r\n    \"point\": 0,\r\n    \"paymentMethod\": 1,\r\n    \"longiTo\": 106.3896137,\r\n    \"latiTo\": 18.0357646,\r\n    \"addressTo\": \"X9XR+FW4, Kỳ Long, Kỳ Anh\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{local}}/BookingAPI/FindDriverFood",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"FindDriverFood"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hủy chuyến lần 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{local}}/BookingAPI/DeclineOrderServiceFirst?OrderServiceId=60",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"BookingAPI",
+										"DeclineOrderServiceFirst"
+									],
+									"query": [
+										{
+											"key": "OrderServiceId",
+											"value": "60"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Hủy chuyến lần 2",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"OrderServiceID\":429,\r\n    \"Reason\":\"Tài xế quá xa\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server}}/BookingAPI/DeclineOrderServiceSecond",
+									"host": [
+										"{{server}}"
+									],
+									"path": [
+										"BookingAPI",
+										"DeclineOrderServiceSecond"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tỉnh thành , Quận huyện",
+					"item": [
+						{
+							"name": "GetListProvince",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/Service/GetListProvince",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"Service",
+										"GetListProvince"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetListDistrict",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{local}}/Service/GetListDistrict?ProvinceID=1",
+									"host": [
+										"{{local}}"
+									],
+									"path": [
+										"Service",
+										"GetListDistrict"
+									],
+									"query": [
+										{
+											"key": "ProvinceID",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "App Tài Xế",
+			"item": [
+				{
+					"name": "Lây danh sách đơn hiện tại của tài xế",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{tokenShiper}}"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetDriverOrderInfo?type=1&page=1&limit=15",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetDriverOrderInfo"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "1",
+									"description": "0:đơn countdown , 1 : đơn giao thường"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin đặt xe",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetBookingDriverDetail?OrderServiceID=1185",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetBookingDriverDetail"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "1185"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao hàng",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetBookingPackageDetail?OrderServiceID=64",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetBookingPackageDetail"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "64"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao hàng VIP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{tokenShiper}}"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetBookingPackageVIPDetail?OrderServiceID=64",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetBookingPackageVIPDetail"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "64"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao đồ ăn",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetBookingFoodDetail?OrderServiceID=68",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetBookingFoodDetail"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "68"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin đặt xe khi tiếp nhận cho tài xế",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetOrderServiceDriver?OrderServiceID=15",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetOrderServiceDriver"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao hàng khi tiếp nhận cho tài xế",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/GetOrderServicePackageDriver?OrderServiceID=449",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetOrderServicePackageDriver"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "449"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao hàng khi tiếp nhận cho tài xế VIP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/GetOrderServicePackageVIPDriver?OrderServiceID=449",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetOrderServicePackageVIPDriver"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "449"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lấy thông tin giao đồ ăn khi tiếp nhận cho tài xế",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/GetOrderServiceFoodDriver?OrderServiceID=68",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"GetOrderServiceFoodDriver"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "68"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tiếp nhận đặt xe",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{tokenShiper}}"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/AcceptOrderService?OrderServiceID=766",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"AcceptOrderService"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "766"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tiếp nhận giao hàng",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/AcceptOrderServicePackage?OrderServiceID=701",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"AcceptOrderServicePackage"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "701"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tiếp nhận giao hàng VIP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/AcceptOrderServicePackageVIP?OrderServiceID=701",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"AcceptOrderServicePackageVIP"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "701"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tiếp nhận giao đồ ăn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/AcceptOrderServiceFood?OrderServiceID=68",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"AcceptOrderServiceFood"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "68"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Từ chối tiếp nhận",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{tokenShiper}}"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/DeclineOrderService?OrderServiceID=302",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"DeclineOrderService"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "302"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Đã đón khách",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/PickUpCustomer?OrderServiceID=766",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"PickUpCustomer"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "766"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Đã lấy hàng",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/PickUpPackage?OrderServiceID=63",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"PickUpPackage"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "63"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Đã lấy hàng VIP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/PickUpPackageVIP?OrderServiceID=63",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"PickUpPackageVIP"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "63"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Đã lấy đồ ăn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{local}}/BookingAPI/PickUpFood?OrderServiceID=68",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"PickUpFood"
+							],
+							"query": [
+								{
+									"key": "OrderServiceID",
+									"value": "68"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hủy đơn đặt xe , giao hàng , giao đồ ăn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{tokenShiper}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"OrderServiceID\":1553,\r\n    \"Reason\":\"Khách hàng quá xa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/BookingAPI/NotPickUpCustomer",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"NotPickUpCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hoàn thành đơn đặt xe, giao hàng ,giao đồ ăn",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server}}/BookingAPI/CompleteOrderService?OrderServiceId=766",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"CompleteOrderService"
+							],
+							"query": [
+								{
+									"key": "OrderServiceId",
+									"value": "766"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cập nhật vị trí tài xế",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Lati\":20.996765193691274,\r\n    \"Longi\":105.81002863293406\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server}}/BookingAPI/UpdateShiperLocation",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"BookingAPI",
+								"UpdateShiperLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TestAPI",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShiper}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/BookingAPI/TestAPI",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"BookingAPI",
+								"TestAPI"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TestVNPAY",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local}}/service/vnp_ipn?vnp_Amount=5000000&vnp_BankCode=NCB&vnp_BankTranNo=20210816205525&vnp_CardType=ATM&vnp_OrderInfo=Nạp+50000đ+vào+ví+cọc+tài+xế&vnp_PayDate=20210816205520&vnp_ResponseCode=00&vnp_TmnCode=WESHIP01&vnp_TransactionNo=13566911&vnp_TxnRef=8775&vnp_SecureHashType=SHA256&vnp_SecureHash=2909a8413770d656fbcb044ae4acdd97ee96070813a543d51c6551665de0aecd",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"service",
+								"vnp_ipn"
+							],
+							"query": [
+								{
+									"key": "vnp_Amount",
+									"value": "5000000"
+								},
+								{
+									"key": "vnp_BankCode",
+									"value": "NCB"
+								},
+								{
+									"key": "vnp_BankTranNo",
+									"value": "20210816205525"
+								},
+								{
+									"key": "vnp_CardType",
+									"value": "ATM"
+								},
+								{
+									"key": "vnp_OrderInfo",
+									"value": "Nạp+50000đ+vào+ví+cọc+tài+xế"
+								},
+								{
+									"key": "vnp_PayDate",
+									"value": "20210816205520"
+								},
+								{
+									"key": "vnp_ResponseCode",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TmnCode",
+									"value": "WESHIP01"
+								},
+								{
+									"key": "vnp_TransactionNo",
+									"value": "13566911"
+								},
+								{
+									"key": "vnp_TxnRef",
+									"value": "8775"
+								},
+								{
+									"key": "vnp_SecureHashType",
+									"value": "SHA256"
+								},
+								{
+									"key": "vnp_SecureHash",
+									"value": "2909a8413770d656fbcb044ae4acdd97ee96070813a543d51c6551665de0aecd"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "App Shop",
+			"item": [
+				{
+					"name": "CreateOrUpdateService",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{tokenShop}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Name",
+									"value": "Trà sữa hạnh phúc",
+									"type": "text"
+								},
+								{
+									"key": "Price",
+									"value": "25000",
+									"type": "text"
+								},
+								{
+									"key": "BasePrice",
+									"value": "25000",
+									"type": "text"
+								},
+								{
+									"key": "Description",
+									"value": "Trà sữa",
+									"type": "text"
+								},
+								{
+									"key": "ServiceID",
+									"value": "54",
+									"type": "text"
+								},
+								{
+									"key": "IsActive",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "ServiceType",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "ID",
+									"value": "178",
+									"type": "text"
+								},
+								{
+									"key": "Image",
+									"type": "file",
+									"src": [
+										"/C:/Users/thanh/Pictures/Saved Pictures/1001247405.jpg",
+										"/C:/Users/thanh/Pictures/Saved Pictures/anh-pha-tra-sua-dep_062227481.jpg"
+									]
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/ShopAPI/CreateOrUpdateService",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"ShopAPI",
+								"CreateOrUpdateService"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeStatus",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Status\":1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/ShopAPI/ChangeStatus",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"ShopAPI",
+								"ChangeStatus"
+							],
+							"query": [
+								{
+									"key": "Status",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserInfo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": ""
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

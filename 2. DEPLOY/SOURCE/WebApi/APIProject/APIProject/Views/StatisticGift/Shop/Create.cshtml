@@ -1,0 +1,327 @@
+﻿@using Data.Utils;
+@using Data.DB
+@{ ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<!-- start modal create Shop -->
+<div class="card" id="addShop">
+    <div class="card-header sticky">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row">
+                    <div class="col-md-10 col-sm-9 col-xs-8 col-lg-10">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px"> Thêm cửa hàng</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-3 col-lg-2">
+                        <div style="padding-top: 10px">
+                            <button class="btn btn-primary" style="width:100px;" onclick="CreateShop()">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="frm-add-shiper" style="width:100%">
+            <div class="col-md-12" style="margin-top: 20px; margin-bottom:20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div class="col-md-12">
+                        <div class="row mb-2 mt-2">
+                            <div class="col-md-12">
+                                <div style="font-weight: 600; font-size: 17px;"> Thông tin cửa hàng</div>
+                            </div>
+                        </div>
+                        <div class="row ">
+                            <div class="col col-md-6 text-center">
+                                <span>Ảnh đại diện <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                                <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_place">
+                                    <div class="news">
+                                        <div class="article" id="AddLogoPlace">
+                                            <img id="AddImgLogoPlace" src="~/Content/images/add_photo-512 (1).png" class="col-md-12 px-0 contentImg" alt="your image" />
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col col-md-6 text-center">
+                                <span>Giấy phép kinh doanh <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                                <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_license">
+                                    <div class="news">
+                                        <div class="article" id="AddLogoLicense">
+                                            <img id="AddImgLogoLicense" src="~/Content/images/add_photo-512 (1).png" class="col-md-12 px-0 contentImg" alt="your image" />
+                                        </div>
+                                    </div>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        <div class="row mt-2 text-center">
+                            <div class="col col-md-4 col-12">
+                                <span>Tên cửa hàng: <span class="text-danger text-bold" style="font-size:18px">*</span> </span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <input id="shopName" type="text" class="form-control" placeholder="Nhập tên cửa hàng" />
+                            </div>
+                        </div>
+                        <div class="row mt-2 text-center">
+                            <div class="col col-md-4 col-12">
+                                <span>Số điện thoại: <span class="text-danger text-bold" style="font-size:18px">*</span> </span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <input id="shopPhone" type="number" class="form-control number-type" maxlength="13" placeholder="Nhập số điện thoại" />
+                            </div>
+
+                        </div>
+                        <div class="row mt-2 text-center">
+                            <div class="col col-md-4 col-12">
+                                <span>Email: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <input id="shopEmail" type="text" class="form-control" placeholder="Nhập E-mail" />
+                            </div>
+
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-4 col-12 text-left">
+                                <strong>Địa chỉ</strong>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 pt-2 text-center">
+                                <span>Địa chỉ Google Map <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            </div>
+                            <div class="col-md-8 col-xs-6">
+                                <div class="row">
+                                    <div class="col-md-12 col-xs-12 mt-2">
+                                        <input type="text" class="form-control" id="txtAddressShop" placeholder="Nhập địa chỉ" />
+                                        <input type="hidden" id="latiShop" />
+                                        <input type="hidden" id="longtiShop" />
+                                    </div>
+                                    @*<div class="col-md-12 col-xs-12 mt-2">
+                                            <input type="text" class="form-control" id="txtLat" placeholder="lat" />
+                                        </div>
+                                        <div class="col-md-12 col-xs-12 mt-2">
+                                            <input type="text" class="form-control" id="txtLong" placeholder="long" />
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!--chèn select hiển thị quận huyện, tỉnh thành phố-->
+                        <div class="row mt-2">
+                            <div class="col col-md-4 col-12 text-center">
+                                <span>Tỉnh / Thành phố: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <select class="form-control" name="calc_shipping_provinces" id="calc_shipping_provinces" required="" onchange="loadListDistrict(this.value)">
+                                    <option value="">Tỉnh / Thành phố</option>
+                                    @foreach (Data.DB.Province obj in ViewBag.Province)
+                                    {
+                        <option value="@obj.ID">
+                            @obj.Name
+                        </option>
+}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col col-md-4 col-12 text-center">
+                                <span>Quận / Huyện <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <select class=" form-control" name="calc_shipping_district" id="slDistrict" required="">
+                                    <option value="">Quận / Huyện</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--end chèn select-->
+                        <div class="row mt-2">
+                            <div class="col col-md-4 col-12 text-center">
+                                <span>Địa chỉ cụ thể</span>
+                            </div>
+                            <div class="col col-md-8 col-12">
+                                <input id="shopAddress" class="text form-control" placeholder="Địa chỉ cụ thể" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+<!-- end modal create Shop -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAVKaTr6pjVc6Pa4QP8ZTuZ-dl349k_ZLE" type="text/javascript"></script>
+
+<script>
+    var input = document.getElementById('txtAddressShop');
+    var autocomplete = new google.maps.places.Autocomplete(input, {
+        language: ["vi"],
+        input: ["hanoi"],
+    });
+    autocomplete.setComponentRestrictions(
+        { 'country': ['VN'] });
+    $(function () {
+
+        autocomplete.addListener('place_changed', fillInAddress);
+
+        $("#txtAddressShop").focusin(function () {
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    infowindow.close();
+
+                }
+            });
+        });
+    });
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        if (typeof place.geometry !== "undefined") {
+            $("#latiShop").val(place.geometry.location.lat());
+            $("#longtiShop").val(place.geometry.location.lng());
+        }
+    }
+
+</script>
+<script type="text/javascript">
+    $("#AddLogoPlace").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddLogoPlace").empty();
+            var value = fileUrl.replace(window.location.origin, '');
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" data-value = "' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+
+        }
+        fider.popup();
+    });
+    //license image
+    $("#AddLogoLicense").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddLogoLicense ").empty();
+            var value = fileUrl.replace(window.location.origin, '');
+            $("#AddLogoLicense").append('<img id="AddImgLogoLicense" data-value = "' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+
+        }
+        fider.popup();
+    });
+    function CreateShop() {
+        var shopImage = $("#AddImgLogoPlace").attr("data-value");
+        var shopLicense = $("#AddImgLogoLicense").attr('data-value');
+        var shopName = $("#shopName").val();
+        var shopPhone = $("#shopPhone").val();
+        var shopEmail = $("#shopEmail").val();
+        var longti = $("#longtiShop").val();
+        var lati = $("#latiShop").val();
+        var province = $("#calc_shipping_provinces").val();
+        var district = $("#slDistrict").val();
+        var address = $("#shopAddress").val();
+        if (shopImage == "/Content/images/add_photo-512 (1).png") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng chọn ảnh đại diện!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (shopLicense == "/Content/images/add_photo-512 (1).png") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng chọn giấy phép kinh doanh!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (shopName == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập tên cửa hàng!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (shopPhone == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập số điện thoại!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (shopEmail == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập địa chỉ Email!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (shopEmail == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập địa chỉ Email!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (longti == "" || lati == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập địa chỉ GoogleMap!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (province == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng chọn Tỉnh/ Thành phố!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (district == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng chọn Quận/ Huyện!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (address == "") {
+            swal({
+                title: "Thông báo",
+                text: "Vui lòng nhập địa chỉ cụ thể!",
+                icon: "warning"
+            })
+            return;
+        }
+        $.ajax({
+            url: "/Shop/CreateShop",
+            data: { urlAvatar: shopImage, urlCertificate: shopLicense, Name: shopName, Phone: shopPhone, Email: shopEmail, ProvinceId: province, DistrictId: district, Address: address, Long: longti, Lat: lati },
+            type: "POST",
+            success: function (res) {
+                if (res == SUCCESS) {
+                    swal({
+                        title: "Tạo shop thành công",
+                        text: "",
+                        icon: "success"
+                    })
+                } else {
+                    swal({
+                        title: "Có lỗi xảy ra, vui lòng thử lại",
+                        text: "",
+                        icon: "error"
+                    })
+                }
+                window.location = '/Shop/Index'
+            }
+        })
+    }
+</script>
+

@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARRECT</title>
+    <link rel="icon" href="~/Content/images/logo_carrect.png" />
+    <link href="~/Content/PDFcss/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/PDFcss/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/qrcode.js"></script>
+</head>
+<body>
+    @using Data.Model;
+    @model VATOrderModel
+    <div class="container-fluid">
+
+        <diV class="row ">
+            <div class="col-xs-3 text-center " id="qrcode" style="margin-top:5px;padding-left:70px">
+            </div>
+            <div class="col-xs-6 " style="margin-top:-10px">
+                <h4 class="text-center"><b>HÓA ĐƠN GIÁ TRỊ GIA TĂNG</b> </h4>
+                <h6 class="text-center"><b>(<i>VAT INVOICE</i>)</b></h6>
+                <p class="text-center">Bản thể hiện của hóa đơn điện tử</p>
+                <p class="text-center">Ngày @DateTime.Now.Day Tháng @DateTime.Now.Month Năm @DateTime.Now.Year</p>
+            </div>
+            <div class="col-xs-3 " style="margin-top:5px">
+                <p style="float:left;font-size:12px;width:100%"> Mẫu số (<i>From No</i>) : <b>01GTKT0/01</b></p>
+                <p style="font-size:12px"> Ký hiệu (<i>Serial No</i>) : <b>HR/20E</b></p>
+                <p style="font-size:12px"> Số (<i>Invoice No</i>) : <b class="text-danger" id="codeinvoice">@Model.Code</b></p>
+            </div>
+
+        </diV>
+        <hr style=" height:1px;border-width:0;color:gray;background-color:black" />
+        <div class="row" style="margin-left:2px">
+            <h4><b>CÔNG TY TNHH WE-SHIP</b></h4>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Mã số thuế (<i>Tax Code</i>) : <b>0 1 0 8 7 3 2 3 4 4</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Địa chỉ (<i>Address</i>) : <b>Số 3 Ngọc Khánh,phường Giảng Võ, quận Ba Đình, Thành phố Hà Nội,Việt Nam</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Điện thoại (<i>Tel</i>)  : <b>0349202944</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Số tài khoản (<i>Account No</i>)  : <b>@Model.Account - @Model.BankName</b> </p>
+        </div>
+
+        <hr style=" height:1px;border-width:0;color:gray;background-color:black" />
+
+        <div class="row" style="margin-left:2px">
+            <p>Họ tên người mua hàng (<i>Buyer</i>) : <b>@Model.CustomerName</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Tên đơn vị (<i>Enterprise</i>) :  <b>@((Model.OFficeName!=null&Model.OFficeName.Length>0)?Model.OfficeAddress: "..............................................................................................................................................................................")</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Địa chỉ (<i>Address</i>)  : <b>@((Model.OfficeAddress!=null&Model.OfficeAddress.Length>0)?Model.OfficeAddress: "........................................................................................................................................................................................")</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <p>Số tài khoản (<i>Account No</i>)  : <b>..........................................................................................................................................................................</b> </p>
+        </div>
+        <div class="row" style="margin-left:2px">
+            <span>Mã số thuế (<i>Tax Code</i>) : <b> <b>@((Model.OfficeVAT!=null&Model.OfficeVAT.Length>0)?Model.OfficeAddress: "...............................................")</b></b> </span> <span style="padding:10%">Hình thức thanh toán(<i>Payment method</i>) : <b>@Model.PaymentType</b> </span>
+        </div>
+        <table class="table  table-bordered table-hover " style="margin-top:5px">
+            <thead class="text-center ">
+                <tr>
+                    <th style="text-align:center">STT</th>
+                    <th style="text-align:center">Tên hàng hóa,Dịch vụ (<i>Description</i>) </th>
+                    <th style="text-align:center">Đơn vị tính (<i>Unit</i>)</th>
+                    <th style="text-align:center">Số lượng (<i>Quantity</i>)</th>
+                    <th style="text-align:center">Đơn Giá        (<i>Unit Price</i>)</th>
+                    <th style="text-align:center">Thành tiền (<i>Amount</i>)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @{
+                    int stt = 1;
+                    foreach (var item in Model.ListService)
+                    {
+                                <tr style="text-align:center">
+                                    <td>@stt</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.Unit</td>
+                                    <td>@item.QTY</td>
+                                    <td>@item.Price</td>
+                                    <td>@item.TotalPrice</td>
+                                </tr>
+                    stt++;
+                }
+                }
+               <tr>
+                   <td colspan="5">
+                       <div class="row " style="float:right;margin-right:5px;margin-bottom:5px"> <b>Giảm Giá(<i>Discount</i>):</b></div>
+                   </td>
+                   <td class="text-center">@Model.Discount</td>
+               </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <div class="row " style="float:right;margin-right:5px;margin-bottom:5px"> <b>Cộng tiền hàng(<i>Sub total</i>):</b></div>
+                            <br />
+                            <hr />
+                            <div class="row " style="float:left;margin-left:5px;"> <b>Thuế suất GTGT(VAT rate):......%</b></div>  <div class="row " style="float:right;margin-right:5px"> <b>Tiền thuế GTGT(<i>VAT amount</i>):</b></div>
+                            <br />
+                            <hr />
+                            <div class="row " style="float:right;margin-right:5px;margin-bottom:5px;margin-top:5px"> <b>Tổng tiền thanh toán(<i>Total amount</i>):</b></div>
+                        </td>
+                        <td>
+                            <div class="row " style="float:right;margin-right:40%;margin-bottom:5px"> <b>@Model.BasePrice</b></div>
+                            <br />
+                            <hr />
+                            <div class="row " style="float:right;margin-right:40%;margin-bottom:5px"> <b>123123</b></div>
+                            <br />
+                            <hr />
+                            <div class="row " style="float:right;margin-right:40%;margin-bottom:5px"> <b>@Model.TotalPrice</b></div>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="row" style="margin-left:2px">
+                <span><b>Số tiền bằng chữ</b> (<i>Amount in words</i>) : <b>@Model.TotalPriceSTR</b> </span>
+            </div>
+            <div class="row" style="margin-left:2px;margin-top:15px;margin-bottom:150px">
+                <div style="float:left;margin-left:15%"> Người mua hàng(<i>Buyer</i>)</div>
+                <div style="float:right;margin-right:15%"> Người bán hàng(<i>Seller</i>)</div>
+            </div>
+
+            <div class="row" style="margin-right:20px;float:right">
+                <p class="text-danger">Được kí bởi <b>CÔNG TY TNHH CARRECT</b></p>
+                <br />
+                <p class="text-danger">Ngày kí  </p>
+               
+            </div>
+
+
+
+
+        </div>
+
+    </body>
+
+</html>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var code = $("#codeinvoice").text();
+        console.log(code);
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 100,
+            height: 100,
+            correctLevel: QRCode.CorrectLevel.L
+        });
+        qrcode.makeCode(code);
+    });
+</script>

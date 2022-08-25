@@ -1,0 +1,101 @@
+﻿.hidden {
+    visibility: hidden;
+}
+
+.show {
+    visibility: visible;
+}
+
+.conf-time-input{
+    border: 0px solid;
+    text-align: center;
+    width: 50px;
+}
+
+.mt-6 {
+    margin-top: 6px !important;
+}
+
+.mt-10 {
+    margin-top: 10px !important;
+}
+
+
+.conf-time-input-w {
+    border: 0px solid;
+    text-align: center;
+    width: 80px;
+}
+
+.modal-content-config {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: .3rem;
+    outline: 0;
+    height: 529px !important;
+}
+
+.thumbnail-ranks {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.mb-10{
+    margin-bottom: 10px !important;
+}
+
+.mb-20 {
+    margin-bottom: 20px !important;
+}
+
+.mr-10 {
+    margin-right: 10px;
+}
+
+.small-box {
+    padding: 15px 10px 20px;
+    border-radius: .25rem;
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.small-box-sml {
+    padding: 9px 0px 1px;
+    border-radius: .25rem;
+    box-shadow: 0 0 1px rgb(0 0 0 / 13%), 0 1px 3px rgb(0 0 0 / 20%);
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .small-box .icon {
+        color: rgba(0,0,0,.15);
+        z-index: 0;
+    }
+
+        .small-box .icon > i {
+            font-size: 50px;
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            transition: all .3s linear;
+            margin-top: 32px;
+        }
+
+.sub-title-dash {
+    font-size: 16px;
+    font-weight: 600;
+}
+.display-input {
+    display: none;
+}

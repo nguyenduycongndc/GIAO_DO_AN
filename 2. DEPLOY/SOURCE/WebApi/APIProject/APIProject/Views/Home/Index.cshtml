@@ -1,0 +1,1325 @@
+﻿@*@using APIProject.Resource;*@
+@using Quobject.SocketIoClientDotNet.Client;
+@using Data.Utils
+@using Data.Model.APIWeb
+@{ Layout = "~/Views/Shared/_Layout.cshtml";
+                var CountCustomers = ViewBag.CountCustomers;
+                var CountShops = ViewBag.CountShops;
+                var CountShippers = ViewBag.CountShippers;
+                var SumTotalPrice = ViewBag.SumTotalPrice;
+                var NewCustomerPercent = ViewBag.NewCustomerPercent;
+                var NewShiperPercent = ViewBag.NewShiperPercent;
+                var NewShopPercent = ViewBag.NewShopPercent;
+                var ListCustomerEveryMonth = ViewBag.ListCustomerEveryMonth;
+                var ListShiperEveryMonth = ViewBag.ListShiperEveryMonth;
+                var ListShopEveryMonth = ViewBag.ListShopEveryMonth;
+                var ListMonth = ViewBag.ListMonth;
+                var CusRankCount = ViewBag.CusRankCount;
+                var OrderSaleEveryMonth = ViewBag.OrderSaleEveryMonth; }
+<style>
+
+    canvas {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="~/Scripts/Chart.min.js"></script>
+<script src="~/Scripts/utils.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script>
+<div class="row mt-2">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row">
+                <div class="text-dark">
+                    @*<h4><i class="fa fa-fw fa-tachometer"></i> @Resources.Overview</h4>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row ml-1" id="countDashboard" style="font-family:'Open Sans'">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; margin-bottom: 20px">
+            <div class="row">
+                <div class="col-md-8 col-sm-6 col-xs-6 col-lg-8">
+                    <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px"> Tổng quan</div>
+                </div>
+                @*<div class="col-md-4 col-sm-6 col-xs-6 col-lg-4">
+                    <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px">
+                        <input type="text" id="demo">
+                    </div>
+
+                </div>*@
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    @*<div class="col-xs-12 col-md-6 col-lg-6 col-xl-4 mb-3" id="card-i">
+            <a href="/Card/Index">
+                <div class="card-box padding-card-home" id="bg-home-card">
+                    <i class="fa fa-credit-card float-right text-white size-icon-cardbox-home"></i>
+                    <h5 class="text-white text-uppercase">Kho thẻ cào</h5>
+                    <h1 class="text-white countCard pb-4">@ViewBag.Count</h1>
+                </div>
+            </a>
+        </div>
+        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-4 mb-3">
+            <a href="/Request/Index">
+                <div class="card-box padding-card-home bg-home-gift">
+                    <i class="fa fa-gift float-right text-white size-icon-cardbox-home" style="font-size: 80px"></i>
+                    <h5 class="text-white text-uppercase">Yêu cầu đổi quà</h5>
+                    <h1 class="text-white countGift pb-4">@ViewBag.CountReq</h1>
+                </div>
+            </a>
+        </div>*@
+    @{ UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session[SystemParam.SESSION_LOGIN];
+        if (ss == null)
+        {
+            Response.Redirect("/Home/Login");
+        } }
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <div class="row">
+
+            <div class="col-md-6 col-lg-3 col-xs-6 col-sm-6">
+                <!-- small box -->
+                <div class="small-box bg-light">
+                    <div class="inner">
+                        <p class="sub-title-dash">Doanh số</p>
+
+                        <h4 style="text-align: center;font-size: 22px;color: #6b6c6e;font-weight: 700;">@ViewBag.SumTotalPrice VNĐ</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-money"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-6 col-lg-3 col-xs-6 col-sm-6">
+                <!-- small box -->
+                <div class="small-box bg-light" onclick="window.location='/Customer/Index'">
+                    <div class="inner">
+                        <p class="sub-title-dash">Khách hàng</p>
+                        <h4 style="text-align: center;font-size: 22px;color: #6b6c6e;font-weight: 700;">@ViewBag.CountCustomers</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-6 col-lg-3 col-xs-6 col-sm-6">
+                <!-- small box -->
+                <div class="small-box bg-light" onclick="window.location='/Shipper/Index'">
+                    <div class="inner">
+                        <p class="sub-title-dash">Tài xế</p>
+
+                        <h4 style="text-align: center;font-size: 22px;color: #6b6c6e;font-weight: 700;">@ViewBag.CountShippers</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-motorcycle"></i>
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-6 col-lg-3 col-xs-6 col-sm-6">
+                <!-- small box -->
+                <div class="small-box bg-light" onclick="window.location='/Shop/Index'">
+                    <div class="inner">
+                        <p class="sub-title-dash">Quán ăn</p>
+                        <h4 style="text-align: center;font-size: 22px;color: #6b6c6e;font-weight: 700;">@ViewBag.CountShops</h4>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-home"></i>
+                        @*<i class="fa fa-briefcase"></i>*@
+                    </div>
+                </div>
+            </div>
+            <!-- ./col -->
+
+        </div>
+
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-7" style="margin-bottom: 20px">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; padding: 10px 15px 0px">
+            <div>
+                <p class="sub-title-dash">Người dùng</p>
+            </div>
+            <div class="row" style="text-align: center; color: white">
+                <div class="col-md-4 col-sm-4">
+                    <div class="small-box-sml bg-success">
+                        <div class="inner">
+                            <h4>@CountCustomers</h4>
+                            @if (NewCustomerPercent >= 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-up mr-10"></i>@NewCustomerPercent%</p> }
+                            else if (NewCustomerPercent < 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-down mr-10"></i>@(NewCustomerPercent * (-1))%</p>}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="small-box-sml" style="background-color:#8E44AD">
+                        <div class="inner">
+                            <h4>@CountShippers</h4>
+                            @if (NewShiperPercent >= 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-up mr-10"></i>@NewShiperPercent%</p> }
+                            else if (NewShiperPercent < 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-down mr-10"></i>@(NewShiperPercent * (-1))%</p>}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4">
+                    <div class="small-box-sml" style="background-color:#CF000F">
+                        <div class="inner">
+                            <h4>@CountShops</h4>
+                            @if (NewShopPercent >= 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-up mr-10"></i>@NewShopPercent%</p> }
+                            else if (NewShopPercent < 0)
+                            {
+                <p class="sub-title-dash"><i class="fa fa-chevron-down mr-10"></i>@(NewShopPercent * (-1))%</p>}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <canvas id="UserChart" style="height: 370px; width: 100%;"></canvas>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-5" style="margin-bottom: 20px">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; padding: 10px 15px 0px">
+            <div>
+                <p class="sub-title-dash">Hạng thành viên</p>
+            </div>
+            <div class="row" style="text-align: center; color: white">
+                <div class="col-md-12">
+                    <canvas id="ServiceChart" style="height: 370px; width: 100%;"></canvas>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-8" style="margin-bottom: 20px">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; padding: 10px 15px 0px">
+            <div>
+                <p class="sub-title-dash">Doanh số</p>
+            </div>
+            <div class="row" style="text-align: center; color: white">
+                <div class="col-md-12">
+                    <canvas id="RevenueChart" style="height: 370px; width: 100%;"></canvas>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //const myPicker = new lightPick({
+        //    field: document.getElementById('demo'),
+        //    singleDate: true // default: true
+        //});
+        function number_format(number, decimals, dec_point, thousands_sep) {
+            // *     example: number_format(1234.56, 2, ',', ' ');
+            // *     return: '1 234,56'
+            number = (number + '').replace(',', '').replace(' ', '');
+            var n = !isFinite(+number) ? 0 : +number,
+                prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+                sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+                dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+                s = '',
+                toFixedFix = function (n, prec) {
+                    var k = Math.pow(10, prec);
+                    return '' + Math.round(n * k) / k;
+                };
+            // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+            s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+            if (s[0].length > 3) {
+                s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+            }
+            if ((s[1] || '').length < prec) {
+                s[1] = s[1] || '';
+                s[1] += new Array(prec - s[1].length + 1).join('0');
+            }
+            return s.join(dec);
+        }
+        var ctxUser = document.getElementById('UserChart');
+        var ctxService = document.getElementById("ServiceChart");
+        var ctxRevenue = document.getElementById("RevenueChart");
+        var ListCustomerEveryMonth = JSON.parse('@Html.Raw(ListCustomerEveryMonth)');
+        var ListShiperEveryMonth = JSON.parse('@Html.Raw(ListShiperEveryMonth)');
+        var ListShopEveryMonth = JSON.parse('@Html.Raw(ListShopEveryMonth)');
+        var ListMonth = JSON.parse('@Html.Raw(ListMonth)');
+        var CusRankCount = JSON.parse('@Html.Raw(CusRankCount)');
+        var OrderSaleEveryMonth = JSON.parse('@Html.Raw(OrderSaleEveryMonth)');
+        var myLineChart = new Chart(ctxUser, {
+            type: 'line',
+            data: {
+                labels: ListMonth,
+                datasets: [{
+                    label: "Khách hàng",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(40, 167, 69, 0.05)",
+                    borderColor: "rgba(40, 167, 69, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(40, 167, 69, 1)",
+                    pointBorderColor: "rgba(40, 167, 69, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(40, 167, 69, 1)",
+                    pointHoverBorderColor: "rgba(40, 167, 69, 1)",
+                    pointHitRadius: 0,
+                    pointBorderWidth: 2,
+                    data: ListCustomerEveryMonth,
+                }, {
+                    label: "Tài xế",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(142, 68, 173, 0.05)",
+                    borderColor: "rgba(142, 68, 173, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(142, 68, 173, 1)",
+                    pointBorderColor: "rgba(142, 68, 173, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(142, 68, 173, 1)",
+                    pointHoverBorderColor: "rgba(142, 68, 173, 1)",
+                    pointHitRadius: 0,
+                    pointBorderWidth: 2,
+                    data: ListShiperEveryMonth,
+                }, {
+                    label: "Cửa hàng",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(207, 0, 15, 0.05)",
+                    borderColor: "rgba(207, 0, 15, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(207, 0, 15, 1)",
+                    pointBorderColor: "rgba(207, 0, 15, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(207, 0, 15, 1)",
+                    pointHoverBorderColor: "rgba(207, 0, 15, 1)",
+                    pointHitRadius: 0,
+                    pointBorderWidth: 2,
+                    data: ListShopEveryMonth,
+                }
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 9
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return number_format(value);
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: true
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                        }
+                    }
+                }
+            }
+        });
+
+        var myBarChart = new Chart(ctxService, {
+            type: 'bar',
+            data: {
+                labels: ["Thành viên", "Bạc", "Vàng", "Kim cương"],
+                datasets: [{
+                    label: "Khách hàng",
+                    hoverBackgroundColor: ["#A17917", "#BFBFBF", "#F4D03F", "#22A7F0"],
+                    borderColor: "#4e73df",
+                    backgroundColor: ["#A17917", "#BFBFBF", "#F4D03F", "#22A7F0"],
+                    data: CusRankCount,
+                }],
+
+            },
+
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'month'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 6
+                        },
+                        maxBarThickness: 25,
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return number_format(value);
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ' + number_format(tooltipItem.yLabel);
+                        }
+                    }
+                },
+            }
+        });
+        var myLineChartRevenue = new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ListMonth,
+                datasets: [{
+                    label: "Doanh số",
+                    lineTension: 0.3,
+                    backgroundColor: "rgba(40, 167, 69, 0.05)",
+                    borderColor: "rgba(40, 167, 69, 1)",
+                    pointRadius: 3,
+                    pointBackgroundColor: "rgba(40, 167, 69, 1)",
+                    pointBorderColor: "rgba(40, 167, 69, 1)",
+                    pointHoverRadius: 3,
+                    pointHoverBackgroundColor: "rgba(40, 167, 69, 1)",
+                    pointHoverBorderColor: "rgba(40, 167, 69, 1)",
+                    pointHitRadius: 0,
+                    pointBorderWidth: 2,
+                    data: OrderSaleEveryMonth,
+                }
+                ],
+            },
+            options: {
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 25,
+                        top: 25,
+                        bottom: 0
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        time: {
+                            unit: 'date'
+                        },
+                        gridLines: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                            maxTicksLimit: 9
+                        }
+                    }],
+                    yAxes: [{
+                        ticks: {
+                            maxTicksLimit: 5,
+                            padding: 10,
+                            // Include a dollar sign in the ticks
+                            callback: function (value, index, values) {
+                                return number_format(value);
+                            }
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            zeroLineColor: "rgb(234, 236, 244)",
+                            drawBorder: false,
+                            borderDash: [2],
+                            zeroLineBorderDash: [2]
+                        }
+                    }],
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    titleMarginBottom: 10,
+                    titleFontColor: '#6e707e',
+                    titleFontSize: 14,
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    intersect: false,
+                    mode: 'index',
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function (tooltipItem, chart) {
+                            var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                            return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + 'đ';
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+
+
+
+
+    <!--<div class="col-md-12 col-sm-12 col-xs-12 col-lg-7" style="margin-bottom: 20px">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; padding: 10px 15px 0px">
+            <div>
+                <p class="sub-title-dash">Người dùng</p>
+            </div>
+            <div class="row" style="text-align: center; color: white">
+                <div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-success">
+            <div class="inner">
+                <h4>5688</h4>
+                <p class="sub-title-dash"><i class="fa fa-chevron-up mr-10"></i>20.56%</p>
+            </div>
+        </div>
+    </div>-->
+    <!-- ./col -->
+    <!--<div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-warning">
+            <div class="inner">
+                <h4>5688</h4>
+                <p class="sub-title-dash"><i class="fa fa-chevron-down mr-10"></i>20.56%</p>
+            </div>
+        </div>
+    </div>-->
+    <!-- ./col -->
+    <!--<div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-danger">
+                        <div class="inner">
+                            <h4>5688</h4>
+                            <p class="sub-title-dash"><i class="fa fa-chevron-up mr-10"></i>20.56%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>-->
+    <!--<div class="col-md-12 col-sm-12 col-xs-12 col-lg-5" style="margin-bottom: 20px">
+        <div style="background: #FFFFFF; border-radius: 10px; height: auto; padding: 10px 15px 0px">
+            <div>
+                <p class="sub-title-dash">Gói dịch vụ</p>
+            </div>
+            <div class="row" style="text-align: center; color: white">
+                <div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-success">
+            <div class="inner">
+                <h4>5688</h4>
+                <p class="sub-title-dash">20.56%</p>
+            </div>
+        </div>
+    </div>-->
+    <!-- ./col -->
+    <!--<div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-warning">
+            <div class="inner">
+                <h4>5688</h4>
+                <p class="sub-title-dash">20.56%</p>
+            </div>
+        </div>
+    </div>-->
+    <!-- ./col -->
+    <!--<div class="col-md-4 col-sm-4">-->
+    <!-- small box -->
+    <!--<div class="small-box-sml bg-danger">
+                            <div class="inner">
+                                <h4>5688</h4>
+                                <p class="sub-title-dash">20.56%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>-->
+    @*<div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row pb-3 pt-3">
+                    <div class="col-md-6">
+                        <div class="text-dark">
+                            <h4>Created date</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-6" style="padding-right:0px;">
+                        <div id="reportrange" class="float-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                            <i class="fa fa-calendar"></i>&nbsp;
+                            <span></span> <i class="fa fa-caret-down"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div id="container" class="line-chart">
+
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="text-dark pl-3">
+                    <h4>Booking</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="reportrange1" class="float-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mb-3">
+            <div class="col-md-12">
+                <div id="booking" class="line-chart">
+
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="text-dark pl-3">
+                    <h4>Completed Date</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="reportrange2" class="float-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2 mb-3">
+            <div class="col-md-12">
+                <div id="complete" class="line-chart">
+
+                </div>
+            </div>
+        </div>*@
+    @*<div class="row mt-3">
+            <div class="col-md-6">
+                <div class="text-dark pl-3">
+                    <h4>Rankking</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="reportrank" class="float-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc;">
+                    <i class="fa fa-calendar"></i>&nbsp;
+                    <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+            </div>
+        </div>*@
+    @*<div class="row mt-2 mb-3">
+            <div class="col-md-12">
+                <div id="rankking" class="line-chart">
+
+                </div>
+            </div>
+        </div>*@
+    @*<div class="row">
+            <div class="col-md-5"><h4>Combo</h4> </div>
+            <div class="  col-md-2 mb-2">
+                <span style="float:right" class="mt-1">Month</span>
+
+            </div>
+            <div class=" col-md-2 mb-2">
+                <select class="form-control" id="selectmonth" onchange="updatetable(1);">
+                    @{
+                        for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select>
+
+            </div>
+            <div class="  col-md-1 mb-2">
+                <span style="float:right" class="mt-1">Year</span>
+
+            </div>
+            <div class="col-md-2 mb-2">
+                <select class="form-control" id="selectyear" onchange="updatetable(1);">
+                    @{
+                        for (int i = 1990; i <= DateTime.Now.Year; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    }
+                </select>
+
+            </div>
+        </div>*@
+    @*<div class="row mt-2 mb-3">
+            <div class="col-md-12">
+                <div id="combo" class="line-chart">
+
+                </div>
+            </div>
+        </div>*@
+
+    @*<script type="text/javascript">
+            $(function () {
+               $("#selectyear").val(@DateTime.Now.Year);
+                $("#selectmonth").val(@DateTime.Now.Month);
+
+                updatetable(0);
+                var start = moment().subtract(26, 'days');
+                var end = moment().add(3, 'days');
+                var paramStart = start.format('DD/MM/YYYY');
+                var paramEnd = end.format('DD/MM/YYYY');
+
+                var paramStartB = start.format('DD/MM/YYYY');
+                var paramEndB = end.format('DD/MM/YYYY');
+
+                var xCreated = [];
+                var yCreated = [];
+                var xBooking = [];
+                var yBooking = [];
+                var xComplete = [];
+                var yComplete = [];
+                var xRank = [];
+                var yRank = [];
+                function DrawChartCreated(dataDate, data) {
+                    Highcharts.chart('container', {
+                        chart: {
+                            zoomType: 'xy'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: dataDate,
+                            crosshair: {
+                                color: '#6C738D',
+                                width: 1,
+                                dashStyle: 'longdash'
+                            }
+                        },
+                        yAxis: [{ // Primary yAxis
+                            labels: {
+                                //format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: 'Count',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            }
+                        }, { // Secondary yAxis
+                            title: {
+                                text: null,
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            labels: {
+                                format: '{value} <span>đ</span>',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            opposite: true
+                        }],
+                        tooltip: {
+                            shared: true
+                        },
+                        plotOptions: {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        },
+                        series: [{
+                            name: 'View count',
+                            data: data,
+                            color: 'violet',
+                            type: 'spline',
+                            yAxis: 0
+                        }]
+                    });
+                }
+                function DrawChartBooking(dataDate, data) {
+                    Highcharts.chart('booking', {
+                        chart: {
+                            zoomType: 'xy'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: dataDate,
+                            crosshair: {
+                                color: '#6C738D',
+                                width: 1,
+                                dashStyle: 'longdash'
+                            }
+                        },
+                        yAxis: [{ // Primary yAxis
+                            labels: {
+                                //format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: 'Count',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            }
+                        }, { // Secondary yAxis
+                            title: {
+                                text: null,
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            labels: {
+                                format: '{value} <span>đ</span>',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            opposite: true
+                        }],
+                        tooltip: {
+                            shared: true
+                        },
+                        plotOptions: {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        },
+                        series: [{
+                            name: 'View count',
+                            data: data,
+                            color: 'blue',
+                            type: 'spline',
+                            yAxis: 0
+                        }]
+                    });
+                }
+                function DrawChartComplete(dataDate, data) {
+                    Highcharts.chart('complete', {
+                        chart: {
+                            zoomType: 'xy'
+                        },
+                        title: {
+                            text: ''
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: dataDate,
+                            crosshair: {
+                                color: '#6C738D',
+                                width: 1,
+                                dashStyle: 'longdash'
+                            }
+                        },
+                        yAxis: [{ // Primary yAxis
+                            labels: {
+                                //format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: 'Count',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            }
+                        }, { // Secondary yAxis
+                            title: {
+                                text: null,
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            labels: {
+                                format: '{value} <span>đ</span>',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            opposite: true
+                        }],
+                        tooltip: {
+                            shared: true
+                        },
+                        plotOptions: {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        },
+                        series: [{
+                            name: 'View count',
+                            data: data,
+                            color: 'green',
+                            type: 'spline',
+                            yAxis: 0
+                        }]
+                    });
+                }
+                function DrawChartRank(dataDate, data, DimiondRank, GoldRank, ComboRank) {
+                    Highcharts.chart('rankking', {
+                        chart: {
+                            zoomType: 'xy'
+                        },
+                        title: {
+                            text: 'Count'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: dataDate,
+                            crosshair: {
+                                color: '#6C738D',
+                                width: 1,
+                                dashStyle: 'longdash'
+                            }
+                        },
+                        yAxis: [{ // Primary yAxis
+                            labels: {
+                                //format: '{value}',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            title: {
+                                text: null,
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            }
+                        }, { // Secondary yAxis
+                            title: {
+                                text: null,
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            labels: {
+                                format: '{value} <span>đ</span>',
+                                style: {
+                                    color: Highcharts.getOptions().colors[1]
+                                }
+                            },
+                            opposite: true
+                        }],
+                        tooltip: {
+                            shared: true
+                        },
+                        plotOptions: {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        },
+                        series: [{
+                            name: 'Sliver',
+                            data: data,
+                            color: 'gray',
+                            type: 'spline',
+                            yAxis: 0
+                        },
+                         {
+                             name: 'Gold',
+                             data: GoldRank,
+                             color: 'yellow',
+                             type: 'spline',
+                             yAxis: 0
+                            },
+                            {
+                                name: 'Diamond',
+                                data: DimiondRank,
+                                color: 'Violet',
+                                type: 'spline',
+                                yAxis: 0
+                            },
+                            {
+                                name: 'Combo',
+                                data: ComboRank,
+                                color: 'red',
+                                type: 'spline',
+                                yAxis: 0
+                            }]
+                    });
+                }
+                function cb(start, end) {
+                    $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                    paramStart = start.format('DD/MM/YYYY');
+                    paramEnd = end.format('DD/MM/YYYY');
+                    GetData(paramStart, paramEnd);
+                }
+                function cbBooking(start, end) {
+                    $('#reportrange1 span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                    paramStartB = start.format('DD/MM/YYYY');
+                    paramEndB = end.format('DD/MM/YYYY');
+                    GetDataB(paramStartB, paramEndB);
+                }
+                function cbComplete(start, end) {
+                    $('#reportrange2 span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                    paramStartB = start.format('DD/MM/YYYY');
+                    paramEndB = end.format('DD/MM/YYYY');
+                    GetDataC(paramStartB, paramEndB);
+                }
+                function cbRank(start, end) {
+                    $('#reportrank span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+                    paramStartB = start.format('DD/MM/YYYY');
+                    paramEndB = end.format('DD/MM/YYYY');
+                    GetDataD(paramStartB, paramEndB);
+                }
+                function GetData(fromDate, toDate) {
+                    $.ajax({
+                        url: '/Home/GetChart',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            fromDate: fromDate,
+                            toDate: toDate,
+                            type: 1
+                        },
+                        success: function (res) {
+                            xCreated = res.Result.List_H_axis;
+                            yCreated = res.Result.List_V_axis;
+                            DrawChartCreated(xCreated, yCreated);
+                        }
+                    });
+                }
+                function GetDataB(fromDate, toDate) {
+                    $.ajax({
+                        url: '/Home/GetChart',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            fromDate: fromDate,
+                            toDate: toDate,
+                            type: 2
+                        },
+                        success: function (res) {
+                            xBooking = res.Result.List_H_axis;
+                            yBooking = res.Result.List_V_axis;
+                            DrawChartBooking(xBooking, yBooking);
+
+                        }
+                    });
+                }
+                function GetDataC(fromDate, toDate) {
+                    $.ajax({
+                        url: '/Home/GetChart',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            fromDate: fromDate,
+                            toDate: toDate,
+                            type: 3
+                        },
+                        success: function (res) {
+
+                            xComplete = res.Result.List_H_axis;
+                            yComplete = res.Result.List_V_axis;
+                            DrawChartComplete(xComplete, yComplete);
+
+                        }
+                    });
+                }
+                function GetDataD(fromDate, toDate) {
+                    $.ajax({
+                        url: '/Home/GetShift',
+                        type: 'GET',
+                        async: false,
+                        data: {
+                            fd: fromDate,
+                            td: toDate,
+                        },
+                        success: function (res) {
+                            console.log(res)
+                            xRank = res.data2.Result.List_H_axis;
+                            yRank = res.data2.Result.List_V_axis;
+                            DimiondRank = res.data2.Result.List_V_axis_diamon;
+                            GoldRank = res.data2.Result.List_V_axis_gold;
+                            SliverRank = res.data2.Result.List_V_axis_sliver;
+                            ComboRank = res.data2.Result.List_V_axis_combo;
+                            DrawChartRank(xRank, SliverRank, DimiondRank, GoldRank, ComboRank);
+
+                        }
+                    });
+                }
+                $('#reportrange').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cb);
+                //dateBooking
+                $('#reportrange1').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cbBooking);
+                $('#reportrange2').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cbComplete);
+                $('#reportrank').daterangepicker({
+                    startDate: start,
+                    endDate: end,
+                    ranges: {
+                        'Today': [moment(), moment()],
+                        'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                        'This Month': [moment().startOf('month'), moment().endOf('month')],
+                        'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                    }
+                }, cbRank);
+                cb(start, end);
+                cbBooking(start, end);
+                cbComplete(start, end);
+                cbRank(start, end);
+                setTimeout(function () {
+                    cb(start, end);
+                }, 100);
+
+
+
+            });
+            function DrawTable(sliver,diamond) {
+                Highcharts.chart('combo', {
+                    chart: {
+                        type: 'column'
+                    },
+                    title: {
+                        text: ''
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: [
+                            'First week',
+                            'Second week',
+                            'Third week',
+                            'Fourth week'
+
+                        ],
+                        crosshair: true
+                    },
+                    yAxis: {
+                        min: 0,
+                        title: {
+                            text: ''
+                        },
+                        labels: {
+                            step: 1,
+                            text: 'Count'
+
+                        }
+                    },
+                    tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.f} bookking</b></td></tr>',
+                        footerFormat: '</table>',
+                        shared: true,
+                        useHTML: true
+                    },
+                    plotOptions: {
+                        column: {
+                            pointPadding: 0.2,
+                            borderWidth: 0
+                        }
+                    },
+                    series: [{
+                        name: 'Sliver',
+                        data: sliver,
+                        color: "#27AE60"
+
+                    }, {
+                         name: 'Diamond',
+                            data: diamond,
+                            color:"#F1C40F"
+
+                    }]
+                });
+            }
+
+            function updatetable( type) {
+                var year = $("#selectyear").val();
+                var month = $("#selectmonth").val();
+                if (type == 1) {
+                    $("#combo").focus();
+                }
+                $.ajax({
+                    url: "/Home/GetCharTable",
+                    type: "GET",
+                    data: {
+                        month: month,
+                        year: year
+                    }, beforeSend: function () {
+                        $("#modalLoad").modal("show");
+                    }, success: function (res) {
+                        $("#modalLoad").modal("hide");
+                        console.log(res);
+                        DrawTable(res.sliver,res.diamon);
+                    }
+                })
+            }
+        </script>*@
+
+    </div>

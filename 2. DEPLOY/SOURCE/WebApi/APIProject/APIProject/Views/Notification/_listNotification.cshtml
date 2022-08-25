@@ -1,0 +1,133 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@using Data.Utils
+@model IPagedList<NotiAdminModel>
+
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Tiêu đề</th>
+            <th class="wrap">Ngày tạo</th>
+            <th class="wrap">Loại tài khoản</th>
+            <th class="wrap">Số lượng</th>
+            <th class="widthCreatedDate"></th>
+        </tr>
+    </thead>
+
+    <tbody class="text-center">
+        @{ if (Model.Count <= 0)
+            {
+                <tr>
+                    <td colspan="10">Không có dữ liệu</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+
+                foreach (var cus in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        @{
+
+                            <td>@cus.Title</td>
+
+                            <td>@cus.CreateDate.ToString(SystemParam.CONVERT_DATETIME)</td>
+                            if (Int32.Parse(cus.Type).Equals(SystemParam.TYPE_PUSH_TO_CUSTOMERS))
+                            {
+                                <td>Khách hàng</td>
+                            }
+                            else if (Int32.Parse(cus.Type).Equals(SystemParam.TYPE_PUSH_TO_SHOPS))
+                            {
+                                <td>Cửa hàng</td>
+                            }
+                            else if (Int32.Parse(cus.Type).Equals(SystemParam.TYPE_PUSH_TO_SHIPERS))
+                            {
+                                 <td>Tài xế</td>
+                            }else
+                            {
+                                <td>Tất cả</td>
+                            }
+                        }
+                        <td>@cus.Count</td>
+                        <td class="width2btn">
+
+                            <a href="javascript:void(0);" title="Detail" data-title="@cus.Title" data-content="@cus.Content" onclick="showNotiDetail($(this))">
+                                <i class="btnEdit btnEdit glyphicon glyphicon-upload cursor-pointer" id="btnEditNotify"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            } }
+    </tbody>
+</table>
+
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(
+                       Model,
+                       page => Url.Action("SearchNoti", "Notification", new { page = page, search = ViewBag.search, type = ViewBag.type, isActive = ViewBag.isActive, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate }),
+                       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListNotification" })
+                       )
+    </div>
+</div>
+
+
+<div class="modal fade" id="noti-detail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title">Chi tiết thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                    <div class="col-md-12">
+                        <div class="row" style="margin-bottom: 20px">
+                            <div class="col-md-3">
+                                <label for="fname" style="margin-top: 7px">Tiêu đề</label>
+                            </div>
+                            <div class="col-md-9" id="title"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label for="fname" style="margin-top: 7px">Nội dung</label>
+                            </div>
+                            <div class="col-md-9" id="content"></div>
+                        </div>
+
+                    </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div style="">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 100px">Thoát</button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function showNotiDetail(data) {
+        var title = data.attr('data-title');
+        var content = data.attr('data-content');
+        $('#title').html(title);
+        $('#content').html(content);
+        $('#noti-detail').modal('show');
+    }
+</script>

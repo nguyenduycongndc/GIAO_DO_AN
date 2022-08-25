@@ -1,0 +1,698 @@
+﻿
+@{
+    //ViewBag.Title = "TransactionDeliveryDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using PagedList
+
+@model TransactionDeliveryModel
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-9 col-sm-9 col-8 text-dark px-0">
+                        <h4 class="custom_title">Chi tiết giao hàng</h4>
+                    </div>
+                    @*<div class="col-md-1 pull-right pb-10 pr-10">*@
+                    <div class="col-md-2 row">
+                        <div class="col-md-6 col-sm-6 col-6 text-right px-0">
+                            <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/TransactionDeliveryNation/Index'"><i class="fa fa-fw fa-arrow-left"></i>Quay trở lại</a>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-6 text-right px-0">
+                            <button class="btn btn-success" onclick="javaScript:SaveUpdateStatus(@Model.ID);"><i class="fa fa-fw fa-check"></i>Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    @* Thông tin khách hàng *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Thông tin khách hàng</legend>
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tên khách hàng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Số điện thoại:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Địa chỉ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <input type="hidden" id="txtMemId" value="@Model.CustomerID" />
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tên khách hàng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.CustomerName</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Số điện thoại:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.CustomerPhone</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Địa chỉ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.CustomerAddress</p>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                    @* Thông tin tài xế *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Thông tin tài xế</legend>
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tên tài xế:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Số điện thoại:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @*<input type="hidden" id="txtMemId" value="@Model.ShiperID" />*@
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tên tài xế:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.ShiperName</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Số điện thoại:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.ShiperPhone</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                    @* Thông tin giao dịch *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Thông tin giao dịch</legend>
+
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Địa điểm:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Dịch vụ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Người hủy:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Lý do hủy:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @*<input type="hidden" id="txtMemId" value="@Model.ShiperID" />*@
+                                if (Model.UserCancel != null || Model.Status == @SystemParam.ORDER_STATUS_DENY)
+                                {
+                                    <legend class="scheduler-border" style="float:right">Đã hủy</legend>
+                                }
+                                else if (Model.Status == @SystemParam.ORDER_STATUS_PENDING)
+                                {
+                                    <legend class="scheduler-border" style="float:right">Chờ tiếp nhận</legend>
+                                }
+                                else if (Model.Status == @SystemParam.ORDER_STATUS_FINISH)
+                                {
+                                    <legend class="scheduler-border" style="float:right">Hoàn thành</legend>
+                                }
+                                else if (Model.Status == SystemParam.ORDER_STATUS_DELIVERY)
+                                {
+                                    if(Model.TransportType != SystemParam.TRANSPORT_TYPE_WESEN) { 
+                                        <div class="row mt-2">
+                                            <div class="col-md-4 col-xs-6">
+                                                <label class="font-weight-normal">Trạng thái giao dịch:</label>
+                                            </div>
+                                            <div class="col-md-8 col-xs-6">
+                                                <select class="form-control" id="slStatus">
+                                                    <option class="text-black-50" value="">--Trạng thái--</option>
+                                                    <option value="@SystemParam.ORDER_STATUS_DENY" @(Model.Status == SystemParam.ORDER_STATUS_DENY ? "selected" : "")>Đơn Shipper bị từ chối</option>
+                                                    <option value="@SystemParam.ORDER_STATUS_DELIVERY" @(Model.Status == SystemParam.ORDER_STATUS_DELIVERY ? "selected" : "")>Đơn Shipper đang tiếp nhận</option>
+                                                    <option value="@SystemParam.ORDER_STATUS_PICK_UP" @(Model.Status == SystemParam.ORDER_STATUS_PICK_UP ? "selected" : "")>Đơn Shipper đã lấy hàng</option>
+                                                    <option value="@SystemParam.ORDER_STATUS_FINISH" @(Model.Status == SystemParam.ORDER_STATUS_FINISH ? "selected" : "")>Đơn Shipper hoàn thành</option>
+                                                </select>
+                                            </div>
+                                        </div>                                
+                                    }
+                                    else
+                                    {
+                                        <legend class="scheduler-border" style="float:right">Đang tiếp nhận</legend>
+                                    }
+
+                                }
+                                else if (Model.Status == SystemParam.ORDER_STATUS_PICK_UP)
+                                {
+                                    if(Model.TransportType != SystemParam.TRANSPORT_TYPE_WESEN)
+                                    {
+                                    <div class="row mt-2">
+                                        <div class="col-md-4 col-xs-6">
+                                            <label class="font-weight-normal">Trạng thái giao dịch:</label>
+                                        </div>
+                                        <div class="col-md-8 col-xs-6">
+                                            <select class="form-control" id="slStatus">
+                                                <option class="text-black-50" value="">--Trạng thái--</option>
+                                                <option value="@SystemParam.ORDER_STATUS_DENY" @(Model.Status == SystemParam.ORDER_STATUS_DENY ? "selected" : "")>Đơn Shipper bị từ chối</option>
+                                                <option value="@SystemParam.ORDER_STATUS_PICK_UP" @(Model.Status == SystemParam.ORDER_STATUS_PICK_UP ? "selected" : "")>Đơn Shipper đã lấy hàng</option>
+                                                <option value="@SystemParam.ORDER_STATUS_FINISH" @(Model.Status == SystemParam.ORDER_STATUS_FINISH ? "selected" : "")>Đơn Shipper hoàn thành</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                        <legend class="scheduler-border" style="float:right">Đã lấy hàng</legend>
+                                    }
+                                    
+                                }
+                                <div class="row mt-5">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Địa điểm:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.Address</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Dịch vụ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @if (Model.TransportType == SystemParam.TRANSPORT_TYPE_STANDARD)
+                                        {
+                                            <p>Tiêu chuẩn</p>
+                                        }
+                                        else if (Model.TransportType == SystemParam.TRANSPORT_TYPE_FAST)
+                                        {
+                                            <p>Nhanh</p>
+                                        }
+                                        else if (Model.TransportType == SystemParam.TRANSPORT_TYPE_WESEN)
+                                        {
+                                            <p>Wesend</p>
+                                        }
+                                        else
+                                        {
+                                            <p></p>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Người hủy:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @if (Model.UserCancel == SystemParam.ORDER_SHIPER_CANCLE)
+                                        {
+                                            <p>@Model.ShiperName</p>
+                                        }
+                                        else if (Model.UserCancel == SystemParam.ORDER_USER_CANCLE)
+                                        {
+                                            <p>@Model.CustomerName</p>
+                                        }
+                                        else
+                                        {
+                                            <p></p>
+                                        }
+                                        @*<p>@Model.UserCancel</p>*@
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Lý do hủy:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@Model.ReasonCancel</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal"></label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                    @* Thông tin thanh toán *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Thông tin thanh toán</legend>
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Hình thức thanh toán:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Phí dịch vụ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Điểm đã dùng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Khuyến mãi:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tổng tiền:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @*<input type="hidden" id="txtMemId" value="@Model.CustomerID" />*@
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Hình thức thanh toán:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @if (Model.PaymentType == SystemParam.PAYMENT_TYPE_ON_DELIVERY)
+                                        {
+                                            <p>@SystemParam.PAYMENT_TYPE_ON_DELIVERY_STR</p>
+                                        }
+                                        else if (Model.PaymentType == SystemParam.PAYMENT_TYPE_VN_PAY)
+                                        {
+                                            <p>@SystemParam.PAYMENT_TYPE_VN_PAY_STR</p>
+                                        }
+
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Phí dịch vụ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@string.Format("{0:#,0}", Convert.ToDecimal(@Model.BasePrice)) VNĐ</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Điểm đã dùng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@string.Format("{0:#,0}", Convert.ToDecimal(@Model.UsePoint)) điểm</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Khuyến mãi:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @if (Model.TypeCoupon == SystemParam.PAYMENT_TYPE_ON_DELIVERY)
+                                        {
+                                            <p>@Model.Calculate VNĐ&nbsp;(@Model.Percent%&nbsp;@Model.CouponCode)</p>
+                                        }
+                                        else if (Model.TypeCoupon == SystemParam.PAYMENT_TYPE_VN_PAY)
+                                        {
+                                            <p>@Model.Discount VNĐ&nbsp;(@Model.CouponCode)</p>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Tổng tiền:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p>@string.Format("{0:#,0}", Convert.ToDecimal(@Model.TotalPrice)) VNĐ</p>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                    @* Trạng thái chuyến hàng *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Trạng thái chuyến hàng</legend>
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Thời gian đặt:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã xác nhận:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã đón khách:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã giao hàng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        <p></p>
+                                    </div>
+                                </div>
+                                @*<div class="row mt-2">
+                                        <div class="col-md-4 col-xs-6">
+                                            <label class="font-weight-normal">Đơn Shipper hoàn thành:</label>
+                                        </div>
+                                        <div class="col-md-8 col-xs-6">
+                                            <p></p>
+                                        </div>
+                                    </div>*@
+                            }
+                            else
+                            {
+                                @*<input type="hidden" id="txtMemId" value="@Model.CustomerID" />*@
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Thời gian đặt:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @*@if (Model.Status == @SystemParam.ORDER_STATUS_DENY)
+                                            {
+                                                <p>@Model.BookingDate</p>
+                                            }*@
+                                        <p>@Model.BookingDate</p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã xác nhận:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @*@if (Model.Status == @SystemParam.ORDER_STATUS_PENDING)
+                                            {
+                                                <p>@Model.BookingDate</p>
+                                            }*@
+                                        <p>@Model.StartDate</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã lấy đồ:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @*@if (Model.Status == @SystemParam.ORDER_STATUS_DELIVERY)
+                                            {
+                                                <p>@Model.BookingDate</p>
+                                            }*@
+                                        <p>@Model.ConfirmDate</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đã giao hàng:</label>
+                                    </div>
+                                    <div class="col-md-8 col-xs-6">
+                                        @*@if (Model.Status == @SystemParam.ORDER_STATUS_PICK_UP)
+                                            {
+                                                <p>@Model.BookingDate</p>
+                                            }*@
+                                        <p>@Model.CompletedDate</p>
+                                    </div>
+                                </div>
+                                @*<div class="row mt-2">
+                                        <div class="col-md-4 col-xs-6">
+                                            <label class="font-weight-normal">Đơn Shipper hoàn thành:</label>
+                                        </div>
+                                        <div class="col-md-8 col-xs-6">
+                                            @if (Model.Status == @SystemParam.ORDER_STATUS_FINISH)
+                                            {
+                                                <p>@Model.BookingDate</p>
+                                            }
+                                        </div>
+                                    </div>*@
+                            }
+                        </fieldset>
+                    </div>
+                    @* Đánh giá *@
+                    <div class="col-md-6 col-xs-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border">Đánh giá</legend>
+                            @if (Model == null)
+                            {
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đánh giá:</label>
+                                    </div>
+                                    <div class="rating">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                @*<input type="hidden" id="txtMemId" value="@Model.CustomerID" />*@
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Đánh giá: </label>
+                                    </div>
+                                    <div class="rating">
+                                        <p hidden>@Model.Rate</p>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-4 col-xs-6">
+                                        <label class="font-weight-normal">Nội dung đánh giá:</label>
+                                    </div>
+                                    <div>
+                                        <p> @Model.RateNote</p>
+                                    </div>
+                                </div>
+                            }
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="~/Content/assets/js/jquery.star-rating-svg.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var id = $('#txtMemId').val();
+            var valueRating = $(".rating p").text();
+            $(".rating").starRating({
+                initialRating: valueRating,
+                strokeColor: '#894A00',
+                strokeWidth: 10,
+                starSize: 25,
+                readOnly: true
+            });
+        });
+        function SaveUpdateStatus(id) {
+            var _status = $('#slStatus').val();
+            $.ajax({
+                url: '/TransactionDeliveryNation/SaveUpdateStatus',
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    id: id,
+                    Status: _status,
+                }),
+                success: function (res) {
+                    if (res) {
+                        swal({
+                            title: "Success!",
+                            text: "Lưu thành công!",
+                            icon: "success",
+                            button: "Close",
+                        }).then((willDelete) => {
+                            if (willDelete) {
+                                location.reload();
+                            }
+                        })
+                    }
+                    else {
+                        swal({
+                            title: " Failed!",
+                            text: "Lưu thất bại",
+                            icon: "warning",
+                            button: "Close"
+                        })
+                    }
+                },
+                error: function (ex) {
+                    swal({
+                        title: " Failed!",
+                        text: "Lưu thất bại",
+                        icon: "warning",
+                        button: "Close",
+                    })
+                }
+            })
+        }
+    </script>
+

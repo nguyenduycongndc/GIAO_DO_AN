@@ -1,0 +1,308 @@
+﻿
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<link href="~/Content/jquery.tagsinput-revisited.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.tagsinput-revisited.js"></script>
+<div class="shipper">
+    <div class="card">
+        <div class="card-header sticky">
+            <div class="row ml-1">
+                <div class="col-md-6 col-sm-6 col-12 text-dark px-0 mt-3">
+                    <h4> Tài xế</h4>
+                </div>
+                <div class="col-md-6 col-sm-6 col-12 mt-3">
+                    <div class="text-right">
+                        <button class="btn btn-success" id="btnAddShip" onclick="window.location='/Shipper/Create'">Thêm mới</button>
+                        <button class="btn btn-warning" id="btnMoneyShip" data-toggle="modal" data-target="#myModal">Cộng tiền</button>
+                        <button class="btn btn-primary" onclick="searchShipper()">Tìm kiếm</button>
+                        <button class="btn btn-primary btn_export" id="btnExport" onclick="exportListShipper()"><i class="fa fa-download mr-1"></i> Xuất excel</button>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control" id="txtName" placeholder="Mã, tên, SĐT, Email tài xế" />
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <select id="txtStatus" name="txtStatus" class="form-control" onchange="searchShipper()">
+                        <option selected disabled hidden>Trạng thái</option>
+                        <option value="">Tất cả</option>
+                        <option value="1">Hoạt động</option>
+                        <option value="2">Dừng hoạt động</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control relative-icon-calendar date" id="FromDate" placeholder="Từ ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 mt-2">
+                    <input type="text" class="form-control relative-icon-calendar date" id="ToDate" placeholder="Đến ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-3 col-12">
+                    <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+                        <option value="">Tỉnh / Thành phố</option>
+                        @foreach (Data.DB.Province obj in ViewBag.Province)
+                        {
+                            <option value="@obj.ID">
+                                @obj.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-3 col-12">
+                    <select class=" form-control" name="calc_shipping_district" id="slDistrict">
+                        <option value="">Quận / Huyện</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-sm-6 col-12 ">
+                    <select id="isVip" name="isVip" class="form-control" onchange="searchShipper()">
+                        <option selected disabled hidden>Loại tài xế</option>
+                        <option value="">Tất cả</option>
+                        <option value="1">VIP</option>
+                        <option value="0">Thường</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="tableShipper">
+                    @{ Html.RenderAction("Search", "Shipper", new { Page = 1 }); }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal cộng tiền *@
+<!-- The Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title"> Cộng tiền</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="row pb-3">
+                        <div class="col-md-12 col-sm-12 col-12 frmSearch" style="position:relative;">
+                            <label>Tài khoản nhận</label><br />
+                            <input type="text" class="form-control" id="txt-keyword" placeholder="Nhập tên hoặc số điện thoại shipper" autocomplete="off" />
+                            <div id="suggesstion-point" style="position: absolute; right:15px; z-index: 1;"></div>
+                            <input type="text" class="form-control" name="txtListIdPoint" id="txtListIdPoint" />
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px">
+                        <div class="col-md-3">
+                            <label for="fname" style="margin-top: 7px">Số tiền</label>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control number" placeholder="" id="txtPoint" />
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="fname" style="margin-top: 7px">Ghi chú</label>
+                        </div>
+                        <div class="col-md-9">
+                            <textarea id="txtContent" class="form-control" name="" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div style="margin-right: 130px">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" style="width: 100px">Thoát</button>
+                    <button type="button" class="btn btn-success" style="width: 100px" onclick="AddMoneyShiper()">Xác nhận</button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#txtListIdPoint').tagsinput({
+            allowDuplicates: false,
+            itemValue: 'id',
+            itemText: 'text'
+        });
+
+        roleLogin();
+    });
+
+    function roleLogin() {
+
+        $.ajax({
+            url: '/Home/GetUserLogin',
+            type: 'GET',
+            success: function (response) {
+                var role = response.Role;
+                if (role == 2) {
+                    $("#btnMoneyShip").hide();
+                    $("#btnExport").hide();
+                }
+                if (role == 3 || role == 7) {
+                    $("#btnExport").hide();
+                }
+                if (role == 6) {
+                    $("#btnAddShip").hide();
+                    $("#btnExport").hide();
+                }
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        });
+
+    }
+
+    $(window).keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            searchShipper();
+        }
+    });
+    function exportListShipper() {
+        var key = $.trim($("#txtName").val());
+        var status = $.trim($("#txtStatus").val());
+        var fromDate = $.trim($("#FromDate").val());
+        var toDate = $.trim($("#ToDate").val());
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        var isVip = $('#isVip').val();
+        //swal({
+        //    title: "Vui lòng chờ...!",
+        //    text: "Việc này có thể kéo dài trong vài phút",
+        //    icon: "warning",
+        //    buttons: ["Cancel", "OK"],
+        //    dangerMode: true
+        //})
+        window.location.href = "/Shipper/ExportListShipper?searchKey=" + key + "&status=" + status +"&provinceID="+ provinceID + "&districtID=" + districtID +"&isVip=" + isVip  + "&fromDate=" + fromDate + "&toDate=" + toDate;
+    }
+    function searchShipper() {
+        var key = $.trim($("#txtName").val());
+        var status = $.trim($("#txtStatus").val());
+        var fromDate = $.trim($("#FromDate").val());
+        var toDate = $.trim($("#ToDate").val());
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        var isVip = $('#isVip').val();
+        $.ajax({
+            url: '/Shipper/Search',
+            data: {
+                Page: 1,
+                Key: key,
+                Status: status,
+                FromDate: fromDate,
+                ToDate: toDate,
+                provinceID: provinceID,
+                districtID: districtID,
+                isVip: isVip
+            },
+            success: function (rs) {
+                $("#tableShipper").html(rs);
+            }
+        });
+    }
+
+    function deleteShip(id) {
+        swal({
+            title: "Bạn chắc chắn xóa chứ?",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '/Shipper/DeleteShipper',
+                        data: { ID: id },
+                        type: 'POST',
+                        success: function (res) {
+                            if (res == SUCCESS) {
+                                swal({
+                                    title: "Xóa thành công",
+                                    text: "",
+                                    icon: "success"
+                                }).then((sc) => {
+                                    if (sc)
+                                        searchShipper();
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: "Có lỗi xảy ra!",
+                                    text: "Vui lòng thực hiện lại",
+                                    icon: "warning"
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+    }
+
+    var lstShipper = [];
+    //SearchAutocomplete shipper
+    $('#txt-keyword').autocomplete({
+        source: function (request, response) {
+            var key = ReplaceSpace($("#txt-keyword").val());
+            $.ajax({
+                type: "POST",
+                url: "/Shipper/GetListShipperByKeyword",
+                data: { keyword: key },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.Status == 0) {
+                        swal({
+                            title: "Đã xảy ra lỗi, xin vui lòng liên hệ với đội kỹ thuật để được xử lý!",
+                            icon: "error"
+                        })
+                        return;
+                    }
+                    lstShipper = [];
+                    $.each(res.Data, function () {
+                        lstShipper.push({ id: this.id, name: this.name });
+                    });
+                }
+            });
+            setTimeout(function () {
+                response($.map(lstShipper, function (item) {
+                    return {
+                        id: item.id,
+                        value: item.name
+                    }
+                }))
+            }, 300);
+        },
+        select: function (event, ui) {
+            $('#txtListIdPoint').tagsinput('add', { id: ui.item.id, text: ui.item.value });
+        },
+        minLength: 0,
+        autoFocus: true
+    })
+</script>
+
+

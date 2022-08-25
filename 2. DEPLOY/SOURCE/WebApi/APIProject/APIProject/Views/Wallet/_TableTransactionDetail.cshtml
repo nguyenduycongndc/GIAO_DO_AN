@@ -1,0 +1,123 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<TransactionMemberDetail>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white">
+        <tr>
+            <th>No.</th>
+            <th>Date</th>
+            <th>Wallet Type</th>
+            <th>Amount</th>
+            <th>Transaction Type</th>
+        </tr>
+    </thead>
+    <tbody class="text-center" id="tblTransList">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="5">No data</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var dt in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@dt.CreateDateSTR</td>
+                        @{
+                            if (dt.TypeWallet == 1)
+                            {
+                                <td>Deposit Wallet</td>
+                            }
+                            else if (dt.TypeWallet == 2)
+                            {
+                                <td>Cash Wallet</td>
+                            }
+                        }
+                        @*<td>@dt.TypeWallet</td>*@
+                        <td>@dt.AmountSTR</td>
+                        @*<td>@dt.TypeTransaction</td>*@
+                        @{
+                            switch (dt.TypeTransaction)
+                            {
+                                case Constant.TYPE_TRANSACTION_WITHDRAW:
+                                    <td>Withdraw</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_TRANSFER_WALLET:
+                                    <td>Transfer Deposit Wallet</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET:
+                                    <td>Transfer Cash Wallet</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_RECHARGE:
+                                    <td>Recharge</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_VNPAY:
+                                    <td>VNPAY</td>
+                                    break;
+                                @*case Constant.TYPE_TRANSACTION_ADD_POINT_WHEN_COMPELETE_CUSTOMER:
+                                    <td>Add point when complete customer</td>
+                                    break;*@
+                                case Constant.TYPE_TRANSACTION_ADD_POINT_BY_ADMIN:
+                                    <td>Add point by Admin</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_REFUND_POINT_BY_ADMIN:
+                                    <td>Refund point by admin</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_REFUND_TRANSACTION:
+                                    <td>Refund transaction</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_SUBTRACT_WASHER_SUBMIT_ORDER:
+                                    <td>Substract washser submit order</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_REWARD_WASHER_COMPLETE_ORDER:
+                                    <td>Reward washer complete order</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_USE_POINT_CUSTOMER:
+                                    <td>Use point customer</td>
+                                    break;
+                                case Constant.TYPE_TRANSACTION_FIRST_LOGIN:
+                                    <td>First login</td>
+                                    break;
+                                default:
+                                    <td> </td>
+                                    break;
+                            }
+                        }
+                        @*@{
+                                if (dt.TypeTransaction == Constant.TRANSACTION_TYPE_RECHARGE_WALLET_WITHDRAW)
+                                {
+                                    <td>Recharge Wallet</td>
+                                }
+                                else if (dt.TypeTransaction == Constant.TRANSACTION_TYPE_RECHARGE_WALLET_NO_WITHDRAW)
+                                {
+                                    <td>Withdraw</td>
+                                }
+                            }*@
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-12 mr-5">
+        <div class="row float-right">
+            @Html.PagedListPager(
+       Model,
+       page => Url.Action("TableTransactionDetail", "Wallet", new { page = page, ID = ViewBag.ID, TypeWallet = ViewBag.TypeWallet, type = ViewBag.type, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate }),
+       PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tableTransact", LoadingElementId = "modalLoad" })
+       )
+        </div>
+    </div>
+</div>

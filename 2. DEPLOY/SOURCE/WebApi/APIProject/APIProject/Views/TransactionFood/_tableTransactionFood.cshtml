@@ -1,0 +1,115 @@
+﻿@*@{
+        ViewBag.Title = "_tableTransactionFood";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+
+
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<TransactionFoodModel>
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md text-center">
+    <thead class="text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Mã đơn hàng</th>
+            <th>Khách hàng</th>
+            <th>Số lượng sản phẩm</th>
+            <th>TG đặt</th>
+            <th>Tiền đồ ăn</th>
+            <th>Phí giao hàng</th>
+            <th>Địa chỉ</th>
+            <th>Cửa hàng</th>
+            <th>Địa chỉ quán</th>
+            <th>Tài xế</th>
+            <th>Trạng thái thanh toán</th>
+            <th>Trạng thái giao dịch</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="14">Không có dữ liêu</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var dt in Model)
+                {
+                    <tr>
+
+                        @*@if (dt.IsActive == 1)*@
+                        @{
+                            <input type="hidden" id="txtTranFoodId" value="@dt.ID" />
+                            <td>@stt</td>
+                            <td>@dt.Code</td>
+                            <td>@dt.CustomerName - @dt.CustomerPhone</td>
+                            <td>@dt.Quantity</td>
+                            <td>@dt.BookingDate.ToString("dd/MM/yyyy")</td>
+                            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.PriceServicePrice))</td>
+                            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.BasePrice))</td>
+                            <td>@dt.Address</td>
+                            <td>@dt.ShopName</td>
+                            <td>@dt.FinishAddress</td>
+                            <td>@dt.ShiperName</td>
+                            if (@dt.StatusPayment == 0)
+                            {
+                                <td>Chưa thanh toán</td>
+                            }
+                            else
+                            {
+                                <td>Đã thanh toán</td>
+                            }
+                            switch (@dt.Status)
+                            {
+                                case SystemParam.ORDER_STATUS_DENY:
+                                    <td>Đơn Shipper bị từ chối</td>
+                                    break;
+                                case SystemParam.ORDER_STATUS_PENDING:
+                                    <td>Đơn Shipper chờ tiếp nhận</td>
+                                    break;
+                                case SystemParam.ORDER_STATUS_DELIVERY:
+                                    <td>Đơn Shipper đang tiếp nhận</td>
+                                    break;
+                                case SystemParam.ORDER_STATUS_PICK_UP:
+                                    <td>Đơn Shipper đã lấy đồ ăn</td>
+                                    break;
+                                case SystemParam.ORDER_STATUS_FINISH:
+                                    <td>Đơn Shipper hoàn thành</td>
+                                    break;
+                            }
+                            <td>
+                                <a href="@Url.Action("TransactionFoodDetail", "TransactionFood", new { id = dt.ID })"  title="@Resources.Detail" class="cursor-pointer">
+                                    <i class="btnEdit glyphicon glyphicon-upload"></i>
+                                </a>
+                                @*<a href="javascript:void(0);" title="@Resources.Delete." class="cursor-pointer">
+                                        <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteTranFood(@dt.ID);"></i>
+                                    </a>*@
+                            </td>
+                            stt++;
+                        }
+                    </tr>
+                }
+            }
+        }
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchTransactionFood", "TransactionFood", new { page, searchKey = ViewBag.searchKey, status = ViewBag.status, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListTransactionFood" })
+        )
+    </div>
+</div>
+
+

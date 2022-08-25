@@ -1,0 +1,668 @@
+﻿@using APIProject.Resource
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAVKaTr6pjVc6Pa4QP8ZTuZ-dl349k_ZLE" type="text/javascript"></script>
+<style>
+    .pac-container {
+        z-index: 9999;
+    }
+</style>
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title"><span style="cursor:pointer;" onclick="window.location='/Transaction/Index'"><</span> Booking</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Transaction/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-12 col-xs-12">
+        <span><b class="font-16">Customer Information</b></span>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-2 col-xs-6 pt-2">
+        <span>Customer</span>
+    </div>
+    <div class="col-md-3 col-xs-6 offset-md-0">
+        <input type="text" class="form-control" id="txtname" placeholder="Enter customer name" />
+        <input type="hidden" id="txtCusId" />
+        @*<span><i class="fa fa-plus-circle color-green inlineblock"></i></span>*@
+    </div>
+    <div class="col-md-1 col-xs-6">
+        <span><i class="fa fa-plus-circle font-30 pt-2 btnAddCustomer" data-toggle="modal" data-target="#addCustomer" onclick="fillInAddress()()"></i></span>
+    </div>
+    <div class="col-md-2 col-xs-6 pt-2">
+        <span>Car</span>
+    </div>
+    <div class="col-md-4 col-xs-6 offset-md-0">
+        <select class="form-control" id="carCus" onchange="GetCarSegment()">
+            <option class="text-black-50" value="0">--Select--</option>
+        </select>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-2 col-xs-6 pt-2">
+        <span>Booking date</span>
+    </div>
+    <div class="col-md-2 offset-md-0 col-sm-6 mt-1">
+        <input type="text" class="form-control relative-icon-calendar date" id="dtDateBooking" placeholder="choose date" onchange="GetListHour()" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-md-2 offset-md-0 pt-1">
+        <select class="form-control" id="hour-Booking" >
+            <option class="text-black-50" value="0">--choose hour--</option>
+        </select>
+    </div>
+    <div class="col-md-2 col-xs-6 pt-2">
+        <span>Type Car</span>
+    </div>
+    <div class="col-md-4 col-xs-6 offset-md-0 pt-2">
+        <span id="segName"></span>
+        <input type="hidden" id="segValue" />
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-6">
+        <div class="row">
+            <div class="col-md-4 pt-2">
+                <span>Address</span>
+            </div>
+            <div class="col-md-8 col-xs-6">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12 mt-2">
+                        <input type="text" class="form-control" id="txtaddress" placeholder="Enter address" />
+                        <input type="hidden" id="placeId" />
+                    </div>
+                    @*<div class="col-md-12 col-xs-12 mt-2">
+                            <input type="text" class="form-control" id="txtLat" placeholder="lat" />
+                        </div>
+                        <div class="col-md-12 col-xs-12 mt-2">
+                            <input type="text" class="form-control" id="txtLong" placeholder="long" />
+                        </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <div class="row">
+            <div class="col-md-4  col-xs-6 pt-2">
+                <span>Note</span>
+            </div>
+            <div class="col-md-8  col-xs-6">
+                <textarea class="form-control" id="note" placeholder="Enter note"></textarea>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-6">
+        <div class="row">
+            <div class="col-md-4  col-xs-6 pt-2">
+                <span>Type</span>
+            </div>
+            <div class="col-md-8  col-xs-6">
+                <select class="form-control" id="typeWash">
+                    <option class="text-black-50" value="0">--select--</option>
+                    <option value="1">Indoor</option>
+                    <option value="1">Outdoor</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <span><b class="font-16">Package Service</b></span>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-4 col-xs-4 pt-2">
+                <span>Package</span>
+            </div>
+            <div class="col-md-8 col-xs-8 pt-2">
+                <select class="form-control" id="package" onchange="ChangePackage()">
+                    <option class="text-black-50" value="0">-- Select --</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-3 col-xs-3">
+                <b id="packageName"></b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <b id="segmentName"></b>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <b id="packPrice"></b>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <span><b class="font-16">Additional service</b></span>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-9 col-xs-9">
+                <select class="form-control" id="additional">
+                    <option class="text-black-50" value="0">-- Select --</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-xs-3">
+                <button class="btn btn-success plr-25" onclick="AddAdditional()">Add</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12 col-xs-12">
+                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                    <thead class="text-center text-white">
+                        <tr>
+                            <th>ID</th>
+                            <th>
+                                Job
+                            </th>
+                            <th class="wrap">Price</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center tbody-additonal">
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row mt-2">
+        <div class="col-md-12 col-xs-12">
+            <span><b class="font-16">Washer Information</b></span>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-2 col-xs-6 pt-2">
+            <span>Washer</span>
+        </div>
+        <div class="col-md-4 offset-md-0 col-sm-6 mt-1">
+            <select class="form-control" id="washer">
+                <option class="text-black-50" value="0">--Select--</option>
+
+            </select>
+        </div>
+
+    </div>*@
+<div class="row mt-4 pb-3">
+    <div class="col-md-6 col-xs-6">
+        <button class="btn btn-danger pull-right plr-25" onclick="backTransaction()">Cancel</button>
+    </div>
+    <div class="col-md-6 col-xs-6">
+        <button class="btn btn-success pull-left plr-25" onclick="AddTransaction()">Save</button>
+    </div>
+</div>
+
+<div class="modal fade" id="addCustomer" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:725px !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add customer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_create_money" name="form_create_money">
+                    <div class="row pb-3">
+                        <div class="col-md-12 col-xs-12">
+                            <p><b>Customer Information</b></p>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-2 col-xs-6">
+                            <label class="fw-normal">Name</label>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-6">
+                            <input type="text" class="form-control" id="nameCus" name="name" placeholder="Enter the name">
+                        </div>
+                        <div class="col-md-2 col-xs-6">
+                            <label class="fw-normal">Password</label>
+                        </div>
+                        <div class="col-md-4 col-sm-6 col-6">
+                            <input type="password" class="form-control" id="txtPassword" name="pass" placeholder="Enter password">
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row pb-3">
+                                <div class="col-md-4 col-xs-4">
+                                    <span>Phone:</span>
+                                </div>
+                                <div class="col-md-8 col-xs-8">
+                                    <input type="number" class="form-control checkPhone" id="txtPhone" name="Code" placeholder="Enter phone" onkeydown="javascript: return event.keyCode == 69 ? false : true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                            <div class="row pb-3">
+                                <div class="col-md-4 col-xs-4 pt-2" style="padding-left:0px;padding-right:0px;">
+                                    <span>Confirm password:</span>
+                                </div>
+                                <div class="col-md-8 col-xs-8">
+                                    <input type="password" class="form-control" id="txtConfirm" name="confirm" placeholder="Confirm password">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-12 col-xs-12">
+                            <p><b>Vehicle Information</b></p>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-2 col-xs-4">
+                            <span>Brand:</span>
+                        </div>
+                        <div class="col-md-4 col-xs-8">
+                            <select class="form-control" id="brand-add" name="brand" onchange="ChangeBrand()">
+                                <option class="text-black-50" value="0">Brand</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <span>Car:</span>
+                        </div>
+                        <div class="col-md-4 col-xs-8">
+                            <select class="form-control" id="carmodel-add" name="brand">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-2 col-xs-4">
+                            <span>License plate:</span>
+                        </div>
+                        <div class="col-md-4 col-xs-8">
+                            <input type="text" class="form-control" id="txtLicense" name="license" placeholder="">
+                        </div>
+                        <div class="col-md-2 col-xs-4">
+                            <span>Color:</span>
+                        </div>
+                        <div class="col-md-4 col-xs-8">
+                            <input type="text" class="form-control" id="txtColor" name="color" placeholder="Enter color">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success px-3" onclick="AddCustomer()"><i class="fa fa-check mr-2"></i>@Resources.Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times mr-2"></i>@Resources.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var autocomplete;
+    $(document).ready(function () {
+        $('.date').datepicker({
+            dateFormat: "dd/mm/yy",
+        });
+        $('.checkPhone').keyup(function (e) {
+            var value = $(this).val();
+            console.log("value", value);
+            if (value.includes("-") || value.includes(".") || value.includes(",")) {
+                $(this).val("");
+            }
+        })
+        LoadGoogleMap();
+        GetListHour();
+        //GetListWasher();
+        GetListCarBrand();
+    })
+
+    function LoadGoogleMap() {
+        var input = document.getElementById('txtaddress');
+        autocomplete = new google.maps.places.Autocomplete(input, {
+            language: ["vi"],
+            input: ["hanoi"],
+        });
+        autocomplete.setComponentRestrictions(
+            { 'country': ['VN'] });
+        autocomplete.addListener('place_changed', fillInAddress);
+
+        $("#txtaddress").focusin(function () {
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    infowindow.close();
+
+                }
+            });
+        });
+    }
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        if (typeof place.geometry !== "undefined") {
+            //$("#txtLat").val(place.geometry.location.lat());
+            //$("#txtLong").val(place.geometry.location.lng());
+            $("#placeId").val(place.place_id);
+            console.log("api", place.lat);
+        }
+    }
+</script>
+<script>
+    var listCus = [];
+    // Search autocomplate agent
+    $("#txtname").autocomplete({
+        source: function (request, response) {
+            var name = $("#txtname").val();
+            $.ajax({
+                type: "POST",
+                url: "/Transaction/GetListCustomerAutocomplete",
+                data: { cusName: name },
+                dataType: 'json',
+                success: function (res) {
+                    listCus = [];
+                    $.each(res, function () {
+                        listCus.push({ id: this.CustomerID, value: this.CustomerName + " - " + this.PhoneNumber });
+                    });
+                    response(listCus);
+                    console.log(listCus)
+                }
+            });
+         
+        },
+        select: function (event, ui) {
+            $(this).val(ui.item.name);
+            $("#txtCusId").val(ui.item.id);
+            console.log("id", $("#txtCusId").val());
+            GetCarByCustomer();
+        },
+        minLength: 0,
+        autoFocus:true
+    });
+    function GetCarByCustomer() {
+        var cusId = $("#txtCusId").val();
+        $.ajax({
+            url: '/Transaction/GetCarModelByCusId',
+            type: 'GET',
+            data: { cusId: cusId },
+            success: function (res) {
+                if (res.length != 0) {
+                    $("#carCus").empty();
+                    $("#carCus").append('<option class="text-black-50" value="0">--Select--</option>');
+                    $.each(res, function () {
+                        $("#carCus").append('<option value="' + this.ID + '" data-id="' + this.CarSegmentName + '" class="' + this.CarSegmentId+'">' + this.CarModelName+'</option>')
+                    })
+                }
+            }
+        })
+    }
+    function GetCarSegment() {
+        // thay đổi thì clear result
+        $("#packageName").text("");
+        $("#segmentName").text("");
+        $("#packPrice").text("");
+
+        var carId = $("#carCus").val();
+        var segName = $("#carCus > option[value='" + carId + "']").data('id');
+        var segValue = $("#carCus > option[value='" + carId + "']").attr('class');
+        $("#segValue").val(segValue);
+        console.log("segId", $("#segValue").val());
+
+        var packId = $("#package").val();
+        var price = $("#package > option[value='" + packId + "']").data('id');
+        var packName = $("#package > option[value='" + packId + "']").text();
+
+        if (segName == undefined) {
+            $("#segName").text("");
+        }
+        else {
+            //if (packId != 0) {
+            //    $("#packageName").text(packName);
+            //    $("#segmentName").text(segName);
+            //    $("#packPrice").text(cms_encode_currency_format(price) + " VNĐ");
+            //    GetPackageService();
+            //    GetAdditionalService();
+            //}
+            $("#segName").text(segName);
+            GetPackageService();
+            GetAdditionalService();
+        }
+    }
+    function GetPackageService() {
+        var segId = $("#segValue").val();
+        $.ajax({
+            url: '/Transaction/GetListPackageService',
+            type: 'GET',
+            data: { type: 1, segmentId: segId },
+            success: function (res) {
+                $("#package").empty();
+                $("#package").append('<option class="text-black-50" value="0">-- Select --</option>');
+                $.each(res, function () {
+                    $("#package").append('<option value="' + this.ID + '" data-id="' + this.Price+'">' + this.Name + '</option>');
+                })
+            }
+        })
+    }
+    function GetAdditionalService() {
+        var segId = $("#segValue").val();
+        $.ajax({
+            url: '/Transaction/GetListPackageService',
+            type: 'GET',
+            data: { type: 2, segmentId: segId },
+            success: function (res) {
+                $("#additional").empty();
+                $("#additional").append('<option class="text-black-50" value="0">-- Select --</option>');
+                $.each(res, function () {
+                    $("#additional").append('<option value="' + this.ID + '" data-id="' + this.Price + '">' + this.Name + '</option>');
+                })
+            }
+        })
+    }
+    function ChangePackage() {
+        var packId = $("#package").val();
+        var price = $("#package > option[value='" + packId + "']").data('id');
+        var packName = $("#package > option[value='" + packId + "']").text();
+        if (price == undefined) {
+            $("#packageName").text("");
+            $("#segmentName").text("");
+            $("#packPrice").text("");
+        }
+        else {
+            $("#packageName").text(packName);
+            $("#segmentName").text($("#segName").text());
+            $("#packPrice").text(cms_encode_currency_format(price)+" VNĐ");
+        }
+    }
+    function AddAdditional() {
+        var addtionalId = $("#additional").val();
+        var additonalName = $("#additional > option[value='" + addtionalId + "']").text();
+        var price = $("#additional > option[value='" + addtionalId + "']").data('id');
+        var checkDuplicate = false;
+        if (addtionalId == 0) {
+            swal({
+                title: "",
+                text: "Please select service !",
+                icon: "warning"
+            })
+            return;
+        }
+        if ($(".tbody-additonal > tr").length == 0) {
+            $(".tbody-additonal").append('<tr><td class="addtional-id">' + addtionalId + '</td><td>' + additonalName + '</td><td>' + cms_encode_currency_format(price) + ' VNĐ</td><td><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="@Resources.Delete." class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i></a></td></tr>')
+        }
+        else {
+            $.each($(".addtional-id"), function () {
+                if ($(this).text() == addtionalId) {
+                    checkDuplicate = true;
+                }
+            });
+            if (checkDuplicate == false) {
+                $(".tbody-additonal").append('<tr><td class="addtional-id">' + addtionalId + '</td><td>' + additonalName + '</td><td>' + cms_encode_currency_format(price) + ' VNĐ</td><td><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="@Resources.Delete." class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteAddional(event)"></i></a></td></tr>')
+        }
+        else {
+            swal({
+                title: "",
+                text: "This service was selected",
+                icon: "warning"
+            })
+        }
+        }
+    }
+    //function GetListWasher() {
+    //    $.ajax({
+    //        url: '/Washer/GetListAgent',
+    //        type: 'GET',
+    //        success: function (res) {
+    //            $.each(res, function () {
+    //                $("#washer").append('<option value="' + this.ID + '">' + this.Name + ' - '+this.Phone+'</option>');
+    //            });
+    //        }
+    //    })
+    //}
+    function DeleteAddional(event) {
+        $(event.target).closest("tr").remove();
+    }
+    function GetListCarBrand() {
+        $.ajax({
+            url: '/Transaction/GetListCarBrand',
+            type: 'GET',
+            success: function (res) {
+                $("#brand-add").empty();
+                $("#brand-add").append('<option class="text-black-50" value="0">Brand</option>');
+                $.each(res, function () {
+                    $("#brand-add").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                });
+            }
+        })
+    }
+    function GetListHour() {
+        var _date = $("#dtDateBooking").val().trim();
+        $.ajax({
+            url: '/Transaction/GetListShift',
+            type: 'GET',
+            data: { Date: _date },
+            success: function (res) {
+                $("#hour-Booking").empty();
+                $("#hour-Booking").append('<option>' + 'choose hour' + '</option>');
+                $.each(res, function () {
+                    $("#hour-Booking").append('<option>' + this + '</option>');
+                })
+            }
+        })
+    }
+    function ChangeBrand() {
+        var brandId = $("#brand-add").val();
+        $.ajax({
+            url: '/Transaction/GetListCarModelByBrand',
+            type: 'GET',
+            data: { brandId: brandId },
+            success: function (res) {
+                $("#carmodel-add").empty();
+                $("#carmodel-add").append('<option class="text-black-50" value="0">--select--</option>');
+                $.each(res, function () {
+                    $("#carmodel-add").append('<option value="' + this.CarID + '">' + this.Name + '</option>');
+                });
+            }
+        })
+    }
+    function AddCustomer() {
+    var name = $("#nameCus").val().trim();
+    var phone = $("#txtPhone").val().trim();
+    var password = $("#txtPassword").val().trim();
+    var confirm = $("#txtConfirm").val().trim();
+    var brandId = $("#brand-add").val();
+    var carModel = $("#carmodel-add").val();
+    var license = $("#txtLicense").val().trim();
+    var color = $("#txtColor").val().trim();
+    var dataTest = {
+        name: name,
+        phone: phone,
+        password: password,
+        carModelId: carModel,
+        license: license,
+        color: color
+    }
+        console.log(dataTest);
+
+        if (phone.includes("-") || phone.includes(".") || phone.includes(",") || phone.length > 11 || phone.length < 9) {
+            swal({
+                title: "",
+                text: "Phone number is not valid!",
+                icon: "warning",
+            });
+            return;
+        }
+        if (password.length < 6) {
+            swal({
+                title: "Password can not be empty and more than 5 characters",
+                text: "",
+                icon: "warning"
+            })
+
+            return;
+        }
+        if (name == "" || phone == "" || password == "" || confirm == "" || brandId == 0 || carModel == 0 || license == "" || color == "") {
+            swal({
+                title: "",
+                text: "Please enter full information!",
+                icon: "warning",
+            });
+            return;
+        }
+        if (password != confirm) {
+            swal({
+                title: "",
+                text: "Confirm password is not correct!",
+                icon: "warning",
+            });
+            return;
+        }
+    $.ajax({
+        url: '/Transaction/CreateCustomer',
+        type: 'POST',
+        data: {
+            name: name,
+            phone: phone,
+            password: password,
+            carModelId: carModel,
+            license: license,
+            color: color
+        },
+        success: function (res) {
+            console.log(res)
+            if (res.Status == 1) {
+                swal({
+                    title: "",
+                    text: res.Message,
+                    icon: "success",
+                });
+                $("#nameCus").val("");
+                $("#txtPhone").val("");
+                $("#txtPassword").val("");
+                $("#txtConfirm").val("");
+                $("#brand-add").val(0);
+                $("#carmodel-add").empty();
+                $("#txtLicense").val("");
+                $("#txtColor").val("");
+                $("#addCustomer").modal('hide');
+                //điền thông tin user đã thêm vào text box
+                $("#txtname").val(res.Result.CustomerName + ' - ' + res.Result.PhoneNumber);
+                $("#txtCusId").val(res.Result.CustomerID);
+                GetCarByCustomer();
+            }
+            else {
+                swal({
+                    title: "",
+                    text: res.Message,
+                    icon: "error",
+                });
+            }
+        }
+    })
+
+}
+</script>

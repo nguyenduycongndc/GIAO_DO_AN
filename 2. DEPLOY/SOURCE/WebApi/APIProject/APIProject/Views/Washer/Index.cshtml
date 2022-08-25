@@ -1,0 +1,764 @@
+﻿@using Data.DB
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+@using Data.Utils
+<link href="~/Content/jquery.tagsinput-revisited.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.tagsinput-revisited.js"></script>
+<div class="" id="View">
+    <div id="init-view">
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                        <h4> Washer</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control input" id="txtCode" placeholder="Enter code or name" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control input" id="txtPhone" placeholder="Enter phone" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control input" id="txtEmail" placeholder="Enter email" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <select class="form-control" id="SlActive">
+                    <option class="text-black-50" value="0">Status</option>
+                    <option value="1">Active</option>
+                    <option value="2">Deactive</option>
+                </select>
+            </div>
+            @*<div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                    <input type="text" class="form-control" id="txtControlPanel" placeholder="Control panel" />
+                </div>*@
+
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="row">
+                    @*<div class="col-md-2 offset-md-0 col-sm-6 mt-1 text-center">
+                            <label class="fw-normal">@Resources.FromDate</label>
+                        </div>*@
+                    <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                        <input type="text" class="form-control relative-icon-calendar date input" id="dtFromDateIndex" placeholder="From date" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                    <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                        <input type="text" class="form-control relative-icon-calendar date input" id="dtTodateIndex" placeholder="To date" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-2 offset-md-0 col-sm-6 mt-1 text-center">
+                            <label class="fw-normal">End day</label>
+                        </div>
+                        <div class="col-md-4 offset-md-0 col-sm-6 mt-1">
+                            <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="" />
+                            <i class="fa fa-calendar absolute-icon-calendar"></i>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10 ml-2">
+                    <button class="btn btn-warning text-white" data-toggle="modal" data-target="#addCouponCus" style="width:115px;">Add Coupon</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pb-10">
+                    <button class="btn btn-primary btn_money" id="btnAddMoney" data-toggle="modal" data-target="#createAddMoney" onclick="ShowAddMoney(1)">Add money</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pb-10 pr-10">
+                    <button class="btn btn-primary btn_minusMoney" id="btnMinusMoney" data-toggle="modal" data-target="#createAddMoney" onclick="ShowAddMoney(2)">Minus money</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pb-10 pr-10">
+                    <button class="btn btn-primary btn_export" id="btnExport" onclick="exportExcel()"> @Resources.Export</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-danger" id="btnFilter" onclick="ClearFilterWasher()">@Resources.ClearFilter</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-success" id="btnAdd" onclick="showAddViewWasher()">Add</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-primary btn_search" id="btnSearch" onclick="SearchWasher()"><i class="fa fa-search"></i> @Resources.Search</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id="ListWasher">
+                @{
+                    Html.RenderAction("Search", "Washer", new { Page = 1, CodeOrName = ViewBag.CodeOrName, Phone = ViewBag.Phone, Email = ViewBag.Email, Status = ViewBag.Status, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate });
+                }
+            </div>
+        </div>
+
+        <!-- start modal -->
+        <div class="modal fade" id="mdAddPoint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cộng điểm khách hàng</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="frmAddPoint" method="post">
+                        <div class="modal-body" id="">
+
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>SĐT Khách hàng</label>
+                                    <input type="text" class="form-control" name="phoneNum" id="txtPhoneNumber" placeholder="Nhập số điện thoại" />
+                                    <input type="hidden" class="form-control" name="" id="txtID" />
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Số điểm</label>
+                                    <input type="number" class="form-control" name="pointNum" id="txtPoint" placeholder="Nhập số điểm muốn thêm">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Lý do</label>
+                                    <textarea class="form-control" id="txtNote" name="Note" placeholder="Nhập lý do thêm điểm"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer row">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" id="btnSaveAdd" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="createAddMoney" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title modal-money" id="exampleModalLabel" data-id="1">Add money</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="form_create_money" name="form_create_money">
+                    <div class="row pb-3">
+                        <div class="col-md-2 col-xs-12">
+                            <label class="fw-normal">Washer</label>
+                        </div>
+                        <div class="col-md-10 col-sm-12 col-12 add_one_washer">
+                            <select class="form-control" id="washer" name="washer">
+                                <option class="text-black-50" value="0">Washer</option>
+                            </select>
+                        </div>
+                        <div class="col-md-10 col-sm-12 col-12 add_multi_washer display-none pt-2">
+                            <span class="font-weight-bold span_multiWasher"></span>
+                        </div>
+                        <input type="hidden" id="checkTypeAdd" />
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-2 col-xs-12">
+                            <label class="fw-normal">Money</label>
+                        </div>
+                        <div class="col-md-10 col-sm-12 col-12">
+                            <input type="text" class="form-control number" id="txtMoney" name="money" placeholder="Enter money">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2 col-xs-12">
+                            <label class="fw-normal">Note</label>
+                        </div>
+                        <div class="col-md-10 col-sm-12 col-12">
+                            <textarea class="form-control" placeholder="@Resources.EnterNote..." id="noteAddmoney" name="Description"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" model="model-click" class="btn btn-success px-3" id="btn_addMoney">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times mr-2"></i>@Resources.Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="addCouponCus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title custom_title" id="exampleModalLabel">Add Promocode</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="fr_add_point">
+                <div class="modal-body" id="">
+
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Promocode:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <input type="text" class="form-control" name="Promocode" id="txt_promocodeCus" placeholder="Enter promocode">
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">TypeCoupon:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <select class="form-control" name="TypeCoupon" id="txt_typeCouponEditCus" disabled>
+                                <option value="1">Product Coupon</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Describe</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <textarea class="form-control" id="txt_contentCus" name="Content" placeholder="Enter content"></textarea>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Amount</span>
+                        </div>
+                        <div class="col-md-4 col-sm-12 col-12">
+                            <input type="text" class="form-control  number " name="title" id="txt_amountCus" placeholder="Enter amount">
+                        </div>
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <select class="form-control" id="txtValue">
+                                <option value="@Constant.COUPON_TYPE_PERCENT">%</option>
+                                <option value="@Constant.COUPON_TYPE_DISCOUNT">VNĐ</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">All Washer:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12 position-relative">
+                            <input type="checkbox" class="checkbox-custom" id="checkallcustomercoupon" />
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Washer:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <div class="position-relative">
+                                <input type="text" class="form-control pl-26 scrollabletextbox" name="quantity" id="txt_cus_addcoupon" placeholder="Enter customer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Quantity:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <div class="position-relative">
+                                <input type="number" class="form-control pl-26" name="quantity" id="txt_quantityCus" value="0" placeholder="Enter quantity" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-3 col-sm-12 col-12">
+                            <span class="color-blue">Status:</span>
+                        </div>
+                        <div class="col-md-9 col-sm-12 col-12">
+                            <select class="form-control" name="TypeCoupon" id="txt_status">
+                                <option value="1">Show</option>
+                                <option value="0">Hide</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer row">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button type="submit" onclick="saveCreateCouponCus()" id="btnSaveAdd" class="btn btn-success">Add</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        localStorage.clear();
+        $("#btn_addMoney").click(function () {
+            event.preventDefault();
+            $(this).prop('disabled', true);
+            setTimeout(function () {
+                $("#btn_addMoney").prop('disabled', false);
+            }, 2000);
+        });
+        //window.location.href.split('#')[0]
+        history.replaceState(null, null, ' ');
+        $('#txt_cus_addcoupon').tagsInput({
+            'autocomplete': {
+                source: listcus
+
+            },
+            'onChange': function () {
+                var count = 0;
+                var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+                count = tag.length;
+                $("#txt_quantityCus").val(count);
+            }
+
+        });
+    });
+    $("#btn_addMoney").click(function () {
+        var type = $(".modal-money").attr("data-id");
+        AddMoneyAgent(type);
+
+    })
+    var listcus = [];
+    var listfullCus = [];
+    $.ajax({
+        url: "/Washer/GetCusTagInput",
+        type: "GET",
+        success: function (res) {
+            $.each(res, function () {
+                listfullCus.push($(this));
+                var nameandphone = $(this)[0].Name + " - " + $(this)[0].Phone;
+                listcus.push(nameandphone);
+            })
+        }
+    })
+
+
+    $('#addCouponCus').on('show.bs.modal', function (e) {
+        var Local = localStorage.getItem("ListCus") == "" ? null : localStorage.getItem("ListCus");
+        var PhoneName = Local != null ? Local.split(",") : [];
+        $("#checkallcustomercoupon").prop("checked", false);
+        var listcheckbox = $(".checkboxcus");
+        $("#txt_cus_addcoupon").removeTag();
+        $.each(listcheckbox, function () {
+            var Name = $(this).attr("data-name").trim();
+            var Phone = $(this).attr("data-phone").trim();
+            if ($(this).prop("checked") == true) {
+                if (PhoneName.indexOf(Name + " - " + Phone) < 0) {
+                    PhoneName.push(Name + " - " + Phone);
+                }
+            }
+            else {
+                if (PhoneName.indexOf(Name + " - " + Phone) >= 0) {
+                    PhoneName.splice(PhoneName.indexOf(Name + " - " + Phone), 1);
+                }
+            }
+        })
+
+
+        localStorage.setItem("ListCus", PhoneName);
+        var Localnew = localStorage.getItem("ListCus") == "" ? null : localStorage.getItem("ListCus");
+        var PhoneNameFinal = Localnew != null ? Localnew.split(",") : [];
+        if (PhoneNameFinal.length > 0) {
+            for (i = 0; i < PhoneNameFinal.length; i++) {
+                $("#txt_cus_addcoupon").addTag(PhoneNameFinal[i]);
+            }
+        }
+    })
+
+    $("#checkallcustomercoupon").change(function () {
+        if ($(this).prop("checked")) {
+            var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+            $.each(tag, function () {
+                $('#txt_cus_addcoupon').removeTag($(this).children("span").text())
+            })
+            $('#txt_cus_addcoupon_tag').prop("disabled", true);
+        }
+        else {
+            $('#txt_cus_addcoupon_tag').prop("disabled", false);
+        }
+    })
+    function saveCreateCouponCus() {
+        //alert($('#txt_promocode').val());
+        var listCusID = [];
+        var promocode = $.trim($('#txt_promocodeCus').val());
+        var content = $.trim($('#txt_contentCus').val());
+        var amount = $.trim($('#txt_amountCus').val().replace(/,/g, ""));
+        var typeCoupon = $('#txtValue').val();
+        var allcustomer = $("#checkallcustomercoupon").prop("checked") ? 1 : 0;
+        console.log(allcustomer)
+        //var typeCoupon = $('#txt_typeCoupon').val();
+        var quantity = $.trim($('#txt_quantityCus').val());
+        var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+        var status = $("#txt_status").val();
+        $.each(tag, function () {
+            var texttag = $(this).children("span").text().trim();
+            var NamePhone = texttag.split("-");
+            var Name = NamePhone[0].trim();
+            var Phone = NamePhone[1].trim();
+            $.each(listfullCus, function () {
+                if ($(this)[0].Name == Name && $(this)[0].Phone == Phone) {
+                    listCusID.push(parseInt($(this)[0].Id));
+                    return false;
+                }
+
+            })
+        })
+
+
+        //console.log(promocode);
+        if (promocode == "") {
+            swal({
+                title: "",
+                text: "Please! Enter your promocode",
+                icon: "warning"
+            })
+            return;
+        }
+
+        if (promocode.length <= 3) {
+            swal({
+                title: "",
+                text: "Promocde must be over three characters!",
+                icon: "warning"
+            })
+            return;
+        }
+        if (amount.length <= 0) {
+            swal({
+                title: "",
+                text: "Please! Enter your amount",
+                icon: "warning"
+            })
+            return;
+        }
+        if (amount >= 100 && typeCoupon == 1) {
+            swal({
+                title: "",
+                text: " Amount value must be less than 100 !",
+                icon: "warning"
+            })
+            return;
+        }
+        if (amount < 1000 && typeCoupon == 2) {
+            swal({
+                title: "",
+                text: " Amount value must be biger than 1000 !",
+                icon: "warning"
+            })
+            return;
+        }
+        if (quantity <= 0 && !allcustomer) {
+            swal({
+                title: "",
+                text: "Quantity must be greater than 1 ",
+                icon: "warning"
+            })
+            return;
+        }
+
+        //else if (url == null) {
+        //    swal({
+        //        title: "Thông báo",
+        //        text: "Vui lòng chọn ít nhất 1 ảnh",
+        //        icon: "warning"
+        //    })
+        //    return;
+        //}
+        $.ajax({
+            url: "/Promocode/CreateCoupon",
+            data: {
+                Code: promocode,
+                Content: content,
+                TypeCoupon: typeCoupon,
+                Amount: amount,
+                QTY: quantity,
+                Path: "",
+                CreateDate: "",
+                rankId: null,
+                listAgentID: listCusID,
+                allcustomer: allcustomer,
+                type: 1,
+                status,
+            },
+            beforeSend: function () {
+                $("#modalLoad").modal("show");
+            },
+            traditional: true,
+            success: function (response) {
+                $("#modalLoad").modal("hide");
+                if (response == 1) {
+
+                    $("#addCouponCus").modal('hide');
+                    swal({
+                        title: "",
+                        text: "Add promocode successFully !",
+                        icon: "success"
+                    })
+                    localStorage.clear();
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: "Promocode already exists !",
+                        icon: "error"
+                    })
+                }
+            }
+        });
+    }
+
+
+
+    function AddMoneyAgent(type) {
+        var money = $("#txtMoney").val().trim();
+        var note = $("#noteAddmoney").val().trim();
+        if (money == "") {
+            swal({
+                title: "",
+                text: "Please enter money",
+                icon: "warning",
+            });
+            return;
+        }
+        if (note == "") {
+            swal({
+                title: "",
+                text: "Please enter note",
+                icon: "warning",
+            });
+            return;
+        }
+        money = cms_decode_currency_format(money);
+        var checkType = $("#checkTypeAdd").val().trim();
+        if (checkType == 1) {
+            var memId = $("#washer").val();
+            var lang = $("#washer > option[value=" + memId + "]").attr('class');
+            console.log("type money", typeof (money))
+            if (memId == 0) {
+                swal({
+                    title: "",
+                    text: "Please select washer",
+                    icon: "warning",
+                });
+                return;
+            }
+            if (lang == "null") {
+                lang = "vi";
+            }
+            var checkData = {
+                memId: memId,
+                money: money,
+                lang: lang,
+                note: note
+            }
+            console.log("data", checkData);
+            $.ajax({
+                url: '/Washer/AddMoneyAgent',
+                type: 'POST',
+                data: {
+                    memID: memId,
+                    point: money,
+                    lang: lang,
+                    content: note,
+                    type: type
+                },
+                success: function (res) {
+                    swal({
+                        title: "",
+                        text: "Add money successfully",
+                        icon: "success",
+                    });
+                    $("#createAddMoney").modal('hide');
+                }
+            });
+        }
+        else {
+            var listphone = [];
+            var text = $(".span_multiWasher").text();
+            if (text.split(',').length > 0) {
+                $.each(text.split(','), function () {
+                    listphone.push(this.split('-')[1].trim())
+
+                })
+            }
+            console.log(listphone)
+            $.ajax({
+                url: '/Washer/AddMultiMoney',
+                type: 'POST',
+                beforeSend: function () {
+                    $("#modalLoad").modal("show");
+                },
+                data: {
+                    point: money,
+                    content: note,
+                    type: type,
+                    listphone: listphone
+                },
+                success: function (res) {
+                    $("#modalLoad").modal("hide");
+                    if (res.Status == 1) {
+                        $("#createAddMoney").modal('hide');
+                        SearchWasher();
+                        swal({
+                            title: "",
+                            text: "Add money successfully",
+                            icon: "success",
+                        });
+                    }
+                    else {
+                        swal({
+                            title: "",
+                            text: res.Message,
+                            icon: "success",
+                        });
+                    }
+                }
+            })
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    function ShowAddMoney(check) {
+        if (check == 1) {
+            $(".modal-money").text("Add Money");
+            $("#btn_addMoney").text("Add");
+        }
+        else {
+            $(".modal-money").text("Minus Money");
+            $(".modal-money").attr("data-id", 2);
+            $("#btn_addMoney").text("Minus");
+        }
+
+        ////
+        var ListcusLocal = localStorage.getItem("ListCus") == null ? [] : localStorage.getItem("ListCus").split(',');
+        if ($(".checkboxcus").length > 0) {
+            $.each($(".checkboxcus"), function () {
+                var phone = $(this).data('phone').trim();
+                var name = $(this).data('name').trim();
+                if (!$(this).prop("checked")) {
+                    if (!ListcusLocal.indexOf(phone) >= 0) {
+                        ListcusLocal.splice(ListcusLocal.indexOf(name + " - " + phone), 1);
+
+                    }
+                }
+
+            })
+            localStorage.setItem("ListCus", ListcusLocal);
+        }
+        var Nameandphone = (localStorage.getItem("ListCus") == null || localStorage.getItem("ListCus") == "") ? "" : (localStorage.getItem("ListCus") + ",");
+        if ($(".checkboxcus:checked").length > 0) {
+            $.each($(".checkboxcus:checked"), function () {
+                var phone = $(this).data('phone').trim();
+                var name = $(this).data('name').trim();
+                var namephone = name + " - " + phone + ",";
+                if (!Nameandphone.includes(phone)) {
+                    Nameandphone = Nameandphone + namephone;
+
+
+                }
+
+            })
+        }
+        if (Nameandphone.length > 0) {
+            $("#checkTypeAdd").val(2);
+            $(".add_multi_washer").show();
+            $(".add_one_washer").hide();
+            $(".span_multiWasher").html(Nameandphone.slice(0, Nameandphone.length - 1));
+        }
+        else {
+            $(".span_multiWasher").html("");
+            $("#checkTypeAdd").val(1);
+            $(".add_multi_washer").hide();
+            $(".add_one_washer").show();
+            $("#washer").empty();
+            $("#washer").append('<option class="text-black-50" value="0">Washer</option>');
+            $.ajax({
+                url: '/Washer/GetListAgent',
+                type: 'GET',
+                success: function (res) {
+                    console.log(res);
+                    $.each(res, function () {
+                        $("#washer").append('<option value="' + this.MemberId + '" class="' + this.Lang + '">' + this.Name + ' - ' + this.Phone + '</option>');
+                    });
+                }
+            })
+        }
+        ////
+
+
+        //setTimeout(function () {
+        //    if (checkAmountCheck == 0) {
+        //        $("#checkTypeAdd").val(1);
+        //        $(".add_multi_washer").hide();
+        //        $(".add_one_washer").show();
+        //        $("#washer").empty();
+        //        $("#washer").append('<option class="text-black-50" value="0">Washer</option>');
+        //        $.ajax({
+        //            url: '/Washer/GetListAgent',
+        //            type: 'GET',
+        //            success: function (res) {
+        //                console.log(res);
+        //                $.each(res, function () {
+        //                    $("#washer").append('<option value="' + this.MemberId + '" class="' + this.Lang + '">' + this.Name + ' - ' + this.Phone + '</option>');
+        //                });
+        //            }
+        //        })
+        //    }
+
+        //}, 400);
+
+    }
+    function exportExcel() {
+        var codeOrName = $("#txtCode").val().trim();
+        var phone = $("#txtPhone").val().trim();
+        var email = $("#txtEmail").val().trim();
+        var status = $("#SlActive").val();
+        var fromDate = $("#dtFromDateIndex").val().trim();
+        var toDate = $("#dtTodateIndex").val().trim();
+        if (status == 0) {
+            status = null;
+        }
+        window.location.href = "/Washer/ExportRequest?CodeOrName=" + codeOrName + "&Phone=" + phone + "&Email=" + email + "&Status=" + status + "&FromDate=" + fromDate + "&ToDate=" + toDate;
+    }
+</script>
+<!-- end modal -->
+@*autocomplate*@
+@*<script>
+        $("#txtPhone").autocomplete({
+            source: function (request, response) {
+                var name = $("#txtPhone").val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Customer/SearchCusName",
+                    data: { Name: name },
+                    success: response,
+                    dataType: 'json'
+                });
+            }
+        });
+
+    </script>*@

@@ -1,0 +1,3411 @@
+{
+	"info": {
+		"_postman_id": "5770a174-769a-43ff-b117-b6a966e84692",
+		"name": "CarRect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Phone\": \"0123401234\",\n    \"PassWord\": \"123456\",\n    \"deviceID\": \"b9d37e68-a98b-45fe-8d33-1f93548729df\",\n    \"role\" : 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}Login",
+							"host": [
+								"{{local}}Login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Phone\": \"0355441199\",\n\t\"deviceID\":\"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}Register",
+							"host": [
+								"{{local}}Register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RegisterWasher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Phone\": \"0355441100\",\n\t\"Password\":\"123456\",\n\t\"Email\" : \"\",\n\t\"Name\" : \"\"\n\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}RegisterWasher",
+							"host": [
+								"{{local}}RegisterWasher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCustomer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"token\": \"49D1B9505247A5DB520F5EE0A538CCE0\",\n    \"phone\": \"0962630097\",\n    \"name\": \"TUNG NC\",\n    \"sex\": 1,\n    \"address\": \"Mai Dong Hoang Mai HN\",\n    \"email\": \"Tungnguyen@gmail.com\",\n    \"dobStr\": \"11/11/1980\",\n    \"passWord\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateCustomer",
+							"host": [
+								"{{local}}UpdateCustomer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangePass",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Phone\": \"0355441109\",\n\t\"newPass\": \"123456\",\n\t\"oldPass\":\"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}ChangePass",
+							"host": [
+								"{{local}}ChangePass"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ConfirmOTP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Phone\": \"0355441199\",\n\t\"OTP\": \"689161\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}ConfirmOTP",
+							"host": [
+								"{{local}}ConfirmOTP"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdatePassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pass\": \"12345678\",\n    \"OTP\": \"888888\",\n    \"deviceID\": \"24da3430-0f93-45bd-9f29-b6ec35385b20\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdatePassword",
+							"host": [
+								"{{local}}UpdatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddLocation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Name\": \"Cơ quan\",\n\t\"PlaceID\": \"ChIJNQCHeHKrNTERsFEDtCHGDh4\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}AddLocation",
+							"host": [
+								"{{local}}AddLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateLocation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"PlaceId\": \"ChIJG5F9WbqsNTERlDSGox8u3x8\",\n    \"Name\": \"Công ty\",\n    \"CustomerAddress\": \"HH2 Bắc Hà, Vũ Hữu, Trung Văn, Thanh Xuân, Hà Nội, Việt Nam\",\n    \"ID\": 51\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateLocation",
+							"host": [
+								"{{local}}UpdateLocation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteLocation",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteLocation?ID=5",
+							"host": [
+								"{{local}}DeleteLocation"
+							],
+							"query": [
+								{
+									"key": "ID",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOTPByPhone",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetOTPByPhone?phone=0962630097&type=2",
+							"host": [
+								"{{local}}GetOTPByPhone"
+							],
+							"query": [
+								{
+									"key": "phone",
+									"value": "0962630097"
+								},
+								{
+									"key": "type",
+									"value": "2",
+									"description": "2:OTP_TYPE_FORGOT_PASS\n1:OTP_TYPE_REGISTER"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateDeviceID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							},
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateDeviceID?deviceID=c224bc3a-1d60-4988-a950-307292e128b4",
+							"host": [
+								"{{local}}UpdateDeviceID"
+							],
+							"query": [
+								{
+									"key": "deviceID",
+									"value": "c224bc3a-1d60-4988-a950-307292e128b4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUserInfor (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetUserInfor",
+							"host": [
+								"{{local}}GetUserInfor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeAvatar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/E:/FILE_lINH_TINH/Image/iCloud Photos/IMG_0078.JPG"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}ChangeAvatar",
+							"host": [
+								"{{local}}ChangeAvatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}Logout",
+							"host": [
+								"{{local}}Logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}Withdraw?point=2000000&id=36",
+							"host": [
+								"{{local}}Withdraw"
+							],
+							"query": [
+								{
+									"key": "point",
+									"value": "2000000"
+								},
+								{
+									"key": "id",
+									"value": "36"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RechargeWallet",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}RechargeWallet?point=100000&type=1",
+							"host": [
+								"{{local}}RechargeWallet"
+							],
+							"query": [
+								{
+									"key": "point",
+									"value": "100000"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"description": "1: nạp tiền vào ví\n2: chuyển tiền từ ví thu nhập vào ví"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPointHistory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetPointHistory?FromDate=&type=1&toDate=",
+							"host": [
+								"{{local}}GetPointHistory"
+							],
+							"query": [
+								{
+									"key": "FromDate",
+									"value": ""
+								},
+								{
+									"key": "type",
+									"value": "1"
+								},
+								{
+									"key": "toDate",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateRefCode (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateRefCode?refCode=0854998392",
+							"host": [
+								"{{local}}UpdateRefCode"
+							],
+							"query": [
+								{
+									"key": "refCode",
+									"value": "0854998392"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "HomeAndNews",
+			"item": [
+				{
+					"name": "GetHomeScreen",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetHomeScreen?deviceID",
+							"host": [
+								"{{local}}GetHomeScreen"
+							],
+							"query": [
+								{
+									"key": "deviceID",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetNews",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetNews?cateID=",
+							"host": [
+								"{{local}}GetNews"
+							],
+							"query": [
+								{
+									"key": "cateID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetNewsDetail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetNewsDetail?newID=1",
+							"host": [
+								"{{local}}GetNewsDetail"
+							],
+							"query": [
+								{
+									"key": "newID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListIntro",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListIntro?type=1",
+							"host": [
+								"{{local}}GetListIntro"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Orther",
+			"item": [
+				{
+					"name": "GetProvinceAndDistrict",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetProvinceAndDistrict?ProvinceCode=1",
+							"host": [
+								"{{local}}GetProvinceAndDistrict"
+							],
+							"query": [
+								{
+									"key": "ProvinceCode",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListCounpon",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListCounpon?Type=1",
+							"host": [
+								"{{local}}GetListCounpon"
+							],
+							"query": [
+								{
+									"key": "Type",
+									"value": "1",
+									"description": "1: chưa xử dung\n2: đã xử dụng"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListShiftTime (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListShiftTime?dateTime=25/06/2020",
+							"host": [
+								"{{local}}GetListShiftTime"
+							],
+							"query": [
+								{
+									"key": "dateTime",
+									"value": "25/06/2020"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/C:/Users/ANHLE/Desktop/img_lights.jpg"
+								},
+								{
+									"key": "carModelID",
+									"value": "DSADSA",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "orderItemDetailStepID",
+									"value": "ASDASD",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "type",
+									"value": "wqeewqew",
+									"type": "text",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UploadImage?carID=&orderServiceID=334&imageRequiteID=1",
+							"host": [
+								"{{local}}UploadImage"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": ""
+								},
+								{
+									"key": "orderServiceID",
+									"value": "334"
+								},
+								{
+									"key": "imageRequiteID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadCarImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "1",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/408.jpg"
+								},
+								{
+									"key": "2",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/381.jpg"
+								},
+								{
+									"key": "3",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/1731.jpg"
+								},
+								{
+									"key": "4",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/26066.jpg"
+								},
+								{
+									"key": "5",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/26067.jpg"
+								},
+								{
+									"key": "6",
+									"type": "file",
+									"src": "/C:/Users/AnhLee/Desktop/IMAGE/26072.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UploadCarImage?carID=10",
+							"host": [
+								"{{local}}UploadCarImage"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UploadCarImageService",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "1",
+									"type": "file",
+									"src": "/C:/Users/ANHLE/Desktop/parking-lot-car-park-building-urban-areas_41043-2702.jpg",
+									"disabled": true
+								},
+								{
+									"key": "2",
+									"type": "file",
+									"src": "/C:/Users/ANHLE/Desktop/parklot-maintenance-16.jpg",
+									"disabled": true
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UploadCarImageService?orderServiceID=332&type=1&note=xe nằm ở gần nhà kho",
+							"host": [
+								"{{local}}UploadCarImageService"
+							],
+							"query": [
+								{
+									"key": "orderServiceID",
+									"value": "332"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"description": "1 : ảnh xe\n2 : ảnh bãi đỗ\n"
+								},
+								{
+									"key": "note",
+									"value": "xe nằm ở gần nhà kho"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteImage",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteImage?ImageID=4&type=1",
+							"host": [
+								"{{local}}DeleteImage"
+							],
+							"query": [
+								{
+									"key": "ImageID",
+									"value": "4"
+								},
+								{
+									"key": "type",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCarImageService",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"listID\": [\n        1\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteCarImageService",
+							"host": [
+								"{{local}}DeleteCarImageService"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetNotify",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetNotify",
+							"host": [
+								"{{local}}GetNotify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetConfig",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetConfig",
+							"host": [
+								"{{local}}GetConfig"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetContentReason",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetContentReason?type=2",
+							"host": [
+								"{{local}}GetContentReason"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetQA",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetQA",
+							"host": [
+								"{{local}}GetQA"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAreaByProvince",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetAreaByProvince?provinceCode=2",
+							"host": [
+								"{{local}}GetAreaByProvince"
+							],
+							"query": [
+								{
+									"key": "provinceCode",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeViewed",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}ChangeViewed?notifyID=1",
+							"host": [
+								"{{local}}ChangeViewed"
+							],
+							"query": [
+								{
+									"key": "notifyID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Car",
+			"item": [
+				{
+					"name": "GetListCarModeAndBrand",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListCarModeAndBrand?search=&carBrandID=",
+							"host": [
+								"{{local}}GetListCarModeAndBrand"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "carBrandID",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCarDetail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetCarDetail?carID=10",
+							"host": [
+								"{{local}}GetCarDetail"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteCarCustomer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteCarCustomer?carID=10",
+							"host": [
+								"{{local}}DeleteCarCustomer"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddCar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"CarModelID\" : 10,\n\t\"LicensePlates\": \"37863\",\n\t\"ManufacturingDate\" : \"2018\",\n\t\"registrationDateStr\" : \"29/09/2019\",\n\t\"CarColor\" : \"Xám đen và nâu\",\n\t\"Status\": \"tình trạng xe\",\n\t\"VehicleRegistration\": \"Giấy tờ xe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}AddCar",
+							"host": [
+								"{{local}}AddCar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"carID\": 20,\n    \"carModel\": \"4C\",\n    \"carModelID\": 10,\n    \"carBrand\": \"Alfa-Romeo\",\n    \"licensePlates\": \"696969\",\n    \"carColor\": \"den\",\n    \"registrationDateStr\": \"29/09/2019\",\n    \"listImage\": [\n        {\n            \"url\": \"http://winds.hopto.org/Uploads/d247b8f2cfd30ece02e2e43479faa635.jpg\",\n            \"imageID\": 177\n        }\n    ],\n    \"VehicleRegistration\": \"Day du\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateCar",
+							"host": [
+								"{{local}}UpdateCar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RequestAddCar",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}RequestAddCar?note=tôi muốn tạo một con Lamborghini: Aventador S sản xuất năm 2020",
+							"host": [
+								"{{local}}RequestAddCar"
+							],
+							"query": [
+								{
+									"key": "note",
+									"value": "tôi muốn tạo một con Lamborghini: Aventador S sản xuất năm 2020"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Service",
+			"item": [
+				{
+					"name": "CheckService",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CheckService?orderServiceID=338",
+							"host": [
+								"{{local}}CheckService"
+							],
+							"query": [
+								{
+									"key": "orderServiceID",
+									"value": "338"
+								},
+								{
+									"key": "PlaceID",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListService",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListService?carID=&type=2&mainServiceID=&orderID=1742",
+							"host": [
+								"{{local}}GetListService"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": ""
+								},
+								{
+									"key": "type",
+									"value": "2"
+								},
+								{
+									"key": "mainServiceID",
+									"value": ""
+								},
+								{
+									"key": "orderID",
+									"value": "1742"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderServiceDetail",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetOrderServiceDetail?orderServiceID=1743",
+							"host": [
+								"{{local}}GetOrderServiceDetail"
+							],
+							"query": [
+								{
+									"key": "longi",
+									"value": "105.7952399",
+									"disabled": true
+								},
+								{
+									"key": "lati",
+									"value": "20.9977287",
+									"disabled": true
+								},
+								{
+									"key": "PlaceID",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "orderServiceID",
+									"value": "1743"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderComboSevice",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetOrderComboSevice?comboCode=22A249C55E2E830DE5F635621E620239",
+							"host": [
+								"{{local}}GetOrderComboSevice"
+							],
+							"query": [
+								{
+									"key": "comboCode",
+									"value": "22A249C55E2E830DE5F635621E620239"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ChangeStatus",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}ChangeStatus?orderServiceID=1355&status=0&reason=Tôi đặt nhậm lịch",
+							"host": [
+								"{{local}}ChangeStatus"
+							],
+							"query": [
+								{
+									"key": "orderServiceID",
+									"value": "1355"
+								},
+								{
+									"key": "status",
+									"value": "0"
+								},
+								{
+									"key": "reason",
+									"value": "Tôi đặt nhậm lịch"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUrlVNPay",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetUrlVNPay?transactionID=1717",
+							"host": [
+								"{{local}}GetUrlVNPay"
+							],
+							"query": [
+								{
+									"key": "transactionID",
+									"value": "1717"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "vnp_ipn",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}vnp_ipn?vnp_Amount=100000000&vnp_BankCode=NCB&vnp_CardType=20200522-140126&vnp_OrderInfo=Nạp tiền&vnp_PayDate=20200522140117&vnp_ResponseCode=00&vnp_TmnCode=EVERGL01&vnp_TransactionNo=13304873&vnp_TxnRef=1178&vnp_SecureHashType=SHA256&vnp_SecureHash=9aad0149a7656057828ec514afe6157285655d3b1983ec7903363d69c360c39e&vnp_BankTranNo=ATM",
+							"host": [
+								"{{local}}vnp_ipn"
+							],
+							"query": [
+								{
+									"key": "vnp_Amount",
+									"value": "100000000"
+								},
+								{
+									"key": "vnp_BankCode",
+									"value": "NCB"
+								},
+								{
+									"key": "vnp_CardType",
+									"value": "20200522-140126"
+								},
+								{
+									"key": "vnp_OrderInfo",
+									"value": "Nạp tiền"
+								},
+								{
+									"key": "vnp_PayDate",
+									"value": "20200522140117"
+								},
+								{
+									"key": "vnp_ResponseCode",
+									"value": "00"
+								},
+								{
+									"key": "vnp_TmnCode",
+									"value": "EVERGL01"
+								},
+								{
+									"key": "vnp_TransactionNo",
+									"value": "13304873"
+								},
+								{
+									"key": "vnp_TxnRef",
+									"value": "1178"
+								},
+								{
+									"key": "vnp_SecureHashType",
+									"value": "SHA256"
+								},
+								{
+									"key": "vnp_SecureHash",
+									"value": "9aad0149a7656057828ec514afe6157285655d3b1983ec7903363d69c360c39e"
+								},
+								{
+									"key": "vnp_BankTranNo",
+									"value": "ATM"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetListOrderService",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListOrderService?status=&fromDate=&toDate=&distance=&page=1&serviceID=&comboID=&search=&longi&lati",
+							"host": [
+								"{{local}}GetListOrderService"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": ""
+								},
+								{
+									"key": "fromDate",
+									"value": ""
+								},
+								{
+									"key": "toDate",
+									"value": ""
+								},
+								{
+									"key": "distance",
+									"value": ""
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "serviceID",
+									"value": ""
+								},
+								{
+									"key": "comboID",
+									"value": ""
+								},
+								{
+									"key": "search",
+									"value": ""
+								},
+								{
+									"key": "longi",
+									"value": null
+								},
+								{
+									"key": "lati",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateOrderService",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"mainService\": 1,\n    \"isInDoor\": 1,\n    \"couponCode\": \"\",\n    \"isBookingNow\": 0,\n    \"agentCode\": \"\",\n    \"note\": \"\",\n    \"carID\": 248,\n    \"placeID\": \"ChIJG5F9WbqsNTERlDSGox8u3x8\",\n    \"CustomerAddress\": \"Tầng 20 -23, Tòa nhà HH2 Bắc Hà, Lê Văn Lương kéo dài, Trung Văn\",\n    \"BookingDateInput\": \"18:30 30/06/2020\",\n    \"comboID\": 0,\n    \"additionService\": [],\n    \"PaymentType\": 1,\n    \"UsePoint\": 0,\n    \"OfficeID\" : 0,\n    \"OfficeVAT\" : 1214582,\n    \"OfficeName\" :\"Windsoft\",\n    \"OfficeAddress\": \"fireStart kim giang\",\n    \"IsExportVAT\" : 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CreateOrderService",
+							"host": [
+								"{{local}}CreateOrderService"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateReview",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderServiceID\": 335,\n    \"point\": 4,\n    \"Note\": \"4 sao nè\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CreateReview",
+							"host": [
+								"{{local}}CreateReview"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckAgentByCode",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CheckAgentByCode?agentCode=CN20201323",
+							"host": [
+								"{{local}}CheckAgentByCode"
+							],
+							"query": [
+								{
+									"key": "agentCode",
+									"value": "CN20201323"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "checkArea",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}checkArea?placeID=ChIJ7_iv8QK6j4ARmw8FEqpEySE",
+							"host": [
+								"{{local}}checkArea"
+							],
+							"query": [
+								{
+									"key": "placeID",
+									"value": "ChIJ7_iv8QK6j4ARmw8FEqpEySE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CheckCreateOrder",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CheckCreateOrder?carID=92&placeID=ChIJd32_DgpfNDERLcREjVHYbF4&bookingDateInput=14:30%2027/05/2020&isBookingNow=1&agentCode=CM202005-52&couponCode=",
+							"host": [
+								"{{local}}CheckCreateOrder"
+							],
+							"query": [
+								{
+									"key": "carID",
+									"value": "92"
+								},
+								{
+									"key": "placeID",
+									"value": "ChIJd32_DgpfNDERLcREjVHYbF4"
+								},
+								{
+									"key": "bookingDateInput",
+									"value": "14:30%2027/05/2020"
+								},
+								{
+									"key": "isBookingNow",
+									"value": "1"
+								},
+								{
+									"key": "agentCode",
+									"value": "CM202005-52"
+								},
+								{
+									"key": "couponCode",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetServiceFilter",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetServiceFilter",
+							"host": [
+								"{{local}}GetServiceFilter"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateNote",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"orderServiceID\" : 332,\n\t\"type\" : 2,\n\t\"note\" : \"xe có một vết xước ở cửa bên trái dài 15cm\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateNote",
+							"host": [
+								"{{local}}UpdateNote"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AdditionServiceExtra (P2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderServiceID\": 1706,\n    \"additionService\": [6,7]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}AdditionServiceExtra",
+							"host": [
+								"{{local}}AdditionServiceExtra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PayExtraService (P2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderServiceID\": 1706,\n    \"additionService\": [6,7]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}PayExtraService?orderServiceID&paymentType",
+							"host": [
+								"{{local}}PayExtraService"
+							],
+							"query": [
+								{
+									"key": "orderServiceID",
+									"value": null
+								},
+								{
+									"key": "paymentType",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Washer",
+			"item": [
+				{
+					"name": "UpdateLocationAgent",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"value": "{{lang}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateLocationAgent",
+							"host": [
+								"{{local}}UpdateLocationAgent"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Noti",
+			"item": [
+				{
+					"name": "TestNotiWasher",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "https",
+								"value": "//onesignal.com/api/v1/notifications",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Basic :ZGZlZmEwNmItNmUxMi00Y2NjLWJmOGUtMWFiMGQxYzU4NDY5",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"android_accent_color\": \"e8000c\",\n    \"app_id\": \"ac4b681b-0885-400d-8fe4-ec83a8f67547\",\n    \"data\": {\n        \"timeSend\": 1591353072,\n        \"timeWait\": 180,\n        \"orderServiceID\": 1435,\n        \"productID\": null,\n        \"newsID\": null,\n        \"AgentCode\": \"\",\n        \"type\": 2,\n        \"deviceID\": \"6601c7ac-8a59-4aa7-9279-b96d39d89459\",\n        \"comboCode\": \"\"\n    },\n    \"headings\": {\n        \"en\": \"Thông báo\"\n    },\n    \"contents\": {\n        \"en\": \"Bạn có đơn hàng mới cần xác nhận\"\n    },\n    \"android_channel_id\": \"257fe7ea-90a6-4772-a16b-25d0c061f01c\",\n    \"include_player_ids\": [\n        \"7f685c53-05dd-4787-8ac7-a78fdd0a9\"\n    ],\n    \"ttl\": 180,\n    \"priority\": 10\n}"
+						},
+						"url": {
+							"raw": "https://onesignal.com/api/v1/notifications",
+							"protocol": "https",
+							"host": [
+								"onesignal",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TestNotiCustomer",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "https",
+								"type": "text",
+								"value": "//onesignal.com/api/v1/notifications"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic :ZGZlZmEwNmItNmUxMi00Y2NjLWJmOGUtMWFiMGQxYzU4NDY5"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"app_id\": \"5a36e238-e0b9-481b-82a6-f496aa9b3682\",\n    \"data\": {\n    \t\"type\": 4,\n        \"timeSend\": 1564487060,\n        \"timeWait\": 18000,\n        \"orderServiceID\": 11,\n        \"productID\" : null,\n        \"newsID\" : null,\n        \"agentCode\": \"CM202003-001\",\n        \"diviceID\":\"\"\n    },\n    \"headings\": {\n        \"en\": \"Heading\"\n    },\n    \"contents\": {\n        \"en\": \"content\"\n    },\n    \"ttl\": 60,\n    \"android_channel_id\": \"c8a999be-9cbe-4a17-9839-a1c1c7acc553\",\n    \"include_player_ids\": [\"6cb015f2-be9d-4c41-885b-5a0dc357f5de\"],\n    \"include_email_tokens\": [\"ngocanhale952995@gmail.com\"]\n}"
+						},
+						"url": {
+							"raw": "https://onesignal.com/api/v1/notifications",
+							"protocol": "https",
+							"host": [
+								"onesignal",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TestNotiCustomer Copy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "https",
+								"type": "text",
+								"value": "//onesignal.com/api/v1/notifications"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Basic :ZGZlZmEwNmItNmUxMi00Y2NjLWJmOGUtMWFiMGQxYzU4NDY5"
+							},
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"app_id\": \"ce5f4ab3-5cce-42eb-8b66-f515540009f3\",\n    \"data\": {\n    \t\"type\": 4\n    },\n    \"headings\": {\n        \"en\": \"Heading\"\n    },\n    \"contents\": {\n        \"en\": \"content\"\n    },\n    \"url\": \"http://winds.hopto.org\",\n    \"include_segments\": [\"All\"]\n}"
+						},
+						"url": {
+							"raw": "https://onesignal.com/api/v1/notifications",
+							"protocol": "https",
+							"host": [
+								"onesignal",
+								"com"
+							],
+							"path": [
+								"api",
+								"v1",
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "OTP",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://brandsms.vn:8018/VMGAPI.asmx/BulkSendSms?alias=carrect.vn&msisdn=0355441109&message=Test OTP Windsoft&sendTime=null&authenticateUser=evergloww&authenticatePass=carrect123!@%23",
+							"protocol": "http",
+							"host": [
+								"brandsms",
+								"vn"
+							],
+							"port": "8018",
+							"path": [
+								"VMGAPI.asmx",
+								"BulkSendSms"
+							],
+							"query": [
+								{
+									"key": "alias",
+									"value": "carrect.vn"
+								},
+								{
+									"key": "msisdn",
+									"value": "0355441109"
+								},
+								{
+									"key": "message",
+									"value": "Test OTP Windsoft"
+								},
+								{
+									"key": "sendTime",
+									"value": "null"
+								},
+								{
+									"key": "authenticateUser",
+									"value": "evergloww"
+								},
+								{
+									"key": "authenticatePass",
+									"value": "carrect123!@%23"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Bank",
+			"item": [
+				{
+					"name": "GetListBank",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetListBank",
+							"host": [
+								"{{local}}GetListBank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBank",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"acount\": \"878708978966\",\n    \"acountOwner\": \"LE NGOC ANH\",\n    \"bankID\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateBank",
+							"host": [
+								"{{local}}UpdateBank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateBank",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"acount\": \"878708978966\",\n    \"acountOwner\": \"LE NGOC ANH\",\n    \"bankID\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CreateBank",
+							"host": [
+								"{{local}}CreateBank"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBank",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteBank?id=2",
+							"host": [
+								"{{local}}DeleteBank"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "GetProduct (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetProduct?CateID=1&search",
+							"host": [
+								"{{local}}GetProduct"
+							],
+							"query": [
+								{
+									"key": "CateID",
+									"value": "1"
+								},
+								{
+									"key": "search",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetProductCate (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetProductCate",
+							"host": [
+								"{{local}}GetProductCate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrders  (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetOrders?status=0",
+							"host": [
+								"{{local}}GetOrders"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetOrderDetail  (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetCartDetail?orderID=1",
+							"host": [
+								"{{local}}GetCartDetail"
+							],
+							"query": [
+								{
+									"key": "orderID",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateCart (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}UpdateCart?productID=3&type=1",
+							"host": [
+								"{{local}}UpdateCart"
+							],
+							"query": [
+								{
+									"key": "productID",
+									"value": "3"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"description": "1: them - 0 xoa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCart (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}GetCart",
+							"host": [
+								"{{local}}GetCart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteOrder (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}DeleteOrder?orderID=2",
+							"host": [
+								"{{local}}DeleteOrder"
+							],
+							"query": [
+								{
+									"key": "orderID",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateOrders (P2)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"counponCode\": \"NMN612\",\r\n    \"listProduct\": [\r\n            {\r\n                \"productDetailID\": 4,\r\n                \"productID\": 5,\r\n                \"productName\": \"Dung Dịch Tẩy Keo, Nhựa Đường 1M 08987 (425 g)\",\r\n                \"qty\": 1,\r\n                \"productPrice\": 130000,\r\n                \"listImage\": []\r\n            },\r\n            {\r\n                \"productDetailID\": 3,\r\n                \"productID\": 4,\r\n                \"productName\": \"Dung Dịch Tẩy Keo, Nhựa Đường 5M 08987 (425 g)\",\r\n                \"qty\": 3,\r\n                \"productPrice\": 130000,\r\n                \"listImage\": []\r\n            }\r\n        ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CreateOrders",
+							"host": [
+								"{{local}}CreateOrders"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Rank",
+			"item": [
+				{
+					"name": "CustomerRank  (P2)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"type": "text",
+								"value": "{{token}}"
+							},
+							{
+								"key": "lang",
+								"type": "text",
+								"value": "{{lang}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}CustomerRank",
+							"host": [
+								"{{local}}CustomerRank"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,289 @@
+﻿
+@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.DB
+@using Data.Model
+@using PagedList.Mvc
+@using PagedList
+@model ShipperDetailModel
+
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<div class="getShipper" style="font-family:'Open Sans'; color: black">
+    <div class="row ml-1">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-8 col-lg-9">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px">
+                            <a href="#" onclick="window.location='/Shipper/Index'"><i class="fa fa-angle-left" style="font-size: 25px"></i></a>
+                            <span style="margin-left: 15px; font-weight: 600">Chi tiết tài xế</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-3 col-lg-3 mt-1">
+                        <div style="padding-top: 10px">
+                            @{ if (Model.ship.Members.Any(m => m.IsActive.Equals(SystemParam.ACTIVE)))
+                                {
+                                    <button class="btn btn-danger" onclick="DeActiveShiper(@Model.ID)">Ngừng hoạt động</button> 
+                                }
+                                else
+                                {
+                                    <button class="btn btn-primary" onclick="DeActiveShiper(@Model.ID)">Kích hoạt</button> 
+                                } 
+                                
+                           }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="float: right" class="col-md-12 col-sm-12 col-xs-12 col-lg-4">
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div style=" margin-left: 20px">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Thông tin tài xế</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="#"><div style="font-weight: 600; font-size: 16px; padding: 15px 0px"> Chi tiết</div></a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-user" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @if (!String.IsNullOrEmpty(Model.ship.Name))
+                                            {
+
+                                                if (Model.ship.IsVip.GetValueOrDefault().Equals(SystemParam.CUSTOMER_VIP))
+                                                {
+                                                    <div style="font-size:16px">
+                                                        @Model.ship.Name - VIP
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div style="font-size:16px">
+                                                        @Model.ship.Name
+                                                    </div>
+                                                }
+
+                                            }
+                                            else
+                                            {
+                                                <div style="font-size:16px">_ _ _</div>
+                                            }
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-phone" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.ship.Phone</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-envelope" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.ship.Email</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-map-marker" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.ship.Address</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-certificate style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @{ if (Model.ship.IsActive == SystemParam.ACTIVE)
+                                                {
+                                    <div style="font-size:16px">Đang hoạt động</div> }
+                                if (Model.ship.IsActive == SystemParam.NO_ACTIVE_DELETE)
+                                {
+                    <div style="font-size:16px">Dừng hoạt động</div> } }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-star" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.ship.RatingAdmin</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div style=" margin-left: 20px">
+                        <div>
+                            <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Khu vực hoạt động</div>
+                        </div>
+                        <div class="col-md-12">
+                            @foreach (Data.DB.ShiperArea obj in Model.ship.ShiperAreas)
+                            {
+                <div class="row mt-2">
+                    <div class="col-md-10">
+                        <ul>
+                            <li style="font-size:16px; color:black">@obj.Area.District.Name</li>
+                        </ul>
+                    </div>
+                </div>}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="float: left" class="col-md-12 col-sm-12 col-xs-12 col-lg-8">
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Danh sách ngân hàng</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row" style="padding-bottom:5%">
+                                <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                    <thead class="text-center text-white align-center bg-thead">
+                                    <thead class="text-center text-white bg-thead">
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên ngân hàng</th>
+                                            <th>Số tài khoản</th>
+                                            <th>Tên tài khoản</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @{ if (Model.shipListBank.Count <= 0)
+                                            {
+                                <tr>
+                                    <td colspan="4">Không có dữ liệu.</td>
+                                </tr>
+ }
+                            else
+                            {
+                                int stt = 1;
+                                foreach (var data in Model.shipListBank)
+                                {
+                <tr>
+                    <td>@stt</td>
+                    <td>@data.BankName </td>
+
+                    <td>@data.AccountOwner</td>
+                    <td>@data.Account</td>
+                </tr>
+ stt++;
+            }
+        } }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Lịch sử nhận việc</div>
+                        </div>
+
+                        <div class="row" style="padding-bottom:5%">
+                            @{ Html.RenderAction("GetListBusiness", "Shipper", new { Page = 1, ShipperID = Model.ship.ID }); }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteShip(id) {
+        swal({
+            title: "Bạn chắc chắn xóa chứ?",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '/Shipper/DeleteShipper',
+                        data: { ID: id },
+                        type: 'POST',
+                        success: function (res) {
+                            if (res == SUCCESS) {
+                                swal({
+                                    title: "Xóa thành công",
+                                    text: "",
+                                    icon: "success"
+                                });
+                                searchShipper();
+                            }
+                            else {
+                                swal({
+                                    title: "Có lỗi xảy ra!",
+                                    text: "Vui lòng thực hiện lại",
+                                    icon: "warning"
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+    }
+</script>

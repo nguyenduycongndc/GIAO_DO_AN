@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845425304868",
+    "firebase_url": "https://car-rect-android.firebaseio.com",
+    "project_id": "car-rect-android",
+    "storage_bucket": "car-rect-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845425304868:android:91324aa14da59835fa7fb1",
+        "android_client_info": {
+          "package_name": "com.car.rect.customer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845425304868-bltucmateegc16qdgo596rhi99q4ubk3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSSwgaMBEW7szza3ej8tspxR6JVWskA2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845425304868-bltucmateegc16qdgo596rhi99q4ubk3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

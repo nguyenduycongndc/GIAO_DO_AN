@@ -1,0 +1,152 @@
+﻿@using Data.Model.APIWeb
+@using PagedList;
+@using PagedList.Mvc
+@using Data.Utils
+@using APIProject.Resource
+@model IPagedList<ListNewsWebOutputModel>
+
+@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+
+<body style="font-family:'Open Sans'">
+    <main>
+        <!-- Banner-->
+        <div class="banner">
+            <div>
+                <img src="~/Content/images/Banner_news.png" width="100%" />
+            </div>
+        </div>
+        <!-- End Banner-->
+        <div class="Hot_news">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center mb-40">
+                            <h2 class="news-title">Tin nóng</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                        @foreach (ListNewsWebOutputModel bf in (List<ListNewsWebOutputModel>)ViewBag.Display_BannerFood)
+                        {
+                            <div class="hover-1 hover-11 text-white rounded mb-20">
+                                <a href="/IntroDuce/NewsDetail?id=@bf.ID">
+                                    <img src="@bf.UrlImage" alt="" width="100%">
+                                    <div class="hover-overlay-1"></div>
+                                    <div class="hover-1-noidung-1 px-5 py-4">
+                                        <h3 class="hover-1-tieude-1 font-weight-bold mb-20" style="color:azure;margin-top:50%"> <span class="font-weight-light"></span>@bf.Title</h3>
+                                        <p class="hover-1-trichdan-1 font-text mb-20" style="overflow: hidden; text-overflow: ellipsis; -webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box;">@bf.Description</p>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                @foreach (ListNewsWebOutputModel adv in (List<ListNewsWebOutputModel>)ViewBag.Display_Advertisement)
+                                {
+                                    <div class="hover-1 hover-11 text-white rounded">
+                                        <a href="/IntroDuce/NewsDetail?id=@adv.ID">
+                                            <img src="@adv.UrlImage" alt="" width="100%">
+                                            <div class="hover-overlay-1"></div>
+                                            <div class="hover-1-noidung-1 px-5 py-4">
+                                                <h3 class="hover-1-tieude-1 font-weight-bold mb-20" style="color:azure;margin-top:50%"> <span class="font-weight-light"></span>@adv.Title</h3>
+                                                <p class="hover-1-trichdan-1 font-text mb-20" style="-webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box; ">@adv.Description</p>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <br />
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- news -->
+        <div class="padtop-0 mt-20 slider-1 mb-80">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center mb-40">
+                            <h2 style="color:orangered; font-size: 30px; padding-top:4%;">Tin tức</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="exampleSlider">
+                            <div class="MS-content">
+                                @foreach (ListNewsWebOutputModel news in (List<ListNewsWebOutputModel>)ViewBag.Display_New)
+                                {
+                                    <div class="item">
+                                        <a href="/IntroDuce/NewsDetail?id=@news.ID">
+                                            <img src="@news.UrlImage" class="size-img" alt="">
+                                            <b>@news.Title</b>
+                                        </a>
+                                        <p class="promotion_content">@news.Description</p>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="MS-controls">
+                                <button class="MS-left"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                                <button class="MS-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @* Khuyen mai *@
+
+        <div class="padtop-0 mt-20 slider-1 mb-80">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center mb-40">
+                            <h2 style="color:orangered; font-size: 30px; padding-top:4%;">Khuyến mãi</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div id="exampleSlider">
+                            <div class="MS-content">
+                                @foreach (ListNewsWebOutputModel promotion in (List<ListNewsWebOutputModel>)ViewBag.Display_Promotion)
+                                {
+                                    <div class="item">
+                                        <a href="/IntroDuce/NewsDetail?id=@promotion.ID">
+                                            <img src="@promotion.UrlImage" class="size-img" alt="">
+                                            <b>@promotion.Title</b>
+                                        </a>
+                                        <p class="promotion_content">@promotion.Description</p>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="MS-controls">
+                                <button class="MS-left"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                                <button class="MS-right"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+

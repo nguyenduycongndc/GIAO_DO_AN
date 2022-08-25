@@ -1,0 +1,128 @@
+﻿@*@{
+        ViewBag.Title = "_tableTransactionDelivery";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<TransactionDeliveryModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md text-center">
+    <thead class="text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Mã giao hàng</th>
+            <th>Khách hàng</th>
+            <th>Loại giao hàng</th>
+            <th>TG đặt</th>
+            <th>Tổng tiền</th>
+            <th>Địa chỉ lấy hàng</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Tài xế</th>
+            <th>Tiền thu hộ</th>
+            <th>Giá trị hàng</th>
+            <th>Người gửi</th>
+            <th>Người nhận</th>
+            <th>Trọng lượng</th>
+            <th>Trạng thái thanh toán</th>
+            <th>Trạng thái giao dịch</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="17">Không có dữ liêu</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var dt in Model)
+                {
+    <tr>
+
+        @{
+            <input type="hidden" id="txtTranFoodId" value="@dt.ID" />
+            <td>@stt</td>
+            <td>@dt.Code</td>
+            <td>@dt.CustomerName - @dt.CustomerPhone</td>
+            if (dt.TransportType == SystemParam.TRANSPORT_TYPE_VIP_IN_PROVINCE)
+            {
+                <td>Siêu tốc nội thành - Vip</td>
+            }
+            else if (dt.TransportType == SystemParam.TRANSPORT_TYPE_WESEN)
+            {
+                <td>Siêu tốc nội thành</td>
+            }
+            else
+            {
+                <td></td>
+            }
+            <td>@dt.BookingDate.ToString("dd/MM/yyyy")</td>
+            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.TotalPrice))</td>
+            <td>@dt.Address</td>
+            <td>@dt.FinishAddress</td>
+            <td>@dt.ShiperName</td>
+            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.CODFee))</td>
+            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@dt.PackageFee))</td>
+            <td>@dt.SenderName - @dt.CustomerPhone</td>
+            <td>@dt.RecevieverName - @dt.RecevieverPhone</td>
+            <td>@dt.Weight</td>
+            if (@dt.StatusPayment == 0)
+            {
+                <td>Chưa thanh toán</td>
+            }
+            else
+            {
+                <td>Đã thanh toán</td>
+            }
+            switch (@dt.Status)
+            {
+                case SystemParam.ORDER_STATUS_DENY:
+                    <td>Đơn Shipper bị từ chối</td>
+                    break;
+                case SystemParam.ORDER_STATUS_PENDING:
+                    <td>Đơn Shipper chờ tiếp nhận</td>
+                    break;
+                case SystemParam.ORDER_STATUS_DELIVERY:
+                    <td>Đơn Shipper đang tiếp nhận</td>
+                    break;
+                case SystemParam.ORDER_STATUS_PICK_UP:
+                    <td>Đơn Shipper đã lấy hàng</td>
+                    break;
+                case SystemParam.ORDER_STATUS_FINISH:
+                    <td>Đơn Shipper hoàn thành</td>
+                    break;
+            }
+            <td>
+                <a href="@Url.Action("TransactionDeliveryDetail", "TransactionDelivery", new { id = dt.ID })" title="@Resources.Detail " class="cursor-pointer">
+                    <i class="btnEdit glyphicon glyphicon-upload"></i>
+                </a>
+                @*<a href="javascript:void(0);" title="@Resources.Delete." class="cursor-pointer">
+                    <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteTranDelivery(@dt.ID);"></i>
+                </a>*@
+            </td>
+            stt++;
+        }
+    </tr>
+                }
+            }
+        }
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchTransactionDelivery", "TransactionDelivery", new { page , searchKey = ViewBag.searchKey,provinceID = ViewBag.provinceID,districtID = ViewBag.districtID, status = ViewBag.status, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate, transportType = ViewBag.transportType ,isVip = ViewBag.isVip }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListTransactionDelivery" })
+        )
+    </div>
+</div>

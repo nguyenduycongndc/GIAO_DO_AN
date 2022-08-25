@@ -1,0 +1,70 @@
+﻿﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.DB
+@using PagedList.Mvc
+@using Data.Utils
+@model PagedList.IPagedList<ListComplainOuputModel>
+
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th>STT</th>
+                <th>Khách hàng</th>
+                <th>Số điện thoại</th>
+                <th>Loại dịch vụ</th>
+                <th>Loại khiếu nại</th>
+                <th>Người bị khiếu nại</th>
+                <th>Ngày tạo</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{
+                if (Model.Count() <= 0 )
+                {
+                    <tr>
+                        <td colspan="8">Không có dữ liệu</td>
+                    </tr>
+                }
+                else
+                {
+                    int stt = ((Model.PageNumber - 1) * Model.PageSize ) + 1;
+                    foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@data.CusName</td>
+                            <td>@data.CusPhone</td>
+                            <td>@data.BookingType</td>
+                            <td>@data.ComplainType</td>
+                            <td>@data.ShiperName</td>
+                            <td>@data.CreatedDate</td>
+
+                            <td>
+                                <a data-toggle="tooltip" data-placement="top" style="font-size:20px; color:green;" class="cursor-pointer mr-2" onclick="window.location = '/Complain/Edit'"><i class="fa fa-edit"></i></a>
+                                <a data-toggle="tooltip" data-placement="top" class="cursor-pointer mr-2" style="font-size:20px; color:blue" onclick="window.location = '/Complain/ComplainDetail?ID=' + @data.ID"><i class="fa fa-arrow-circle-o-right"></i></a>
+                                <a data-toggle="tooltip" data-placement="top" class="cursor-pointer mr-2" style="font-size:20px; color:red" onclick="delComplain(@data.ID)"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        stt++;
+                    }
+
+                }
+            }
+
+        </tbody>
+
+    </table>
+    <input type="hidden" id="txtPageCurrent" value="@ViewBag.PageCurrent" class="txtPageCurrent" />
+    <div class="col-md-12">
+        <div class="row float-right">
+            @Html.PagedListPager(
+     Model,
+     page => Url.Action("Search", new { page = page }),
+      PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tbl-complain-order" })
+     )
+
+
+        </div>
+    </div>

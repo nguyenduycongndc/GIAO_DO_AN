@@ -1,0 +1,162 @@
+﻿@using Data.Model;
+@using Data.Utils
+@model List<QAModels>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>NO</th>
+            <th>Question</th>
+            <th>Order</th>
+            <th>Type</th>
+            <th>Create date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+
+        @{
+            if (Model.Count() == 0)
+            {
+                <tr class="text-center"><td colspan="6">No data</td></tr>
+            }
+            else
+            {
+                int no = 1;
+                foreach (var dt in Model)
+                {
+                    <tr>
+                        <td>@no</td>
+                        <td class="txtQuestion" data-content="@dt.Answer">@dt.Question</td>
+                        <td class="valOrder" id="@dt.Type">@dt.OrderDisplay</td>
+                        @{
+                            if (dt.Type.Equals(SystemParam.LANGUAGE_ENGLISH))
+                            {
+                                <td>English</td>
+                            }
+                            else
+                            {
+                                <td>Vietnamese</td>
+                            }
+                        }
+                        <td>@dt.CreateDateStr</td>
+                        <td>
+                            <a data-toggle="tooltip" data-placement="top" title="Detail" class="cursor-pointer showModalDetail" id="@dt.ID" onclick="loadQAedit($(this))">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a data-toggle="tooltip" data-placement="top" title="Delete data" class="cursor-pointer" onclick="delQA(@dt.ID)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    no++;
+                }
+            }
+        }
+    </tbody>
+</table>
+
+
+<!-- The Modal edit Q&A -->
+<div class="modal fade" id="mdEditQA">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form class="fmAddQA">
+
+
+                    <div class="row">
+                        <div class="col-md-5"><label class="text-dark">Order</label></div>
+                        <div class="col-md-7">
+                            <input id="validQA" type="hidden"/>
+                            <input class="form-control" name="OrderDisplay" id="valOrderED" type="number" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 189 || event.keyCode == 48 || event.keyCode == 190 ? false : true " placeholder="Enter order value" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Type</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" name="Type" id="valTypeED">
+                                <option value="1">Vietnamese</option>
+                                <option value="2">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Question</label></div>
+                        <div class="col-md-7">
+                            <textarea class="form-control" style="height:100px !important;" id="txtQuestionED"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="container">
+                            <label class="text-dark">Answer</label>
+                            <textarea class="form-control mt-1" name="AnswerED" id="txtContentAnswerED"></textarea>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="saveEditQA($('#validQA').val())"><i class="fa fa-save mr-1"></i>Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CKEDITOR.replace('AnswerED', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+    })
+
+    //Load QA edit
+
+    function loadQAedit($this) {
+        var thiss = $this.closest("tr");
+        var id = $this.attr("id");
+        var valOrder = thiss.children('.valOrder').text();
+        var type = thiss.children('.valOrder').attr("id");
+        var question = thiss.children('.txtQuestion').text();
+        var answer = thiss.children('.txtQuestion').attr("data-content");
+        $('#valOrderED').val(valOrder);
+        $('#valTypeED').val(type);
+        $('#txtQuestionED').val(question);
+        CKEDITOR.instances['txtContentAnswerED'].setData(answer);
+        $('#validQA').val(id);
+        $('#mdEditQA').modal('show');
+    }
+</script>

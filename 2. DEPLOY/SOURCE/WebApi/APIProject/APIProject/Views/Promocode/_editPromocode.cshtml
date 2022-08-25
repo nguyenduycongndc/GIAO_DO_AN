@@ -1,0 +1,544 @@
+﻿@using Data.Utils
+@using Data.Model.APIWeb
+@model ListCouponModel
+<link href="~/Content/jquery.tagsinput-revisited.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.tagsinput-revisited.js"></script>
+<div class="modal fade" id="modal_edit_coupon" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title custom_title" id="exampleModalLabel">Sửa mã khuyến mại</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="form_update_coupon">
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col col-md-4 text-left">
+                            <span>Mã khuyến mãi</span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-md-8">
+                            <input value="@Model.Code" type="text" id="txt-promo-code" class="form-control" placeholder="Nhập mã khuyến mãi" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-4">
+                            <span>Tên khuyến mại</span><span style="color:red"> *</span>
+
+                        </div>
+                        <div class="col col-7">
+                            <input value="@Model.Name" class="form-control" type="text" placeholder="Tên khuyến mại" id="txt-Name" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-md-4 text-left">
+                            <span>Mô tả</span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-md-8 col-12"><textarea style="height:75px" id="txt-Painted-Promo" class="form-control" placeholder="Thêm mô tả">@Model.Content</textarea></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4 col-12 text-left">
+                            <span>Giá trị</span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col-md-5 col-12">
+                           
+                            @{
+                                if (Model.Percent.HasValue)
+                                {
+                                    <input value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.Percent))" type="text" class="form-control number" id="txt-Promo-Val" placeholder="Nhập giá trị" />
+                                }
+                                if (Model.Discount.HasValue)
+                                {
+                                    <input value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.Discount))" type="text" class="form-control number" id="txt-Promo-Val" placeholder="Nhập giá trị" />
+                                }
+                            }
+
+                        </div>
+                        <div class="col-md-3 col-12">
+                            <select class="form-control" id="sl-PromoVal">
+                                @{
+                                    if (Model.TypeCoupon == @Constant.COUPON_TYPE_PERCENT)
+                                    {
+                                        <option value="@Constant.COUPON_TYPE_DISCOUNT">VNĐ</option>
+                                        <option value="@Constant.COUPON_TYPE_PERCENT" selected>%</option>
+                                    }
+                                    if (Model.TypeCoupon == @Constant.COUPON_TYPE_DISCOUNT)
+                                    {
+                                        <option value="@Constant.COUPON_TYPE_DISCOUNT" selected>VNĐ</option>
+                                        <option value="@Constant.COUPON_TYPE_PERCENT">%</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-4"><span>Loại dịch vụ</span></div>
+                        <div class="col col-4">
+                            <select class="form-control" id="sl-Type">
+                                @if (Model.Type == 1)
+                                {
+                                    <option value="1" selected>Đặt xe</option>
+                                    <option value="2">Giao hàng</option>
+                                    <option value="3">Giao đồ ăn</option>
+                                }
+                                @if (Model.Type == 2)
+                                {
+                                    <option value="1">Đặt xe</option>
+                                    <option value="2" selected>Giao hàng</option>
+                                    <option value="3">Giao đồ ăn</option>
+                                }
+                                @if (Model.Type == 3)
+                                {
+                                    <option value="1">Đặt xe</option>
+                                    <option value="2">Giao hàng</option>
+                                    <option value="3" selected>Giao đồ ăn</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    @*<div class="row mt-1">
+                            <div class="col-4">
+                                <span>Gửi cho tất cả khách hàng</span>
+                            </div>
+                            <div class="col col-1">
+                                <input type="checkbox" id="cb-Sendall" onclick="SendAllCustomer()" />
+                            </div>
+                        </div>*@
+                    <div class="row mt-2">
+                        <div class="col rol-md-4 text-left">
+                            <span>Hạng thành viên</span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-md-8 col-12 text-left">
+                            <select class="form-control" id="sl-Rank-edit">
+                                <option hidden>--Chọn hạng thành viên--</option>
+                                @{
+                                    foreach (var dt in ViewBag.CustomerRank)
+                                    {
+                                        if (Model.rankId == dt.ID)
+                                        {
+                                            <option value="@dt.ID" selected>@dt.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@dt.ID">@dt.Name</option>
+                                        }
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col col-md-4 text-left mt-2">
+                            <span>Loại khuyến mãi</span><span style="color:red"> *</span>
+                        </div>
+
+                        <div class="col col-md-5 col-12 mt-2">
+                            @{
+                                if (Model.TypeTime == 1)
+                                {
+                                    <input checked type="checkbox" id="cb-Type-Promo" onclick="ShowSelectDate1()" />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" id="cb-Type-Promo" onclick="ShowSelectDate1()" />
+                                }
+                            }
+
+                            <span>Có thời hạn</span>
+                        </div>
+                        @{
+                            if (Model.TypeTime == 1)
+                            {
+                                <div id="slDateTime">
+                                    <div class="row mt-1">
+                                        <div class="col-md-4 col-4"></div>
+                                        <div class="col-md-8 col-8">
+                                            <div class="row">
+                                                <div class="col-6 mr-0">
+                                                    <input value="@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString(SystemParam.CONVERT_DATETIME) : "")" type="text" class="form-control relative-icon-calendar date " id="date-From" placeholder="Từ ngày" />
+                                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                                </div>
+                                                <div class="col-6 ml-0">
+                                                    <input value="@(Model.ExpriceDate.HasValue ? Model.StartDate.Value.ToString(SystemParam.CONVERT_DATETIME) : "")" type="text" class="form-control relative-icon-calendar date " id="date-End" placeholder="Đến ngày" />
+                                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="slDateTime" class="hidden">
+                                    <div class="row mt-1">
+                                        <div class="col-md-4 col-4"></div>
+                                        <div class="col-md-8 col-8">
+                                            <div class="row">
+                                                <div class="col-6 mr-0">
+                                                    <input value="@(Model.StartDate.HasValue ? Model.StartDate.Value.ToString(SystemParam.CONVERT_DATETIME) : "")" type="text" class="form-control relative-icon-calendar date " id="date-From" placeholder="Từ ngày" />
+                                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                                </div>
+                                                <div class="col-6 ml-0">
+                                                    <input value="@(Model.ExpriceDate.HasValue ? Model.StartDate.Value.ToString(SystemParam.CONVERT_DATETIME) : "")" type="text" class="form-control relative-icon-calendar date " id="date-End" placeholder="Đến ngày" />
+                                                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <!--thời hạn datepiker-->
+                        <!--datetime piker-->
+
+
+
+
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col col-md-4 text-left">
+                            <span>Số lượng</span>
+                        </div>
+                        <div class="col col-md-4">
+
+                            <input value="@Model.QTY" type="number" class="form-control number-type" name="quantity" id="txt-Quantum" />
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col col-md-4">
+                            <span>Còn lại</span>
+                        </div>
+                        <div class="col col-md-4">
+                            <input value="@Model.Remain" type="number" class="form-control number-type"  name="quantity" id="txtremainedit" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="txtId" value="@Model.ID" />
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Hủy</button>
+                    <button type="button" onclick="SaveEditCoupon(@Model.ID)" id="btnSaveAdd" class="btn btn-success"><i class="fa fa-save"></i>Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    //auto format number input
+    $('.number').keyup(function () {
+        $val = cms_decode_currency_format($(this).val());
+        $(this).val(cms_encode_currency_format($val));
+    });
+
+    //Chặn dấu đặc biệt trong type number input
+    $('.number-type').keydown(function (e) {
+        if (e.keyCode == 69 || e.keyCode == 189 || e.keyCode == 188 || e.keyCode == 231 || e.keyCode==190)
+            return false;
+    });
+    var listfullCus = [];
+
+    $(document).ready(function () {
+        var listcus = [];
+        var listcurentCus =[];
+        $.ajax({
+            url: "/Customer/GetCusTagInput",
+            type: "GET",
+            success: function (res) {
+                $.each(res, function () {
+                    listfullCus.push($(this));
+                    var nameandphone = $(this)[0].Name + " - " + $(this)[0].Phone;
+                    listcus.push(nameandphone);
+                })
+            }
+        })
+        $.ajax({
+            url: "/Promocode/GetListCusByCoupon",
+            type: "POST",
+            data: {
+                Id:@Model.ID,
+                type:@Model.Type
+            },
+
+            success: function (res) {
+                $("#modalLoad").modal("show");
+                $.each(res, function () {
+                    var nameandphone = $(this)[0].Name + " - " + $(this)[0].Phone;
+                    listcurentCus.push(nameandphone);
+                })
+                if (listcurentCus.length > 0) {
+                    for (i = 0; i < listcurentCus.length; i++) {
+                        console.log(listcurentCus[i]);
+                        $("#cbSendall").addTag(listcurentCus[i]);
+                    }
+                    console.log(listcurentCus);
+                }
+                if (listcurentCus != null && listcurentCus.length > 0) {
+                    $("#ipQuantum").attr("disabled", true)
+                }
+            }
+        })
+
+        @*if (@Model.Type== 1) {
+            $("#slRank").attr("disabled", true);
+            $("#package_edit").attr("disabled", true);
+        }*@
+        $("#slType").val(@Model.Type);
+
+        $('.date').datepicker({
+            dateFormat: "dd/mm/yy",
+        });
+        checkDisplay();
+
+        @*$("#slRank").val(@Model.rankId);*@
+        @*$("#package_edit").val(@Model.ServiceID);*@
+
+        $('#txt_cus_addcoupon').tagsInput({
+            'autocomplete': {
+                source: listcus
+            },
+            'onRemoveTag': function () {
+                var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+                var listtag = [];
+                $.each(tag, function () {
+                    listtag.push($(this).text());
+                })
+                if (listcurentCus.length > 0) {
+                    for (i = 0; i < listcurentCus.length; i++) {
+                        if (listtag.indexOf(listcurentCus[i]) < 0) {
+                            swal({
+                                title: "Không được xóa khách hàng đã có mã khuyến mãi !",
+                                icon:"warning"
+                            })
+                            $("#txt_cus_addcoupon").addTag(listcurentCus[i]);
+                        }
+                    }
+                }
+            },
+            'onChange': function () {
+                var count = 0;
+                var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+                count = tag.length;
+                $("#ipQuantum").val(count);
+            }
+
+        });
+    });
+
+
+    function SaveEditCoupon(id) {
+        
+        var listCusID = [];
+        var codeEdit = $('#txt-promo-code').val().replace(/\s\s+/g, ' '); //Mã khuyến mãi
+        var NameCoupoon = $('#txt-Name').val().replace(/\s\s+/g, ' '); // têm khuyến mãi
+        var contentEdit = $('#txt-Painted-Promo').val().replace(/\s\s+/g, ' '); //Mô tả
+        var amountEdit = $('#txt-Promo-Val').val().replace(/,/g, ""); //Nhập giá trị
+        var typeCoupon = $('#sl-PromoVal').val(); //chọn giá trị
+       // var allcustomer = typeof ($("#cb-Sendall")) != "undefined" ? $("#cb-Sendall").prop("checked") : false; //gửi cho tất cả khách hàng
+        var type = $.trim($('#sl-Type').val()); // Loại dịch vụ
+        var fromDateEdit = $('#date-From').val().replace(/\s\s+/g, ' '); // Từ ngày
+        var toDateEdit = $('#date-End').val().replace(/\s\s+/g, ' ');  // đến ngày
+        var qtyEdit = $('#txt-Quantum').val().replace(/\s\s+/g, ' ');  // số lượng
+        var remainEdit = $.trim($('#txtremainedit').val()); // số lượng còn lại
+        var rankId = $("#sl-Rank-edit").val(); // Hạng mã khuyến mãi
+        var typeTime = $('#cb-Type-Promo').val();
+        var tag = $("#txt_cus_addcoupon_tagsinput").children(".tag");
+        $.each(tag, function () {
+            var texttag = $(this).children("span").text().trim();
+            var NamePhone = texttag.split("-");
+            var Name = NamePhone[0].trim();
+            var Phone = NamePhone[1].trim();
+            $.each(listfullCus, function () {
+                if ($(this)[0].Name == Name && $(this)[0].Phone == Phone) {
+                    listCusID.push(parseInt($(this)[0].Id));
+                    return false;
+                }
+
+            })
+        })
+
+        if (qtyEdit > 200000) {
+            swal({
+                title: "",
+                text: "Số lượng chỉ có thể ít hơn 200.000",
+                icon: "warning"
+            })
+            return;
+        }
+        if (codeEdit == "" || contentEdit == "" || amountEdit == "" || qtyEdit == "" || remainEdit == "") {
+            swal({
+                title: "",
+                text: "Vui lòng nhập đầy đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        if ($("#expireEdit").prop("checked") == true) {
+            if (fromDateEdit == "") {
+                swal({
+                    title: "",
+                    text: "Nhập ngày bắt đầu",
+                    icon: "warning"
+                });
+                return;
+            }
+            if (toDateEdit == "") {
+                swal({
+                    title: "",
+                    text: "Nhập ngày kết thúc",
+                    icon: "warning"
+                });
+                return;
+            }
+        }
+        if ($("#expireEdit").prop("checked") == false) {
+            fromDateEdit = "";
+            toDateEdit = "";
+        }
+        if (parseInt(remainEdit) < 0) {
+            swal({
+                title: "",
+                text: "Số lượng còn lại phải lớn hơn hoặc bằng 0!",
+                icon: "warning"
+            });
+            return;
+        }
+        if (parseInt(remainEdit) > parseInt(qtyEdit)) {
+            swal({
+                title: "",
+                text: "Số lượng còn lại phải ít hơn hoặc bằng số lượng ban đầu",
+                icon: "warning"
+            });
+            return;
+        }
+            $.ajax({
+                url: "/Promocode/SaveEditCoupon",
+                type: 'POST',
+                traditional: true,
+                data: {
+                    ID: id,
+                    Code: codeEdit,
+                    Name: NameCoupoon,
+                    Content: contentEdit,
+                    Amount: amountEdit,
+                    TypeCoupon: typeCoupon,
+                    QTY: qtyEdit,
+                    Remain: remainEdit,
+                    TypeTime: typeTime,
+                    FromDate: fromDateEdit,
+                    ToDate: toDateEdit,
+                    Type: type,
+                    listCusID: listCusID,
+                    rankId: rankId,
+                    //allcustomer: allcustomer
+                },
+                success: function (response) {
+                    if (response == 1) {
+                        $("#modal_edit_coupon").modal('hide');
+                        searchCoupons();
+                        swal({
+                            title: "",
+                            text: "Sửa mã khuyến mại thành công !",
+                            icon: "success"
+                        })
+                    }
+                    else {
+                        swal({
+                            title: "",
+                            text: "Sửa mã khuyến mại thất bại !",
+                            icon: "error"
+                        })
+                    }
+                }
+            });
+    }
+
+    function checkDisplay() {
+        if ($("#expireEdit").prop("checked") == true) {
+            $("#div_date").show();
+        }
+        else {
+            $("#div_date").hide();
+        }
+    }
+    function changeExpireEdit() {
+        if ($("#expireEdit").prop("checked") == true) {
+            $("#div_date").show();
+        }
+        else {
+            $("#div_date").hide();
+        }
+        //console.log($("#expire").prop("checked"));
+    }
+    @*function LoadImage() {
+        var url=@Model.Name.ToString();
+        $("#edit-image-promocode").html('<input type="file" id="input-edit-promocode-url-image" onchange="readURL(this);" data-default-file="" name="UrlImage" class="dropify" />');
+        $("#input-edit-promocode-url-image").attr("data-default-file", url);
+        url_image_promocode = url;
+        $('#input-edit-promocode-url-image').dropify({
+            messages: {
+                default: 'Click to select image',
+                replace: 'Click to select another image',
+                remove: 'Delete image'
+            }
+        });
+    }*@
+    var url_image_promocode =
+        function readURL(input) {
+            var fileUpload = $("#input-edit-promocode-url-image").get(0);
+
+            var files = fileUpload.files;
+            var fileData = new FormData();
+            var fileName = "";
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+                fileName = files[i].name;
+            }
+            url_image_lesson = window.location.origin + "/Uploads/images/" + fileName
+        }
+
+    $('.discount').keyup(function () {
+
+        var dis = (parseInt($(this).val().replace(/,/g, '')));
+
+        var res = cms_encode_currency_format(dis);
+        $(this).val(res);
+
+    })
+    $('.amount').keyup(function () {
+
+        var dis = (parseInt($(this).val().replace(/,/g, '')));
+
+        var res = cms_encode_currency_format(dis);
+        $(this).val(res);
+
+    })
+    function ShowSelectDate1() {
+        if ($('#cb-Type-Promo').prop("checked")) {
+            $('#slDateTime').removeClass("hidden");
+        }
+        else {
+            $('#slDateTime').addClass("hidden");
+        }
+    }
+    function SendAllCustomer() {
+        if ($('#cb-Sendall').prop("checked")) {
+            $('#txt-Quantum').attr("disabled", "disabled");
+            $('#sl-Rank').attr("disabled", "disabled");
+            $('#txt-QTY').attr("disabled", "disabled");
+
+        }
+        else {
+            $('#txt-Quantum').removeAttr("disabled", "disabled");
+            $('#sl-Rank').removeAttr("disabled", "disabled");
+            $('#txt-QTY').removeAttr("disabled", "disabled");
+
+        }
+    }
+
+
+</script>

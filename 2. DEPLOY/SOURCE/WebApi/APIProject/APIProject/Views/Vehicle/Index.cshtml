@@ -1,0 +1,212 @@
+﻿@using Data.DB
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+    <div class="" id="View">
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                        <h4><i class="fa fa-fw fa-users"></i> Vehicle Management</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control" id="txtCusName" placeholder="Customer name" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control" id="txtCarBrand" placeholder="Car brand" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control" id="txtCarModel" placeholder="Model" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <select class="form-control" id="SlActive">
+                    <option class="text-black-50" value="2">Status</option>
+                    <option value="1">Verified</option>
+                    <option value="0">Not verified</option>
+                </select>
+            </div>
+
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                        <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="From date" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                    <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                        <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="To date" />
+                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="mt-1  mb-1 pull-right pb-10">
+                    <button class="btn btn-primary btn_export" id="btnExport" onclick="exportExcel()"> @Resources.Export</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-danger" id="btnFilter" onclick="clearFilterVehicle()">@Resources.ClearFilter</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-primary btn_search" id="btnSearch" onclick="searchVehicle()"><i class="fa fa-search"></i> @Resources.Search</button>
+                </div>
+                @*<div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-success" id="btnAdd">Add</button>
+        </div>*@
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id="ListVehicle">
+                @{
+                    Html.RenderAction("Search", "Vehicle", new { page = 1, cusName = ViewBag.CusName, BrandName = ViewBag.BrandName, modelName = ViewBag.ModelName, isVerify = ViewBag.Status, fromDateSTR = ViewBag.FromDate, toDateSTR = ViewBag.ToDate });
+                }
+            </div>
+        </div>
+
+
+        <!-- start modal -->
+        <!--modal-->
+        <div class="modal fade" id="mdAddPoint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cộng điểm khách hàng</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="frmAddPoint" method="post">
+                        <div class="modal-body" id="">
+
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>SĐT Khách hàng</label>
+                                    <input type="text" class="form-control" name="phoneNum" id="txtPhoneNumber" placeholder="Nhập số điện thoại" />
+                                    <input type="hidden" class="form-control" name="" id="txtID" />
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Số điểm</label>
+                                    <input type="number" class="form-control" name="pointNum" id="txtPoint" placeholder="Nhập số điểm muốn thêm">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Lý do</label>
+                                    <textarea class="form-control" id="txtNote" name="Note" placeholder="Nhập lý do thêm điểm"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer row">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" id="btnSaveAdd" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    $(document).ready(function () {
+
+        $("#dtFromdateIndex").on('change', function (e) {
+            if ($("#dtFromdateIndex").val() == '')
+                $("#btnSearch").click();
+        });
+
+        $("#dtTodateIndex").on('change', function (e) {
+            if ($("#dtTodateIndex").val() == '')
+                $("#btnSearch").click();
+        });
+        $("#cmbRoleCus").on('change', function (e) {
+            $("#btnSearch").click();
+        });
+
+    })
+</script>
+<!-- end modal -->
+@*autocomplate*@
+@*<script>
+    $("#txtPhone").autocomplete({
+        source: function (request, response) {
+            var name = $("#txtPhone").val();
+            $.ajax({
+                type: "POST",
+                url: "/Customer/SearchCusName",
+                data: { Name: name },
+                success: response,
+                dataType: 'json'
+            });
+        }
+    });
+
+</script>*@
+<script>
+    // Search autocomplate vehicle
+    $("#txtCusName").autocomplete({
+        source: function (request, response) {
+            var cusName = $("#txtCusName").val();
+            $.ajax({
+                type: "POST",
+                url: "/Vehicle/GetListCustomerBySearch",
+                data: { cusName: cusName },
+                success: response,
+                dataType: 'json'
+            });
+        }
+    });
+</script>
+<script>
+    // Search autocomplate vehicle
+    $("#txtCarBrand").autocomplete({
+        source: function (request, response) {
+            var brandName = $("#txtCarBrand").val();
+            $.ajax({
+                type: "POST",
+                url: "/Vehicle/GetListCarBrandBySearch",
+                data: { brandName: brandName },
+                success: response,
+                dataType: 'json'
+            });
+        }
+    });
+</script>
+<script>
+    // Search autocomplate vehicle
+    $("#txtCarModel").autocomplete({
+        source: function (request, response) {
+            var modelName = $("#txtCarModel").val();
+            $.ajax({
+                type: "POST",
+                url: "/Vehicle/GetListCarModelBySearch",
+                data: { modelName: modelName },
+                success: response,
+                dataType: 'json'
+            });
+        }
+    });
+</script>
+<script>
+    function exportExcel() {
+        var cusName = $("#txtCusName").val().trim();
+        var BrandName = $("#txtCarBrand").val().trim();
+        var modelName = $("#txtCarModel").val().trim();
+        var isVerify = $("#SlActive").val();
+        var fromDateSTR = $("#dtFromdateIndex").val().trim();
+        var toDateSTR = $("#dtTodateIndex").val().trim();
+        if (isVerify == 2) {
+            isVerify = null;
+        }
+        window.location.href = "/Vehicle/ExportRequest?cusName=" + cusName + "&BrandName=" + BrandName + "&modelName=" + modelName + "&isVerify=" + isVerify + "&fromDateSTR=" + fromDateSTR + "&toDateSTR=" + toDateSTR;
+    }
+</script>

@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "c6b78ef8-5405-4b27-9748-9590db66c5bf",
+		"name": "GoogleMapAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Google Map Search",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=21.041865,105.831577&key={{Key API}}&language=vi&rankby=distance",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"nearbysearch",
+						"json"
+					],
+					"query": [
+						{
+							"key": "location",
+							"value": "21.041865,105.831577"
+						},
+						{
+							"key": "key",
+							"value": "{{Key API}}"
+						},
+						{
+							"key": "language",
+							"value": "vi"
+						},
+						{
+							"key": "radius",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "keyword",
+							"value": "HH2 bắc hà",
+							"disabled": true
+						},
+						{
+							"key": "rankby",
+							"value": "distance"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Google Detail Place ",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://maps.googleapis.com/maps/api/place/details/json?placeid=Ei3EkMOgbyBU4bqlbiwgQmEgxJDDrG5oLCBIw6AgTuG7mWksIFZp4buHdCBOYW0iLiosChQKEgnxPtQCQKs1MRFgQsIKs4IuTRIUChIJ45oDvWurNTER7LS7YBUhS60&key=AIzaSyBxQYiM21_aFOm1b1L5feTslCdyNGTsdIo&language=vi",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"details",
+						"json"
+					],
+					"query": [
+						{
+							"key": "placeid",
+							"value": "Ei3EkMOgbyBU4bqlbiwgQmEgxJDDrG5oLCBIw6AgTuG7mWksIFZp4buHdCBOYW0iLiosChQKEgnxPtQCQKs1MRFgQsIKs4IuTRIUChIJ45oDvWurNTER7LS7YBUhS60"
+						},
+						{
+							"key": "key",
+							"value": "AIzaSyBxQYiM21_aFOm1b1L5feTslCdyNGTsdIo"
+						},
+						{
+							"key": "language",
+							"value": "vi"
+						},
+						{
+							"key": "fields",
+							"value": "name,rating,formatted_phone_number",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AutoComplete",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=Đông anh&key=AIzaSyBxQYiM21_aFOm1b1L5feTslCdyNGTsdIo&language=vi&components=country:vn",
+					"protocol": "https",
+					"host": [
+						"maps",
+						"googleapis",
+						"com"
+					],
+					"path": [
+						"maps",
+						"api",
+						"place",
+						"autocomplete",
+						"json"
+					],
+					"query": [
+						{
+							"key": "input",
+							"value": "Đông anh"
+						},
+						{
+							"key": "key",
+							"value": "AIzaSyBxQYiM21_aFOm1b1L5feTslCdyNGTsdIo"
+						},
+						{
+							"key": "language",
+							"value": "vi"
+						},
+						{
+							"key": "components",
+							"value": "country:vn"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -1,0 +1,162 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList;
+@using PagedList.Mvc;
+@using APIProject.Resource
+@model  IPagedList<UserDetailOutputModel>
+@{ UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session[SystemParam.SESSION_LOGIN]; }
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>Stt</th>
+            <th>Họ tên</th>
+            <th>Số điện thoại</th>
+            <th>Email</th>
+            <th>Loại tài khoản</th>
+            <th>Ngày tạo</th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody class="text-center">
+
+        @{ if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="7">Không có dữ liệu.</td>
+                </tr>
+            }
+            else
+            {
+
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var data in Model)
+                {
+                    <tr>
+                        <td>@stt </td>
+                        <td>@data.UserName </td>
+                        <td>@data.Phone </td>
+                        <td>@data.Email</td>
+                        <td>
+                            @{
+                                switch (@data.Role)
+                                {
+                                    case SystemParam.TYPE_ROLE_ADMIN: <p style="margin-bottom: 0">Admin</p> break;
+                                    case SystemParam.TYPE_ROLE_MANAGEMENT: <p style="margin-bottom: 0">Quản lý điểm giao dịch</p> break;
+                                    case SystemParam.TYPE_ROLE_TELLERS: <p style="margin-bottom: 0">Giao dịch viên</p> break;
+                                    case SystemParam.TYPE_ROLE_BUSINESS: <p style="margin-bottom: 0">Kinh Doanh</p> break;
+                                    case SystemParam.TYPE_ROLE_MARKETING: <p style="margin-bottom: 0">Marketing</p> break;
+                                    case SystemParam.TYPE_ROLE_ACCOUNTANT: <p style="margin-bottom: 0">Kế toán</p> break;
+                                    case SystemParam.TYPE_ROLE_BUSINESS_MANAGEMENT: <p style="margin-bottom: 0">Quản lý Kinh doanh</p> break;
+                                }
+                            }
+                        </td>
+                        <td> @data.CreateDateStr </td>
+
+
+                        <td>
+                            @*<a title="Chi tiết" class="cursor-pointer" data-id="@data.UserID" data-name="@data.UserName" , data-phone="@data.Phone" data-email="@data.Email" onclick="getUserDetail(this)">
+                                    <i class="btnEdit fa fa-fw fa-edit"></i>
+                                </a>*@
+                            <a data-toggle="tooltip" data-placement="top" title="Sửa tài khoản." class="cursor-pointer mr-2" onclick="getUserDetail(@data.UserID)">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a title="Delete" class="cursor-pointer" data-id="@ss.UserID" id="deleteUser" onclick="deleteUser(@data.UserID,this)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+
+                }
+            } }
+
+    </tbody>
+</table>
+
+<div class="modal fade" id="user-detail" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color:#1E8449 ">
+                <h5 class="modal-title"> <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp Sửa tài khoản</h5>
+                <button type="button" class="close " style="color:red" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Tên người dùng</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-name-detail" />
+                        <input type="hidden" id="val-id" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Email</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-email-detail" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Số điện thoại</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-phone-detail" maxlength="10" />
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Mật khẩu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12 input-group" id="show_hide_password">
+                        <input class="form-control" type="password" id="txt-pass-edit" placeholder="Mật khẩu !" />
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Xác nhận mật khẩu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12 input-group" id="confirmPassword">
+                        <input class="form-control" type="password" id="txt-pass-confirm-edit" placeholder="Xác nhận mật khẩu !" />
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2 float-right">
+                    <div class="modal-footer">
+                        <button type="button" style="width:100px" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                        <button type="button" style="width:100px" id="btnadduser" class="btn btn-success" onclick="EditUser()">Lưu</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, Key = ViewBag.Key }),
+                              PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+                              {
+                                  HttpMethod = "GET",
+                                  UpdateTargetId = "tbl-user"
+                              })
+                              )
+    </div>
+</div>

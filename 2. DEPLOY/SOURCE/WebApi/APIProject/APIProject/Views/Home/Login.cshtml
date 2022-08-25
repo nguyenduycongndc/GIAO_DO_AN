@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null;
+}
+@using APIProject.Resource
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>WeShip</title>
+    <link rel="icon" href="~/Content/images/Group4.png" />
+    @Styles.Render("~/dekko/css")
+    @Scripts.Render("~/layout/js")
+    @Scripts.Render("~/dekko/js")
+    @Scripts.Render("~/bundle/js")
+</head>
+
+<body class="bg-gradient-primary" style="background-color: #FFF3EB">
+
+    <div class="container">
+
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+
+            <div class="col-xl-10 col-lg-12 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row ">
+                            <div class="col-lg-6 d-none p-0 d-lg-block bg-login-image text-center" style="border-radius: 12px;">
+                                <img src="~/Content/images/Frame.png" style="width:100%;height:auto" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5" style="height:100%; width:auto">
+                                    <div class="text-center mb-3 mt-3">
+                                        <div class="row">
+                                            <div class="col-md-8 offset-md-2 col-12 text-center">
+                                                <img src="~/Content/images/logo-weship.png" style="max-width:100%; height: auto;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form class="user">
+                                        <div class="form-group">
+                                            <a>Tên đăng nhập:</a><br />
+                                      
+                                            <input type="email" class="form-control form-control-user"
+                                                   id="txtUsernameLogin" aria-describedby="emailHelp"
+                                                   placeholder="Nhập địa chỉ E-mail..." style=" border-radius: 12px">
+                                        </div>
+                                        <div class="form-group">
+                                            <a>Mật khẩu:</a><br />
+                                    
+                                            <input type="password" class="form-control form-control-user "
+                                                   id="txtPasswordLogin" placeholder="Nhập mật khẩu..." style=" border-radius: 12px">
+                                           
+                                        </div>
+                                        <div class="form-group col-6 offset-3 text-center">
+                                            <a onclick="Login();" id="btnLogin" class="btn btn-user btn-block " style="border-radius: 12px; background-color: #ff751a; color: #fff; width:100%; text-align:center">
+                                                Đăng nhập
+                                            </a>
+                                        </div>
+                                        
+                                        
+                                    </form>
+                                    <div class="text-center mt-2">
+                                        <a href="" data-toggle="modal" data-target="#mdForgotPassword" >Quên mật khẩu</a>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>     
+            </div>
+        </div>
+    </div>
+    <!--modal forgot password-->
+    <div class="modal fade" id="mdForgotPassword" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <div class=" text-center">
+                            <div class=" text-center">
+                                <h4>Bạn đã quên mật khẩu?</h4><br />
+                                <a>Nhập E-mail của bạn vào thanh bên dưới và chúng tôi sẽ gửi cho bạn mật khẩu mới</a>
+                            </div>
+                            <div class="row mt-2">
+                                <div class=" col-md-8 offset-md-2 col-sm-12">
+                                    <input type="email" class="form-control form-control-user" id="txtEmail" placeholder="Nhập địa chỉ E-mail của bạn..."   />
+                                </div>
+                            </div>
+                            <div class="col-md-8 offset-md-2 col-sm-12 mt-4" style="color:#fff">
+                                <a onclick="ForgotPassword()" class="btn btn-user btn-block" style="background-color: #ff751a" data-dismiss="modal">
+                                    Gửi E-mail
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+
+    $(document).ready(function () {
+
+        $("#txtUsernameLogin").focus();
+
+        $('#txtPasswordLogin').keypress(function (e) {
+            var key = e.which;
+            if (key == 13) {
+                $("#btnLogin").click();
+            }
+        });
+
+    }); 
+</script>

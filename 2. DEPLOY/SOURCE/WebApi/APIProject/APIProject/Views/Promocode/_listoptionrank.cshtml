@@ -1,0 +1,11 @@
+﻿
+@using Data.Model.APIWeb;
+@model List<ConfigCommissionViewModel>
+
+<option value="-1">--Choose rank--</option>
+@{
+    foreach (var rank in Model)
+    {
+        <option value="@rank.ID">@rank.Name</option>
+    }
+}

@@ -1,0 +1,247 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+<div class="" id="View">
+    <div class="card">
+        <div class="card-header sticky">
+            <div class="col-md-12">
+                <div class="breadcrumb-holder">
+                    <div class="row mb-3 mt-3">
+                        <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                            <h4 class="custom_title">Hóa đơn</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row mt-1">
+                <div class="col col-md-5">
+                    <input type="text" class="form-control" placeholder="Nhập mã hoặc tên nhân viên" />
+                </div>
+                <div class="col col-md-3">
+                    <select class="form-control" id="payment">
+                        <option class="text-black-50" value="0">Phương thức Thanh toán</option>
+                        <option value="1">Tiền mặt</option>
+                        <option value="2">VNpay</option>
+                    </select>
+                </div>
+
+                <div class="col col-md-2 offset-md-0 col-sm-4 ">
+                    <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="Từ ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+
+
+                <div class="col col-md-2 offset-md-0 col-sm-4 ">
+                    <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="Đến ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+            </div>
+
+            <div class="row mt-2 text-right">
+                <div class="col-6"></div>
+                <div class="col-6">
+                    <button class="btn btn-success ml-3 pull-right">Thêm hóa đơn</button>
+                    <button class="btn btn-danger ml-3 pull-right">Xóa dữ liệu</button>
+                    <button class="btn btn-dekko ml-3 pull-right">Tìm kiếm</button>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-12" id="ListInvoice">
+                    *@{
+                        //Html.RenderAction("Search", "Invoice", new { Page = 1, searchKey = ViewBag.CodeOrName, PaymentType = ViewBag.PaymentType, ServiceID = ViewBag.ServiceId, AgentID = ViewBag.AgentId, FromDateStr = ViewBag.FromDate, ToDateStr = ViewBag.ToDate });
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="mdInvoice">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">List Invoice</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row mt-3">
+                        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md" id="lstRequestDT">
+                            <thead class="text-center text-white bg-thead">
+                                <tr>
+                                    <th>Code</th>
+                                    <th>Customer</th>
+                                    <th>Car</th>
+                                    <th>Washer</th>
+                                    <th>Package</th>
+                                    <th>Total price</th>
+                                    <th>Payment type</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="tblInvoiceExport"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer text-center">
+                <button type="button" onclick="exportVAT(1)" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save mr-1"></i>Accept</button>
+                <button class="btn btn-primary" onclick="exportVAT(2)"><i class="fa fa-download mr-1"></i>Export</button>
+                <button class="btn btn-outline-success" onclick="exportVAT(3)"><i class="fa fa-download mr-1"></i>Accept and export</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        GetListWasher();
+        GetListPackage()
+    });
+    function GetListWasher() {
+        $.ajax({
+            url: '/Washer/GetListAgent',
+            type: 'GET',
+            success: function (res) {
+                $.each(res, function () {
+                    $("#washer").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                });
+            }
+        })
+    }
+    function GetListPackage() {
+        $.ajax({
+            url: '/Invoice/GetListService',
+            type: 'GET',
+            success: function (res) {
+                $.each(res, function () {
+                    $("#package").append('<option value="' + this.ID + '">' + this.Name + '</option>');
+                });
+            }
+        })
+    }
+    function exportExcel() {
+        var searchKey = $("#txtcodeOrName").val().trim();
+        var IsExport = $("#isexport").val() == -1 ? null : $("#isexport").val();
+        var PaymentType = $("#payment").val().trim();
+        var ServiceID = $("#package").val().trim();
+        var AgentID = $("#washer").val();
+        var FromDateStr = $("#dtFromdateIndex").val().trim();
+        var ToDateStr = $("#dtTodateIndex").val().trim();
+        if (PaymentType == 0) {
+            PaymentType = null;
+        }
+        if (ServiceID == 0) {
+            ServiceID = null;
+        }
+        if (AgentID == 0) {
+            AgentID = null;
+        }
+        window.location.href = "/Invoice/ExportRequest?searchKey=" + searchKey + "&PaymentType=" + PaymentType + "&ServiceID=" + ServiceID + "&AgentID=" + AgentID + "&FromDateStr=" + FromDateStr + "&ToDateStr=" + ToDateStr + "&IsExport=" + IsExport;
+    }
+    function exportExcelVAT() {
+        let checkdata = 0;
+        $("#tblInvoiceExport").empty();
+        $.each($(".checkboxcus"), function () {
+
+            if ($(this).prop("checked") == true) {
+                checkdata++;
+                var wsName = $(this).closest("tr").find(".InvoiceWsName").text();
+                var cusName = $(this).closest("tr").find(".InvoiceCusName").text();
+                var car = $(this).closest("tr").find(".InvoiceCar").text();
+                var package = $(this).closest("tr").find(".InvoicePackage").text();
+                var date = $(this).closest("tr").find(".InvoiceDate").text();
+                var price = $(this).closest("tr").find(".InvoicePrice").text();
+                var code = $(this).closest("tr").find(".InvoiceCode").text();
+                var paymenttype = $(this).closest("tr").find(".InvoiceType").text();
+                var id = $(this).data("id");
+                $('#tblInvoiceExport').append('<tr class="idWS" data-id="' + id + '"><td class="nameWS">' + code + '</td><td class="phoneWS">' + cusName + '</td><td class="amountWS">' + car + '</td><td class="bankWS">' + wsName + '</td><td class="acountWS">' + package + '</td><td class="ownerWS">' + price + '</td><td class="dateWS">' + paymenttype + '</td><td class="dateWS">' + date + '</td></tr>');
+            }
+
+
+        });
+        if (checkdata == 0) {
+            swal({
+                title: "Please select data!",
+                text: "",
+                icon: "warning"
+            })
+            return;
+        }
+
+        $("#mdInvoice").modal("show");
+
+    }
+
+    function exportVAT(type) {
+        let listid = [];
+        $.each($(".idWS"), function () {
+            listid.push($(this).data("id"));
+        })
+        if (type == 1) {
+            $.ajax({
+                url: "/Invoice/AcceptVAT",
+                type: "GET",
+                contentType: 'application/json',
+                traditional: true,
+                data: {
+                    listid: listid
+                },
+                success: function (res) {
+                    if (res == 1) {
+                        swal({
+                            title: "Success",
+                            icon: "success"
+                        })
+                    } else {
+                        swal({
+                            title: "Error",
+                            icon: "error"
+                        })
+                    }
+                }
+
+            })
+        } else if (type == 2) {
+            $("#modalLoad").modal("show");
+
+            $.ajax({
+                url: window.location.href = "/Invoice/ExportVAT?listid=" + JSON.stringify(listid)
+            }).done(function () {
+
+                $("#modalLoad").modal("hide");
+            })
+        }
+        else {
+            $("#modalLoad").modal("show");
+
+            $.ajax({
+                url: window.location.href = "/Invoice/ExportVATandAccept?listid=" + JSON.stringify(listid)
+            }).done(function () {
+
+                $("#modalLoad").modal("hide");
+            })
+        }
+    }
+</script>
+

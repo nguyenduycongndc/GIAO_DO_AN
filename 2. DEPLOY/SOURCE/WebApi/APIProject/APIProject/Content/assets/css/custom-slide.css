@@ -1,0 +1,118 @@
+﻿.box-slide {
+    background: #fff;
+    border-radius: 10px;
+    padding: 30px 20px 30px 20px;
+}
+
+    .box-slide h3 {
+        font-size: 20px;
+    }
+
+.size-img {
+    width:410px; 
+    height:240px; 
+    margin-bottom:3%;
+}
+
+#exampleSlider {
+    position: relative;
+}
+
+@media (max-width: 767px) {
+    #exampleSlider {
+        border-color: transparent;
+    }
+}
+
+#exampleSlider .MS-content {
+    margin: 15px 5%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@media (max-width: 767px) {
+    #exampleSlider .MS-content {
+        margin: 0;
+    }
+}
+
+#exampleSlider .MS-content .item {
+    display: inline-block;
+    position: relative;
+    vertical-align: top;
+    overflow: hidden;
+    height: 100%;
+    white-space: normal;
+    padding: 0 15px;
+    width: 33.333%;
+}
+
+@media (max-width: 1200px) {
+    #exampleSlider .MS-content .item {
+        width: 33.333%;
+    }
+}
+
+@media (max-width: 992px) {
+    #exampleSlider .MS-content .item {
+        width: 50%;
+    }
+}
+
+@media (max-width: 767px) {
+    #exampleSlider .MS-content .item {
+        width: 100%;
+    }
+    .size-img {
+        width: 460px;
+        height: 240px;
+        margin-bottom: 3%;
+    }
+}
+
+#exampleSlider .MS-content .item p {
+    font-size: 16px;
+    line-height: 1.5;
+    vertical-align: middle;
+    margin: 0;
+    padding: 10px 0 30px 0;
+}
+
+#exampleSlider .MS-controls button {
+    position: absolute;
+    border: none;
+    background: #ff2828;
+    font-size: 30px;
+    outline: 0;
+    top: 90px;
+}
+
+@media (max-width: 767px) {
+    #exampleSlider .MS-controls button {
+        display: none;
+    }
+}
+
+#exampleSlider .MS-controls button:hover {
+    cursor: pointer;
+}
+
+#exampleSlider .MS-controls .MS-left {
+    left: 10px;
+}
+
+@media (max-width: 992px) {
+    #exampleSlider .MS-controls .MS-left {
+        left: -2px;
+    }
+}
+
+#exampleSlider .MS-controls .MS-right {
+    right: 10px;
+}
+
+@media (max-width: 992px) {
+    #exampleSlider .MS-controls .MS-right {
+        right: -2px;
+    }
+}

@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+<div class="" id="View">
+    <div id="init-view">
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                        <h4 class="custom_title"> Combo Management</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            @*<div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                    <input type="text" class="form-control" id="txtCode" placeholder="Enter code" />
+                </div>*@
+            <div class="col-md-4 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control" id="txtName" placeholder="Enter name" />
+            </div>
+            <div class="col-md-4 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="From date" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+            <div class="col-md-4 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="To date" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-primary btn_search" id="btnSearch" onclick="searchCombo()"><i class="fa fa-search"></i> @Resources.Search</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-danger" id="btnFilter" onclick="clearFilterCombo()">@Resources.ClearFilter</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-success" id="btnAdd" onclick="AddCombo()">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" id="ListCombo">
+                @{
+                    Html.RenderAction("SearchCombo", "Combo", new { page = 1, Searchkey = ViewBag.Searchkey, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate });
+                }
+            </div>
+        </div>
+
+
+        <!-- start modal -->
+        <div class="modal fade" id="mdAddPoint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cộng điểm khách hàng</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form id="frmAddPoint" method="post">
+                        <div class="modal-body" id="">
+
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>SĐT Khách hàng</label>
+                                    <input type="text" class="form-control" name="phoneNum" id="txtPhoneNumber" placeholder="Nhập số điện thoại" />
+                                    <input type="hidden" class="form-control" name="" id="txtID" />
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Số điểm</label>
+                                    <input type="number" class="form-control" name="pointNum" id="txtPoint" placeholder="Nhập số điểm muốn thêm">
+                                </div>
+                            </div>
+                            <div class="row pb-3">
+                                <div class="col-md-12 col-sm-12 col-12">
+                                    <label>Lý do</label>
+                                    <textarea class="form-control" id="txtNote" name="Note" placeholder="Nhập lý do thêm điểm"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer row">
+                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                                <button type="submit" id="btnSaveAdd" class="btn btn-primary">Lưu</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        history.replaceState(null, null, ' ');
+    });
+</script>
+

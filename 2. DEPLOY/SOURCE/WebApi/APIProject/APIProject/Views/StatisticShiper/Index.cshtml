@@ -1,0 +1,174 @@
+﻿@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+@using Data.DB
+@using Data.Utils
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-10 col-9 text-info px-0">
+                <h4 class="mt-2">Báo cáo đối tác</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2">
+    <div class="col-md-6 col-12 mt-1">
+        <input type="text" id="txtCodeName" class="form-control" placeholder="Nhập tên hoặc số điện thoại tài xế" />
+    </div>
+
+    <div class="col-md-3 col-12 mt-1">
+        <input type="text" id="txtFromDates" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-md-3 col-12 mt-1">
+        <input type="text" id="txtToDates" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col-md-3 col-12">
+        <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+            <option value="">Tỉnh / Thành phố</option>
+            @foreach (Data.DB.Province obj in ViewBag.Province)
+            {
+                <option value="@obj.ID">
+                    @obj.Name
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3 col-12">
+        <select class=" form-control" name="calc_shipping_district" id="slDistrict">
+            <option value="">Quận / Huyện</option>
+        </select>
+    </div>
+    <div class="col-md-6 col-12">
+        <div class="text-right ">
+            <button id="btnClear" class="btn btn-danger" onclick=""><i></i>Dọn bộ lọc</button>
+            <button id="btnSearch" class="btn btn-primary" onclick="searchShipersReport()"><i class="fa fa-search"></i>Tìm kiếm</button>
+            @{ if (ViewBag.roleLoginStatisticShiper == 6 || ViewBag.roleLoginStatisticShiper == 7)
+                {
+                    <button hidden class="btn btn-primary btn_export" data-toggle="modal" data-target="" onclick="ExportWasher()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                }
+                else
+                {
+                    <button class="btn btn-primary btn_export" data-toggle="modal" data-target="" onclick="ExportWasher()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                }
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 col-md-12" id="tableWasherReport">
+        @{ Html.RenderAction("SearchShiperReport", "StatisticShiper", new { page = 1 }); }
+    </div>
+</div>
+<script>
+    //$(document).ready(function () {
+    //    $(".sidebar-scroll").scrollTop(2000);
+    //});
+    //$('#tabStatisticWasher').addClass("active");
+    //$('#ulStatistic').addClass("d-block");
+    //$('#tabStatistic').addClass("active");
+    //  $(document).on('keypress', function (e) {
+    //    if (e.which == 13) {
+    //        $('#btnSearch').click();
+    //    }
+    //});
+    //$('#btnSearch').click(function () {
+    //    var code = $('#txtCodeName').val();
+    //    var fDate = $('#txtFromDates').val();
+    //    var tDate = $('#txtToDates').val();
+    //    $.ajax({
+    //        url: '/StatisticWasher/SearchShiperReport',
+    //        type: 'POST',
+    //        data: {
+    //            page: 1,
+    //            searchKey: code,
+    //            fromDate: fDate,
+    //            toDate: tDate,
+    //        },
+    //        beforeSend: function () {
+    //            $("#modalLoad").modal("show");
+    //        }
+    //        ,
+    //        success: function (res) {
+    //            $('#tableWasherReport').html(res);
+    //            $("#modalLoad").modal("hide");
+    //        }
+
+
+    //    })
+    //})
+
+    $('#btnClear').click(function () {
+        $('#txtCodeName').val("");
+
+        $('#txtFromDates').val("");
+        $('#txtToDates').val("");
+        $.ajax({
+            url: '/StatisticWasher/SearchShiperReport',
+            type: 'POST',
+            data: {
+                page: 1,
+                code: "",
+                phone: "",
+                fDate: "",
+                tDate: "",
+            },
+            beforeSend: function () {
+                $("#modalLoad").modal("hide");
+            }
+            ,
+            success: function (res) {
+                $('#tableWasherReport').html(res);
+                $("#modalLoad").modal("hide");
+            }
+
+
+        })
+    });
+
+    function ExportWasher() {
+        var searchKeys = $('#txtCodeName').val();
+        var fromDates = $('#txtFromDates').val();
+        var toDates = $('#txtToDates').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        //swal({
+        //    title: "Vui lòng chờ...!",
+        //    text: "Việc này có thể kéo dài trong vài phút",
+        //    icon: "warning",
+        //    buttons: ["Cancel", "OK"],
+        //    dangerMode: true
+        //})
+        window.location.href = "/StatisticShiper/ReportExecel?searchKey=" + searchKeys + "&provinceID=" + provinceID + "&districtID=" + districtID + "&fromDate=" + fromDates + "&toDate" + toDates;
+    }
+    //search bao cao doi tac
+    function searchShipersReport() {
+        var searchKeys = $('#txtCodeName').val();
+        var fromDates = $('#txtFromDates').val();
+        var toDates = $('#txtToDates').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+
+        $.ajax({
+            url: "/StatisticShiper/SearchShiperReport",
+            data: {
+                page: 1,
+                searchKey: searchKeys,
+                provinceID: provinceID,
+                districtID: districtID,
+                fromDate: fromDates,
+                toDate: toDates
+            },
+            success: function (rs) {
+                $("#modalLoad").modal('hide');
+                $('#tableWasherReport').html(rs);
+            }
+
+        });
+    }
+</script>

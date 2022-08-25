@@ -1,0 +1,65 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@model List<ShiftViewModel>
+@{
+    foreach (var typeDay in Model)
+    {
+        <div class="row mt-3 typeShift" data-id="@typeDay.ID" data-name="@typeDay.Name">
+            <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12">
+                <fieldset class="scheduler-border">
+                    @*<legend class="scheduler-border"><label class="text-primary"></label></legend>*@
+                    <h4 class="pt-3 pb-3 listDays position-relative">
+                        @{
+                            foreach (var item in typeDay.ListDays)
+                            {
+                                if (typeDay.ListDays.IndexOf(item) == (typeDay.ListDays.Count - 1))
+                                {
+                                    <span class="text-primary inlineblock itemDay" data-name="@item.Day" data-id="@item.ID">@item.Day</span>
+                                }
+                                else
+                                {
+                                    <span class="text-primary inlineblock itemDay" data-name="@item.Day" data-id="@item.ID">@item.Day ,</span>
+                                }
+                            }
+                        }
+                        <i class="fa fa-edit font-22 inlineblock color-blue position-absolute cursor-pointer" style="top:17px;right:89px;" data-toggle="modal" data-target="#mdEditShift" onclick="ShiftDetail(@typeDay.ID)"></i>
+                        <i class="fa fa-trash-o font-22 inlineblock color-red position-absolute cursor-pointer" style="top:17px;right:65px;" onclick="DeleteShift(@typeDay.ID,event)"></i>
+                    </h4>
+                    <div class="row listShift" id="lstShiftTime">
+                        @{
+                            foreach (var item in typeDay.ListShift)
+                            {
+                                <div class=" col-sm-2 col-md-2 col-xl-2 col-lg-2 mb-4">
+                                    <div class="form-check">
+                                        <label class="form-check-label valCheckbox">
+                                            <input type="checkbox" class="form-check-input form-control checkbox" value="@item.IsActive" style="height:15px;">@item.shift
+                                            <input type="hidden" value="@item.ID" class="valIDShift" />
+                                            <input type="hidden" value="@item.shift" class="valTime" />
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    }
+}
+@*@model List<ShiftOutputModel>
+
+    @{
+        foreach (var dt in Model)
+        {
+            <div class=" col-sm-2 col-md-2 col-xl-2 col-lg-2 mb-4">
+                <div class="form-check">
+                    <label class="form-check-label valCheckbox">
+                        <input type="checkbox" class="form-check-input form-control checkbox" value="@dt.IsActive" style="height:15px;">@dt.shift
+                        <input type="hidden" value="@dt.ID" class="valIDShift" />
+                        <input type="hidden" value="@dt.shift" class="valTime" />
+                    </label>
+                </div>
+            </div>
+        }
+    }*@
+

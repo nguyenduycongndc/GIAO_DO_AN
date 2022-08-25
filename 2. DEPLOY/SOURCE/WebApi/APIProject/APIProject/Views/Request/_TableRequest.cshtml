@@ -1,0 +1,103 @@
+﻿@using Data.Model.APIApp
+@using Data.Utils
+@using PagedList.Mvc
+@model  PagedList.IPagedList<RequestTransactionModel>
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>No</th>
+            <th>Washer</th>
+            <th>Phone</th>
+            <th>Amount</th>
+            <th>Bank</th>
+            <th>Acount</th>
+            <th>Owner</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th><input class="form-control" type="checkbox" id="checkAll" style="width:20px;"></th>
+        </tr>
+    </thead>
+    <tbody class="text-center" id="BDtblRequest">
+
+        @{
+
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="10">No data.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = 1;
+                foreach (var data in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td class="Wsname">@data.WasherName</td>
+                        <td class="Wsphone">@data.WasherPhone</td>
+                        <td class="amount">@String.Format("{0:n0}", data.Amount)</td>
+                        <td class="bank">@data.BrankName</td>
+                        <td class="acount">@data.Acount</td>
+                        <td class="owner">@data.Owner</td>
+                        @{
+                            if (data.Status == Constant.STATUS_TRANSACTION_SUCCESS)
+                            {
+                                <td class="text-success">Done </td>
+                            }
+                            else if (data.Status == Constant.STATUS_TRANSACTION_WAITING)
+                            {
+                                <td class="text-warning">Pending </td>
+                            }
+                            else if (data.Status == Constant.STATUS_TRANSACTION_APPROVE)
+                            {
+                                <td class="text-primary">Approve </td>
+                            }
+                            else if (data.Status == Constant.STATUS_TRANSACTION_FLASE)
+                            {
+                                <td class="text-danger">Refuse</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+                        <td class="date">@data.CreateDate.ToString("dd/MM/yyyy")</td>
+                        <td style="width:20px;"><input class="form-control checkbox" type="checkbox" value="@data.ID"></td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("Search", new { Page, status = ViewBag.status, searchKey = ViewBag.searchKey, fromDate = ViewBag.fromDate, toDate = ViewBag.toDate }),
+     PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+     {
+         HttpMethod = "GET",
+         UpdateTargetId = "tableRequest"
+     })
+     )
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#checkAll').click(function () {
+            if ($(this).prop("checked") == true) {
+                $.each($(".checkbox"), function () {
+                    $(this).prop("checked", true);
+
+                });
+            } else {
+                $.each($(".checkbox"), function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+    });
+</script>

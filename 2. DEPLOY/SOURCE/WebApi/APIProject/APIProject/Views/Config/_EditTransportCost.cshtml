@@ -1,0 +1,228 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@model ConfigTransportCost
+
+<div class="modal fade" id="EditTransportCost" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4>Cập nhật dịch vụ</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 10px"> 
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại dịch vụ</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select class="form-control" id="slEditTypeService" onchange="loadConfigDriver1()">
+                            @{
+                                if (Model.Type == 1)
+                                {
+                                    <option selected value="1">Tài xế</option>
+                                    <option value="2">Giao hàng</option>
+                                    <option value="3">Giao đồ ăn</option>
+                                }
+                                else if (Model.Type == 2)
+                                {
+                                    <option value="1">Tài xế</option>
+                                    <option selected value="2">Giao hàng</option>
+                                    <option value="3">Giao đồ ăn</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Tài xế</option>
+                                    <option value="2">Giao hàng</option>
+                                    <option selected value="3">Giao đồ ăn</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-1" id="editTypeShip" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại vận chuyển</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select id="EditTransportType" class="form-control">
+                            <option value="0">Chọn loại vận chuyển</option>
+                            @{
+                                if (Model.TransportType == 1)
+                                {
+                                    <option selected value="1">Giao thường</option>
+                                    <option value="2">Giao nhanh</option>
+                                }
+                                else
+                                {
+                                    <option value="1">Giao thường</option>
+                                    <option selected value="2">Giao nhanh</option>
+                                }
+
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-1" id="editTypeVehicles" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại xe</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select class="form-control" id="slEditTypeVehicle">
+                            <option value="0">Chọn loại xe</option>
+                            @foreach (Data.DB.VehicleType obj in ViewBag.VehicleType)
+                            {
+                                if (@Model.VehicleTypeID == @obj.ID)
+                                {
+                                    <option selected value="@obj.ID">
+                                        @obj.Name
+                                    </option>
+                                }
+                                else
+                                {
+                                    <option value="@obj.ID">
+                                        @obj.Name
+                                    </option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Mặc định số km đầu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="number" class="form-control number-type" id="EditFirstDistance" value="@Model.FirstDistance" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">km</span>
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Giá mở cửa</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="text" class="form-control number" id="EditFirstPrice" value="@string.Format("{0:0,0}", Convert.ToDecimal(@Model.FirstPrice))" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">VND</span>
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Giá các km tiếp theo</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="text" class="form-control number" id="EditPerKmPrice" value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.PerKmPrice))" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">VND</span>
+                </div>
+                @*<div class="row mt-1" id="editSurcharge" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Phụ phí *</strong>
+                    </div>
+                    <div class="col col-4">
+                        <input type="text" class="form-control number" id="EditBonusFee" value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.BonusFee))" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">VND</span>
+                </div>*@
+                <div id="editFirstKg">
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Mặc định số kg đầu</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="number" class="form-control number-type" id="EditFirstWeight" value="@Model.FirstWeight" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">kg</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Tăng theo mỗi (kg)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="EditPerKg" value="@Model.PerKg" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">kg</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Giá các kg tiếp theo</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="EditPerKgPrice" value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.PerKgPrice))" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">VND</span>
+                    </div>
+                    @*<div class="row mt-1">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Phí thu hộ COD *</strong>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="EditFeeCOD" value="@string.Format("{0:#,0}", Convert.ToDecimal(@Model.FeeCOD))" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">VND</span>
+                    </div>*@
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button class="btn btn-success" onclick="editTransportCost(@Model.ID)"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //Fomat number
+    $('.number-type').keydown(function (e) {
+        if (e.keyCode == 69 || e.keyCode == 189 || e.keyCode == 188 || e.keyCode == 231)
+            return false;
+    });
+
+    $('.number').keyup(function () {
+        $val = cms_decode_currency_format($(this).val());
+        $(this).val(cms_encode_currency_format($val));
+    });
+
+    $(document).ready(function () {
+        loadConfigDriver1();
+    });
+    //phan quyen nhap cho mdAddServicePrice
+    function loadConfigDriver1() {
+        if ($("#slEditTypeService").val() == 2) {
+            $("#editTypeShip").removeClass("display-input");
+            $("#editTypeShip").addClass("show");
+            $("#editTypeVehicles").removeClass("show");
+            $("#editTypeVehicles").addClass("display-input");
+            $("#editFirstKg").removeClass("display-input");
+            $("#editFirstKg").addClass("show");
+            $("#editSurcharge").removeClass("show");
+            $("#editSurcharge").addClass("display-input");
+        }
+        else if ($("#slEditTypeService").val() == 1) {
+            $('#slEditTypeVehicle').attr('disabled', false);
+            $("#editTypeShip").removeClass("show");
+            $("#editTypeShip").addClass("display-input");
+            $("#editTypeVehicles").removeClass("display-input");
+            $("#editTypeVehicles").addClass("show");
+            $("#editFirstKg").removeClass("show");
+            $("#editFirstKg").addClass("display-input");
+            $("#editSurcharge").removeClass("display-input");
+            $("#editSurcharge").addClass("show");
+        }
+        else if ($("#slEditTypeService").val() == 3) {
+            $('#slEditTypeVehicle').attr('disabled', false);
+            $("#editTypeShip").removeClass("show");
+            $("#editTypeShip").addClass("display-input");
+            $("#editTypeVehicles").removeClass("display-input");
+            $("#editTypeVehicles").addClass("show");
+            $("#editFirstKg").removeClass("show");
+            $("#editFirstKg").addClass("display-input");
+            $("#editSurcharge").removeClass("display-input");
+            $("#editSurcharge").addClass("show");
+        }
+    }
+</script>

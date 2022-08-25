@@ -1,0 +1,65 @@
+﻿@using Data.Model;
+@using Data.Utils
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@model  PagedList.IPagedList<ConfigCommissionViewModel>
+
+<div class="col-sm-12 col-md-12 col-xl-12 col-lg-12" id="tblLevelName">
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Loại người dùng</th>
+                <th>Hoa hồng</th>
+                <th></th>
+                
+            </tr>
+        </thead>
+        <tbody class="text-center" id="valCMS">
+            @{ int STT = 1;
+                if (Model.Count() == 0)
+                {
+                    <tr class="text-center">
+                        <td colspan="7">Không có dữ liệu</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var dt in Model)
+                    {
+                        <tr>
+                            <td>@STT</td>
+                            <td class="nameCM">@dt.Name</td>
+                            <td class="autoCM">@dt.</td>
+                            <td class="duration">@dt.Duration</td>
+                            <td class="process">@dt.Process</td>
+                            <td class="commission">@dt.MastersBenefit</td>
+                            <td>
+                                <a title="Chi tiết" class="cursor-pointer showModalDetail" id="@dt.ID" onclick="loadCommissionDetail($(this))">
+                                    <i class="btnEdit fa fa-fw fa-edit"></i>
+                                </a>
+                                <a title="Xóa" class="cursor-pointer" onclick="delCommission(@dt.ID)">
+                                    <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        STT++;
+                    }
+                }
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearcCommission", "Config", new { page }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "Commissions" })
+        )
+    </div>
+</div>

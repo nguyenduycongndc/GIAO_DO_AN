@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.Model.APIApp
+
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header sticky">
+                <div class="row col-md-12">
+                    <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                        <h4>Đồ ăn</h4>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-7 col-sm-6 mt-1">
+                        <div class="row">
+                            <div class="col-md-7 offset-md-0">
+                                <input type="text" class="form-control" id="txtTranFoodName" placeholder="Nhập mã, tên khách hàng" />
+                            </div>
+                            <div class="col-md-5 offset-md-0">
+                                <select class="form-control" id="slTranFoodStatus">
+                                    <option class="text-black-50" value="">--Trạng thái--</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DENY">Đơn Shipper bị từ chối</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PENDING">Đơn Shipper chờ tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DELIVERY">Đơn Shipper đang tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PICK_UP">Đơn shipper đã lấy đồ ăn</option>
+                                    <option value="@SystemParam.ORDER_STATUS_FINISH">Đơn Shipper hoàn thành</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-sm-6">
+                        <div class="row">
+                            <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranFoodFromdate" placeholder="Từ ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                            <div class="col-md-6 offset-md-0 col-sm-6 mt-1">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranFoodTodate" placeholder="Đến ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col-md-12 offset-md-0" style="text-align: end">
+                        @{
+                            if (ViewBag.roleLoginTranfood == 2 || ViewBag.roleLoginTranfood == 3 || ViewBag.roleLoginTranfood == 4 || ViewBag.roleLoginTranfood == 6 || ViewBag.roleLoginTranfood == 7)
+                            {
+                                <button hidden id="btnExport" class="btn btn-primary" onclick="exportExcelFood()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                            else
+                            {
+                                <button id="btnExport" class="btn btn-primary" onclick="exportExcelFood()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--modal addTransaction-->
+                <!--end modal-->
+                <div class="row">
+                    <div class="col-md-12" id="ListTransactionFood">
+                        @{
+                            Html.RenderAction("SearchTransactionFood", "TransactionFood", new { page = 1 });
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#txtTranFoodName').change(function (e) {
+            SearchTransactionFood();
+        });
+        $('#slTranFoodStatus').change(function (e) {
+            SearchTransactionFood();
+        });
+        $('#dtTranFoodFromdate').change(function (e) {
+            SearchTransactionFood();
+        });
+        $('#dtTranFoodTodate').change(function (e) {
+            SearchTransactionFood();
+        });
+    });
+    function SearchTransactionFood() {
+        var _tranName = $('#txtTranFoodName').val();
+        var _tranStatus = $('#slTranFoodStatus').val();
+        var _fromDate = $('#dtTranFoodFromdate').val();
+        var _toDate = $('#dtTranFoodTodate').val();
+
+        $.ajax({
+            url: '/TransactionFood/SearchTransactionFood',
+            type: 'GET',
+            data: {
+                page: 1,
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+                //id: _id
+            },
+            success: function (result) {
+                $('#ListTransactionFood').html(result);
+            }
+        })
+    }
+    //xóa
+    function DeleteTranFood(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/TransactionFood/DeleteTransactionFoods',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        //if (res) {
+                        //    swal({
+                        //        title: "",
+                        //        text: "Xóa bản ghi thành công",
+                        //        icon: "success"
+                        //    });
+                        //    SearchTransactionFood();
+                        //}
+                        //else {
+                        //    swal({
+                        //        title: "",
+                        //        //text: res.Exception,
+                        //        text: "Xóa bản ghi thất bại",
+                        //        icon: "error"
+                        //    })
+                        //}
+                        swal({
+                            title: res.Message,
+                            icon: res.Status == SUCCESS ? 'success' : 'error'
+                        }).then((rp) => {
+                            if (rp) {
+                                searchUser();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+    //xuất excel
+    function exportExcelFood() {
+        var _tranName = $('#txtTranFoodName').val();
+        var _tranStatus = $('#slTranFoodStatus').val();
+        var _fromDate = $('#dtTranFoodFromdate').val();
+        var _toDate = $('#dtTranFoodTodate').val();
+        $.ajax({
+            type: "POST",
+            url: "/TransactionFood/ExportExcelTransactionFood",
+            cache: false,
+            data: {
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+            },
+            success: function (data) {
+                window.location = '/TransactionFood/Download';
+            },
+            error: function (data) {
+                swal({
+                    title: " Failed!",
+                    text: "Lưu thất bại",
+                    icon: "warning",
+                    button: "Close",
+                })
+            }
+        });
+    }  
+</script>

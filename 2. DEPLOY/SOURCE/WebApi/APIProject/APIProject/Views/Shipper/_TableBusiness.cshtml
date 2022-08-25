@@ -1,0 +1,63 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@using APIProject.Resource
+@model IPagedList<OrderOutputModel>
+
+<div class="col-md-12">
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white align-center bg-thead">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th>STT</th>
+                <th>Loại dịch vụ</th>
+                <th>Tổng tiền</th>
+                <th>Hoa hồng</th>
+                <th>Trạng thái</th>
+                <th>TG hoàn thành</th>
+                <th>TG tạo</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{
+                if (Model.Count <= 0)
+                {
+                    <tr>
+                        <td colspan="7">Không có dữ liệu.</td>
+                    </tr>
+                }
+                else
+                {
+                    int stt = 1;
+                    foreach (var data in Model)
+                    {
+                        <tr>
+                            <td>@stt</td>
+                            <td>@data.NameService </td>
+                            <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.TotalPrice))</td>
+                            <td>5000</td>
+                            <td>Đã hoàn thành</td>
+                            @*<td>@data.TotalPrice</td>*@
+                            <td>@data.CompletedDate</td>
+                            <td>@data.CreateDate</td>
+                        </tr>
+                        stt++;
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="col-md-11">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("GetListBusiness", "Shipper", new { Page, ViewBag.ShipperID }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListCustomer", LoadingElementId = "modalLoad", OnBegin = "LoadCheck", OnComplete = "LoadChecked" })
+        )
+    </div>
+</div>
+

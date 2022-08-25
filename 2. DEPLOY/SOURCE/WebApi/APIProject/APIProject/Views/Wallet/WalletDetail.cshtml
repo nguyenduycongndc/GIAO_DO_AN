@@ -1,0 +1,298 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using PagedList
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ViewListWalletModel
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="col-md-12">
+                <div class="breadcrumb-holder">
+                    <div class="row mb-3 mt-3">
+                        <div class="col-md-9 col-sm-9 col-8 text-dark px-0">
+                            <h4 class="custom_title">Chi tiết ví</h4>
+                        </div>
+                        <div class="col-md-1 pull-right pb-10 pr-10">
+                            @*<button class="btn btn-primary btn_export" id="btnExport" onclick="ExportExcelWallet(@Model.Detail.ID)"> @Resources.Export</button>*@
+                        </div>
+                        <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                            <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Wallet/Index'"><i class="fa fa-fw fa-arrow-left"></i>Quay lại</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @*<div class="col-md-12 col-xs-12">*@
+                <div class="col-md-3 col-xs-3">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Thông tin ví</legend>
+                        @if (Model == null)
+                        {
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Mã:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p></p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Tên:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Số điện thoại:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Ví cọc:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Ví thu nhập:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p></p>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <input type="hidden" id="txtMemId" value="@Model.CusId" />
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Mã:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p>@Model.CusCode</p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Tên:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p>@Model.CusName</p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Số điện thoại:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p>@Model.CusPhone</p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Ví cọc:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p>@string.Format("{0:#,0}", Convert.ToDecimal(@Model.PileWallet))</p>
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-md-4 col-xs-6">
+                                    <label class="font-weight-normal">Ví thu nhập:</label>
+                                </div>
+                                <div class="col-md-8 col-xs-6">
+                                    <p>@string.Format("{0:#,0}", Convert.ToDecimal(@Model.IncomeWallet))</p>
+                                </div>
+                            </div>
+                        }
+
+
+                    </fieldset>
+                </div>
+                @*</div>
+
+                    <div class="row">*@
+                @*<div class="col-md-12 col-xs-12">*@
+                <div class="col-md-9 col-xs-9" style="float:right">
+                    <fieldset class="scheduler-border">
+
+                        <legend class="scheduler-border">Lịch sử ví</legend>
+                        <div class="row mt-2">
+                            <div class="col-md-3 offset-md-0">
+                                <select class="form-control" id="walletType">
+                                    <option class="text-black-50" value="">Loại ví</option>
+                                    <option value="1">Ví cọc</option>
+                                    <option value="2">Ví thu nhập</option>
+                                    @*<option>Cash Wallet</option>*@
+                                </select>
+                            </div>
+                            <div class="col-md-3 offset-md-0">
+                                <select class="form-control" id="transactionType">
+                                    <option class="text-black-50" value="">Loại giao dịch</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_WITHDRAW">Rút tiền</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_REFUND_WITHDRAW">Hoàn tiền khi yêu cầu rút tiền bị từ chối</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_TRANSFER_WALLET">Chuyển tiền sang ví cọc</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET">Nhận tiền sau khi hoàn thành đơn</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET_EXCHANGE">Nhận tiền từ ví thu nhập</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_RECHARGE">Nạp tiền từ hệ thống</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_RECHARGE_ADMIN">Cộng tiền từ Admin</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_ACCEPT_ORDER">Trừ tiền ví cọc khi nhận đơn</option>
+                                    <option value="@Constant.TYPE_TRANSACTION_REFUND_ORDER_CANCLE">Hoàn tiền ví cọc khi đơn bị hủy</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 offset-md-0 col-sm-6">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="Từ ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                            <div class="col-md-3 offset-md-0 col-sm-6">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="Đến ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+
+                        </div>
+                        <div class="row pt-40">
+                            <div class="col-md-12">
+                                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                                    <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-md-12 col-xs-12" id="tableTransact">
+                                        @*@{
+                                                Html.RenderAction("_tableWalletDetail", "Wallet", new { page = 1});
+                                            }*@
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="pr-3 pb-2 mb-1 d-flex justify-content-end">
+                                <button class="btn btn-primary btn-back" onclick="backWallet()"> Back</button>
+                            </div>*@
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+<script>
+
+
+    $(document).ready(function () {
+        var id = $('#txtMemId').val();
+        SearchWalletHistory(id);
+
+        $('#walletType').change(function (e) {
+            $('#transactionType').val('')
+            SearchWalletHistory(id);
+                 $("#transactionType").empty();
+            $("#transactionType").append("<option class='text-black-50' value=''>Loại giao dịch</option>");
+            if ($('#walletType').val() == 1) {
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_REFUND_ORDER_CANCLE + "'>" + "Hoàn tiền ví cọc khi đơn bị hủy" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_ACCEPT_ORDER + "'>" + "Trừ tiền ví cọc khi nhận đơn" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_RECHARGE + "'>" + "Nạp tiền từ hệ thống" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET_EXCHANGE + "'>" + "Nhận tiền từ ví thu nhập"  + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_RECHARGE_ADMIN + "'>" + "Cộng tiền từ Admin" + "</option>");
+            } else {
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_WITHDRAW + "'>" + "Rút tiền" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_REFUND_WITHDRAW + "'>" + "Hoàn tiền khi yêu cầu rút tiền bị từ chối" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_WALLET + "'>" + "Chuyển tiền sang ví cọc" + "</option>");
+                $("#transactionType").append("<option value='" + @Constant.TYPE_TRANSACTION_TRANSFER_NO_WALLET + "'>" + "Nhận tiền sau khi hoàn thành đơn"  + "</option>");
+            }
+        });
+        $('#transactionType').change(function (e) {
+            SearchWalletHistory(id);
+        });
+        $('#dtFromdateIndex').change(function (e) {
+            SearchWalletHistory(id);
+        });
+        $('#dtTodateIndex').change(function (e) {
+            SearchWalletHistory(id);
+        });
+    });
+    function SearchWalletHistory(_id) {
+        var _memType = $('#walletType').val();
+        var _memTransactionType = $('#transactionType').val();
+        var _fromDate = $('#dtFromdateIndex').val();
+        var _toDate = $('#dtTodateIndex').val();
+
+        $.ajax({
+            url: '/Wallet/ListTransactionHistory',
+            type: 'GET',
+            data: {
+                page: 1,
+                memType: _memType,
+                memTransactionType: _memTransactionType,
+                fromDate: _fromDate,
+                toDate: _toDate,
+                id: _id
+            },
+            success: function (res) {
+                $('#tableTransact').html(res);
+            }
+        })
+    }
+    //function clearFilterTransaction(ID) {
+    //    $('#walletType').val("");
+    //    $('#transactionType').val("");
+    //    $('#dtFromdateIndex').val("");
+    //    $('#dtTodateIndex').val("");
+    //    $.ajax({
+    //        url: '/Wallet/SearchTransactionHistory',
+    //        type: 'GET',
+    //        data: {
+    //            page: 1,
+    //            TypeWallet: "",
+    //            type: "",
+    //            fromDate: "",
+    //            toDate: "",
+    //            ID: ID
+    //        },
+    //        success: function (res) {
+    //            $('#tableTransact').html(res);
+    //        }
+    //    })
+    //}
+
+    $(document).ready(function () {
+        $('.date').datepicker({
+            dateFormat: "dd/mm/yy"
+        });
+    })
+
+    // EXPORT excel file wallet
+    function ExportExcelWallet(ID) {
+        var TypeWallet = $('#walletType').val().trim();
+        var type = $('#transactionType').val().trim();
+        var fromDate = $('#dtFromdateIndex').val().trim();
+        var toDate = $('#dtTodateIndex').val().trim();
+        window.location.href = "/Wallet/ExportRequestWalletDetail?ID=" + ID + "&TypeWallet=" + TypeWallet + "&type=" + type + "&fromDate=" + fromDate + "&toDate=" + toDate;
+    }
+
+</script>

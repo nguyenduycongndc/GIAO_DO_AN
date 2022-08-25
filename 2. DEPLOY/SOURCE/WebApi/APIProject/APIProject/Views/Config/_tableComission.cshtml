@@ -1,0 +1,73 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<ConfigCommissionModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Tên</th>
+            <th>Hoa hồng</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="4">
+                        Không có dữ liệu!
+                    </td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.CommissionName</td>
+                        <td>@item.MastersBenefit%</td>
+                        @*@{
+                            if (item.IsActive == 1)
+                            {
+                                <td>Hoạt động</td>
+                            }
+                            else
+                            {
+                                <td>Ngừng hoạt động</td>
+
+                            }
+                        }*@
+                        @*<td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>*@
+                        <td class="width2btn">
+                            <a title="Sửa" class="cursor-pointer" onclick="EditConfigCommission(@item.ID);">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a title="Xóa" class="cursor-pointer" onclick="DeleteConfigCommission(@item.ID)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchCommission", "Config", new { page, nameCommission = ViewBag.nameCommission}),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tblSearchCommission" })
+        )
+    </div>
+</div>

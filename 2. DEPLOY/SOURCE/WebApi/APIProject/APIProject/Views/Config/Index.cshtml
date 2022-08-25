@@ -1,0 +1,2067 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using APIProject.Resource
+@using Data.Utils
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ConfigDataModel dt = (ViewBag.systemParamCofig);
+}
+
+
+<div style="font-family:'Open Sans'">
+    <div class="col-12 content" id="backToIndex">
+        <div class="col-md-12 ">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                        <h4><i class="fa fa-fw fa-gears"></i>Cài đặt</h4>
+                    </div>
+                    @*<div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                            <a class="btn btn-outline-secondary" href="javascript:void(0);" onclick="backToIndexCustomer(@ViewBag.PageBefore)"><i class="fa fa-fw fa-arrow-left"></i> @Resources.ComeBack</a>
+                        </div>*@
+
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs justify-content-start sticky" role="tablist" id="myTab">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#param">Thông tin hệ thống</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#Area">Khu vực hoạt động</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#Commission">Hoa hồng</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#QA">Hạng thành viên</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#Message">Loại xe</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#FeeShip">Giá dịch vụ chuyển phát nhanh</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link border-left-0" data-toggle="tab" href="#WorkingTime">Giá Cước Weship</a>
+            </li>
+        </ul>
+
+        <div class="tab-content bg-white mb-3 mt-1">
+            <div id="param" class="tab-pane active container">
+                <div class="row">
+                    <div class="col-ms-6 col-md-6 col-lg-6 col-xl-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border"><label class="text-primary"><h4>Ví</h4></label></legend>
+                            <form id="frmWallet" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                        <label class="text-dark">
+                                            Ví cọc tối thiểu:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col xl-6">
+                                        <input type="hidden" name="ConfigWalletNoWithdrawID" value="" />
+                                        <input type="text" class="form-control number" name="ConfigWalletNoWithdrawValue" id="txtMinimunBalanceDesposit" value="@string.Format("{0:#,0}", Convert.ToDecimal( @dt.WalletConfig.ConfigWalletNoWithdrawValue))" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                        <label class="text-dark">
+                                            Ví thu nhập tối thiểu:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col xl-6">
+                                        <input type="hidden" name="ConfigWalletWithdrawID" value="@dt.WalletConfig.ConfigWalletWithdrawID" />
+                                        <input class="form-control number" name="ConfigWalletWithdrawValue" type="text" id="txtMinimunBalanceCash" value="@string.Format("{0:#,0}", Convert.ToDecimal( @dt.WalletConfig.ConfigWalletWithdrawValue))" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                                        <label class="text-dark">
+                                            Thời gian rút tiền:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-3 col-md-3 col-lg-3 col">
+                                        <input type="hidden" name="ConfigTimeWithdrawID" value="@dt.WalletConfig.ConfigTimeWithdrawID" />
+                                        <input type="number" class="form-control number-type" name="ConfigTimeWithdrawValue" id="txtMinimunBalanceSendMess" value="@dt.WalletConfig.ConfigTimeWithdrawValue" />
+                                    </div>
+                                    <div class="col-sm-2 col-md-3 col-lg-3 col mt-10">
+                                        <label>Ngày</label>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mt-5">
+                                <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 offset-9 text-right">
+                                    <button class="btn btn-success" onclick="saveWallet()"><i class="fa fa-save mr-1"></i>Lưu</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-ms-6 col-md-6 col-lg-6 col-xl-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border"><label class="text-primary"><h4>Giao dịch</h4></label></legend>
+                            <form id="frmtransaction" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-4">
+                                        <label class="text-dark">
+                                            Thời gian nhận
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-4">
+                                        <div class="row">
+                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                <input type="hidden" id="CountDownID" name="CountDownConfigID" value="@dt.TransactionConfig.CountDownConfigID" />
+                                                <input type="number" class="form-control number-type" id="countdownconfig" name="CountDownConfigValue" value="@dt.TransactionConfig.CountDownConfigValue" />
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-3  mt-10"><label class="text-dark">Giây</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-sm-7 col-md-7 col-lg-4 col-xl-4"><label class="text-dark">Hủy giao dịch:</label></div>
+                                    <div class="col-sm-5 col-md-5 col-lg-4 col-xl-4">
+                                        <div class="row ">
+                                            <input type="hidden" id="CancelTimeID" name="CancelTimeConfigID" value="@dt.TransactionConfig.CancelTimeConfigID" />
+                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                <input type="number" class="form-control number-type" id="cancelTransaction" name="CancelTimeConfigValue" value="@dt.TransactionConfig.CancelTimeConfigValue" />
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-3  mt-10"><label class="text-dark">Lần</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-sm-7 col-md-7 col-lg-7 col-xl-4">
+                                        <label class="text-dark">
+                                            Thời gian hủy hóa đơn
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-5 col-xl-4">
+                                        <div class="row">
+                                            <div class="col-md-9 col-sm-9 col-xs-9">
+                                                <input type="hidden" id="TimeCancelID" name="TimeCancelOrderID" value="@dt.TransactionConfig.TimeCancelOrderID" />
+                                                <input type="number" class="form-control number-type" id="TimeCancelValue" name="TimeCancelOrderValue" value="@dt.TransactionConfig.TimeCancelOrderValue" />
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-3  mt-10"><label class="text-dark">Giây</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="col-sm-7 col-md-7 col-lg-4 col-xl-4">
+                                        <label class="text-dark">
+                                            Phí thu hộ tối đa:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-5 col-md-5 col-lg-8 col-xl-8">
+                                        <div class="row">
+                                            <input type="hidden" id="MaxCODID" name="MaxCODConfigID" value="@dt.TransactionConfig.MaxCODConfigID" />
+                                            <div class="col-md-9"><input type="text" class="form-control number" id="maxcod" name="MaxCODConfigValue" value="@string.Format("{0:#,0}", Convert.ToDecimal(@dt.TransactionConfig.MaxCODConfigValue))" /></div>
+                                            <div class="col-md-3"><label class="text-dark">VNĐ</label></div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mt-5">
+                                <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 text-right offset-9">
+                                    <button class="btn btn-success" onclick="saveUpdateTransactionConfig()"><i class="fa fa-save mr-1"></i>Lưu</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-ms-6 col-md-6 col-lg-6 col-xl-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border"><label class="text-primary"><h4>Khu vực hoạt động</h4></label></legend>
+                            <form id="fromGPS">
+                                <div class="row mt-3">
+                                    <div class="col-md-6 col-sm-8 col-lg-6 mt-6 col-xs-8">
+                                        <label class="text-dark">
+                                            Khu vực hoạt động tối đa:
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4">
+                                        <input type="hidden" name="MaxAreaConfigID" value="@dt.AreaConfig.MaxAreaConfigID" />
+                                        <input name="MaxAreaConfigValue" id="valMaximumArea" class="form-control number" type="text" value="@dt.AreaConfig.MaxAreaConfigValue" />
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row mt-5">
+                                <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2 text-right offset-9">
+                                    <button class="btn btn-success" onclick="saveUpdateAreaConfig()"><i class="fa fa-save mr-1"></i>Lưu</button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-ms-6 col-md-6 col-lg-6 col-xl-6">
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border"><label class="text-primary"><h4>Khung giờ cao điểm</h4></label></legend>
+                            <div class="row mt-2 ml-1">
+                                <button data-toggle="modal" data-target="#mdAddRushHours" class="btn btn-primary mr-10"><i class="fa fa-plus mr-1"></i>Thêm</button>
+                                <button class="btn btn-success" onclick="saveUpdateConfigTime()"><i class="fa fa-save mr-1"></i>Lưu</button>
+                            </div>
+                            <div class="row mt-2 ml-1">
+                                <form id="frm-update-config-time" enctype="multipart/form-data">
+                                    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                        <thead class="text-center text-white bg-thead">
+                                            <tr>
+                                                @*<th>STT</th>*@
+                                                <th>Khung giờ</th>
+                                                <th>Phí tăng trong giờ cao  điểm</th>
+                                                <th>Mô tả</th>
+                                                <th></th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody class="text-center" id="configtime-table">
+                                            @{
+                                                //int stt = 1;
+                                                foreach (var i in dt.PeakHourConfig)
+                                                {
+                                                    <tr class="val-configtime-id" data-id="@i.ID" data-startTime="@i.StartTime" data-endTime="@i.EndTime" data-Price="@i.Price" data-Desc="@i.Description">
+                                                        <td>
+                                                            <input class="conf-time-input start-time" type="text" value="@i.StartTime" /> -
+                                                            <input class="conf-time-input end-time" type="text" value="@i.EndTime" />
+                                                        </td>
+                                                        <td><input class="conf-time-input-w price number" type="text" value="@string.Format("{0:#,0}", Convert.ToDecimal(@i.Price))" />VND/km</td>
+                                                        <td><input class="conf-time-input-w desc" type="text" value="@i.Description" /></td>
+                                                        <td>
+                                                            <a onclick="deleteRow(this)" style="color: red; cursor: pointer"><i class="fa fa-fw fa-trash"></i></a>
+                                                        </td>
+                                                    </tr>
+                                                    //stt++;
+                                                }
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+                                </form>
+                            </div>
+
+                        </fieldset>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row mt-5" id="">
+                @*@{
+                        Html.RenderAction("SearchActiveArea", "Config", new { page = 1 });
+                    }*@
+                @*<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tỉnh/Thành phố</th>
+                                <th>Quận/huyện</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <i class=" btnEdit fa fa-fw fa-edit"></i>
+                                    <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>*@
+
+            </div>
+            <div id="Area" class="tab-pane ">
+                <div class="container">
+                    <div class="row sticky">
+                        <div class="col-sm-7 col-md-7 col-lg-7 col-xl-7">
+                            <div class="row">
+                                <div class="col col-md-6 col-12">
+                                    <select class="form-control" name="calc_shipping_provinces" id="calc_shipping_provinces" required="" onchange="loadListDistrict(this.value)">
+                                        <option value="">Tỉnh / Thành phố</option>
+                                        @foreach (Data.DB.Province obj in ViewBag.Province)
+                                        {
+                                            <option value="@obj.ID">
+                                                @obj.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col col-md-6 col-12">
+                                    <select class=" form-control" name="calc_shipping_district" id="slDistrict" required="">
+                                        <option value="">Quận / Huyện</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 col-md-5 col-lg-5 col-xl-5 text-right">
+                            <button class="btn btn-primary" onclick="javaScript:searchArea()"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#mdAddArea"><i class="fa fa-plus mr-1"></i>Thêm mới</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" id="tblSearchArea">
+                        @{
+                            Html.RenderAction("SearchActiveArea", "Config", new { page = 1 });
+                        }
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            @* View hoa hồng *@
+            <div id="Commission" class="tab-pane">
+                <div class="container">
+                    <div class="row sticky">
+                        <div class="col-sm-4 col-md-4 col-xl-4 col-lg-4">
+                            <div class="row">
+
+                                <div class="col-sm-10 col-md-10 col-xl-10 col-lg-10">
+                                    <input type="text" id="nameCommission" class="form-control" placeholder="Tên mức hoa hồng" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8 col-md-8 col-xl-8 col-lg-8 text-right">
+                            <button class="btn btn-primary mr-1" id="btnSearchServiArea" onclick="SearchCommission()"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#mdAddCommnisisson"><i class="fa fa-plus mr-1"></i>Thêm mới</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" id="tblSearchCommission">
+                        @{
+                            Html.RenderAction("SearchConfigCommission", "Config", new { page = 1 });
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="QA" class="tab-pane">
+                <div class="container">
+                    @*<div class="row mt-2">
+                            <div class="col-md-7"><h4>Hạng thành viên</h4></div>
+                        </div>*@
+                    <div class="row mt-3" id="_TableCustomerRank">
+                        @{ Html.RenderAction("ViewCustomerRank", "Config", new { Page = 1 });}
+                    </div>
+                </div>
+            </div>
+
+            <div id="WorkingTime" class="tab-pane ">
+                <div class="container">
+                    <div class="row sticky">
+                        <div class="col col-md-8 col-12">
+                            <div class="row">
+                                <div class="col col-6">
+                                    <select class="form-control" id="slcType">
+                                        <option>Loại dịch vụ</option>
+                                        <option value="@SystemParam.SHIP_DRIVER">@SystemParam.SHIP_DRIVER_STR</option>
+                                        <option value="@SystemParam.SHIP_PACKAGE">@SystemParam.SHIP_PACKAGE_STR</option>
+                                        <option value="@SystemParam.SHIP_FOOD">@SystemParam.SHIP_FOOD_STR</option>
+                                    </select>
+                                </div>
+                                <div class="col col-6">
+                                    <select class="form-control" id="slcTypeVehice">
+                                        <option>Chọn loại xe</option>
+                                        @foreach (Data.DB.VehicleType obj in ViewBag.VehicleType)
+                                        {
+                                            <option value="@obj.ID">@obj.Name @*- @obj.Logo*@</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-md-4 col-12 text-right">
+                            <button onclick="SearchConfigTransportCost()" class="btn btn-primary"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>
+                            <button onclick="loadConfigDriver()" class="btn btn-success" data-toggle="modal" data-target="#mdAddServicePrice1"><i class="fa fa-plus mr-1"></i>Thêm mới</button>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" id="_TableTransportCost">
+                        @{ Html.RenderAction("SearchConfigTranportCost", "Config", new { Page = 1 });}
+                    </div>
+                </div>
+
+            </div>
+
+            @*Gía dịch vụ chuyển phát nhanh*@
+            <div id="FeeShip" class="tab-pane container">
+                <div class="row mb-20 mt-4">
+                    <div class="col-lg-9">
+                        <h4>Giá dịch vụ chuyển phát nhanh</h4>
+
+                    </div>
+                    <div class="ml-auto col-lg-3 text-center">
+                        <button class="btn btn-success" data-toggle="modal" data-target="#mdAddTransportArea"><i class="fa fa-plus mr-1"></i>Thêm mới</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" id="_TableTransportArea">
+                        @{ Html.RenderAction("GetDataConfigTransportArea", "Config", new { page = 1 });}
+                    </div>
+                </div>
+            </div>
+
+            @* Loại xe *@
+            <div id="Message" class="tab-pane container">
+                <div class="row sticky">
+                    <div class="col col-4">
+                        <input type="text" class="form-control" id="vehicleName" placeholder="Nhập tên loại xe" />
+                    </div>
+                    <div class="col col-4">
+                        <select class="form-control" id="isActive">
+                            <option value="">Trạng thái hoạt động</option>
+                            <option value="@SystemParam.ACTIVE">Đang hoạt động</option>
+                            <option value="@SystemParam.DEACTIVE">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col col-4 text-right ">
+                        <button class="btn btn-primary mr-1" onclick="javaScript:btnSearchVehicleType()"><i class="fa fa-search mr-1"></i>Tìm kiếm</button>
+                        <button class="btn btn-success mr-1" data-toggle="modal" data-target="#mdAddTypeVehicle" onclick="javaScript:btnAddVehicleType()"><i class="fa fa-plus mr-1"></i>Thêm loại xe</button>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12" id="ListVehicleType">
+                        @{
+                            Html.RenderAction("SearchVehicleType", "Config", new { page = 1 });
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div id="Message" class="tab-pane container" style="padding-left:0px; padding-right:0px; ">
+        <div class="card">
+            <div class="card-header sticky col-12">
+                <div class="row mt-1 ml-2"><h4>Loại xe</h4></div>
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <input type="text" class="form-control" id="vehicleName" placeholder="Nhập tên loại xe" />
+                    </div>
+                    <div class="col col-4">
+                        <select class="form-control" id="isActive">
+                            <option value="">Trạng thái hoạt động</option>
+                            <option value="1">Đang hoạt động</option>
+                            <option value="2">Ngừng hoạt động</option>
+                        </select>
+    </div>
+                    <div class="col col-4"> <button class="btn btn-success" data-toggle="modal" data-target="#mdAddQA"><i class="fa fa-plus mr-1"></i>Thêm mới</button></div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mt-5" id="tblCommission">-->
+    <!--Trả tableVehicle vào đây-->
+    <!--@{
+
+                    }
+                </div>
+            </div>
+        </div>
+
+
+    </div>-->
+</div>
+<!-- Nav tabs need pin to header -->
+<!-- Tab panes -->
+<!--Modal add type vehicle-->
+<div class="modal fade" id="mdAddTypeVehicle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4>Thêm cấu hình loại xe</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-2">
+                    <div class="col col-5">
+                        <span>Tên loại xe</span><span class="text-danger" >*</span>
+                    </div>
+                    <div class="col col-7">
+                        <input type="text" id="addName" class="form-control" placeholder="Nhập tên loại xe" />
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col col-5">
+                        <span>Thứ tự ưu tiên</span><span class="text-danger">*</span>
+                    </div>
+                    <div class="col col-7">
+                        <input type="text" id="addOrder" class="form-control" placeholder="Nhập thứ tự ưu tiên" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col col-5 ">
+                        <span>Icon</span><span class="text-danger">*</span>
+                    </div>
+                    @*<div class="col col-7">
+                            <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_license">
+                                <div class="news">
+                                    <div class="article" id="AddLogoLicense">
+                                        <img id="AddImgLogoLicense" src="~/Content/images/add_photo-512 (1).png" class="col-md-12 px-0 contentImg" alt="your image" />
+                                    </div>
+                                </div>
+                            </a>
+                        </div>*@
+                    <div class="col col-md-7">
+                        <div id="AddLogoLicense">
+                            <i class="fa fa-camera" style="font-size:30px;"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-5 ">
+                        <span>Xe máy</span>
+                    </div>
+                    <div class="col-7">
+                        <input type="checkbox" id="IsMotorbike" style="height:20px; width:20px" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Hủy</button>
+                <button type="button" class="btn btn-success" onclick="btnSave()"><i class="fa fa-save"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal edit type vehicle-->
+
+<div class="modal fade" id="editTypeVehicle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa loại xe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtVehicleTypeID" />
+                <div class="row mt-2">
+                    <div class="col col-5">
+                        <span>Tên loại xe</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <input type="text" id="editName" class="form-control" placeholder="Nhập tên loại xe" />
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col col-5">
+                        <span>Thứ tự ưu tiên</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <input type="text" id="editOrder" class="form-control" placeholder="Nhập thứ tự ưu tiên" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-5 mt-5">
+                        <span>Icon</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="eiditVehicleTypeIcon" data-id="1">
+                            <div class="news">
+                                <div class="article position-relative" id="editIcon">
+                                    <img id="txtVehicleTypeIcon" src="~/Content/images/add_photo-512 (1).png" class="col-md-12 px-0 contentImg" alt="your image" />
+                                    <i title="Delete" id="deleteimg" class="fa fa-2x fa-remove remove-avatar d-none" data="img1" style="position:absolute;top: -14px;left: 150px;color: #ff0000;z-index: 999;"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row pb-3 mt-2">
+                    <div class="col-md-5 col-sm-12 col-12">
+                        <span>Trạng thái:</span>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-12">
+                        <select id="txtIsActiveEdit" class="form-control text-center" name="Trạng thái">
+                            <option value="@SystemParam.ACTIVE">Hoạt động</option>
+                            <option value="@SystemParam.DEACTIVE">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-5 ">
+                        <span>Xe máy</span>
+                    </div>
+                    <div class="col-7">
+                        <input type="checkbox" id="IsMotorbikeEdit" style="height:20px; width:20px" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Hủy</button>
+                <button type="button" class="btn btn-success" onclick="btnSaveEdit()"><i class="fa fa-save" data-dismiss="modal"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdAddShift">
+    <div class="modal-dialog" style="max-width:1000px !important;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Add working time</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="frmAddCommission">
+
+                    <input type="hidden" id="shiftId" />
+                    <div class="row">
+                        <div class="col-md-2"><label class="text-dark">Name:</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" id="sl_day" onchange="changeDay('add')">
+                                <option value="0">Select day</option>
+                                <option value="1">MonDay</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="7">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-2" id="listDays">
+
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Setup time</label></div>
+                    </div>
+                    <div class="row mt-3" id="listShiftTime">
+                        @*@{
+                                for (int i = 0; i < 48; i++)
+                                {
+                                    <div class=" col-sm-2 col-md-2 col-xl-2 col-lg-2 mb-4">
+                                        <div class="form-check">
+                                            <label class="form-check-label valCheckbox">
+                                                <input type="checkbox" class="form-check-input form-control checkbox" value="1" style="height:15px;">0:30
+                                                <input type="hidden" value="" class="valIDShift" />
+                                                <input type="hidden" value="" class="valTime" />
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }*@
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="submitAddShift()"><i class="fa fa-save mr-1"></i>Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mdEditShift">
+    <div class="modal-dialog" style="max-width:1000px !important;">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Edit working time</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="frmAddCommission">
+
+                    <input type="hidden" id="shiftIdEdit" />
+                    <div class="row">
+                        <div class="col-md-2"><label class="text-dark">Name:</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" id="sl_dayEdit" onchange="changeDay('edit')">
+                                <option value="0">Select day</option>
+                                <option value="1">MonDay</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                                <option value="7">Sunday</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mt-2" id="listDaysEdit">
+
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Setup time</label></div>
+                    </div>
+                    <div class="row mt-3" id="listShiftTimeEdit">
+
+                    </div>
+
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="submitEditShift()"><i class="fa fa-save mr-1"></i>Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- The Modal commission detail -->
+<div class="modal fade" id="mdCommissionDetail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Commision level detail</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="frmCommissionDetail">
+
+
+                    <div class="row">
+                        <div class="col-md-5"><label class="text-dark">Name:</label></div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtNameDT" placeholder="Enter name" name="Name" />
+                            <input id="valIDCMS" type="hidden" name="ID" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Car autocare academy:</label></div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtAutocareDT" placeholder="Enter car autocare academy" name="CarAutocareAcaDemy" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Duration:</label></div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtDurationDT" placeholder="Enter duration" name="Duration" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Process:</label></div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtProcessDT" placeholder="Enter process" name="Process" />
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Commission:</label></div>
+                        <div class="col-md-7">
+                            <input class="form-control" type="number" id="txtCommissionDT" placeholder="Enter commision" name="MastersBenefit" onkeydown="javascript: return event.keyCode == 69 || event.keyCode == 189 ? false : true" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="SaveEditCommision()"><i class="fa fa-save mr-1"></i>Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--  Modal add khu vực -->
+<div class="modal fade" id="mdAddArea">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Thêm khu vực hoạt động</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row mt-2">
+                    <div class="col col-md-4 col-12">
+                        <span>Tỉnh / Thành phố</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8 col-12">
+                        <select class="form-control" name="calc_shipping_provinces" id="calc_shipping_province" required="" onchange="loadListDistrictModal(this.value)">
+                            <option value="">Tỉnh / Thành phố</option>
+                            @foreach (Data.DB.Province obj in ViewBag.Province)
+                            {
+                                <option value="@obj.ID">
+                                    @obj.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-md-4 col-12">
+                        <span>Quận / Huyện</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-md-8 col-12">
+                        <select class=" form-control" name="calc_shipping_district" id="slDistrictModal" required="">
+                            <option value="">Quận / Huyện</option>
+                        </select>
+                    </div>
+                </div>
+                <divv class="row mt-2">
+                    <div class="col col-4 ">
+                        <span>Trạng thái</span>
+                    </div>
+                    <div class="col col-8">
+                        <select class=" form-control" id="slType">
+                            <option value="@SystemParam.ACTIVE">Hoạt động</option>
+                            <option value="@SystemParam.DEACTIVE">Ngừng hoạt động</option>
+                        </select>
+                    </div>
+                </divv>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-success" onclick="saveActiveArea()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--Modal edit khu vực-->
+
+<div class="modal fade" id="editActiveArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title " id="exampleModalLabel">Sửa khu vực hoạt động</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="txtActiveAreaID" />
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col col-md-4 col-12">
+                            <span>Tỉnh / Thành phố </span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <select class="form-control" name="calc_shipping_provinces" id="sltProvinceId" required="" onchange="loadListDistrictModals(this.value)">
+                                <option value="">Tỉnh / Thành phố</option>
+                                @foreach (Data.DB.Province obj in ViewBag.Province)
+                                {
+                                    <option value="@obj.ID">
+                                        @obj.Name
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-md-4 col-12">
+                            <span>Quận / Huyện</span><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <select class=" form-control" name="calc_shipping_district" id="slDistrictModals" required="">
+                                <option value="">Quận / Huyện</option>
+                            </select>
+                        </div>
+                    </div>
+                    <divv class="row mt-2">
+                        <div class="col col-4 ">
+                            <span>Trạng thái</span>
+                        </div>
+                        <div class="col col-8">
+                            <select class=" form-control" id="sltType">
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                    </divv>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i>Hủy</button>
+                <button type="button" class="btn btn-success" onclick="btnSaveEditArea()"><i class="fa fa-save" data-dismiss="modal"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal edit service area -->
+<div class="modal fade" id="mdEditServiceArea">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Add service area</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="fmEditServiceArea">
+                    <div class="row">
+                        <input type="hidden" id="valIdServiceArea" name="ID" />
+                        <div class="col-md-5"><label class="text-dark">Province</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" id="slProvinceAreaED" onchange="loadListDistrictAreaED(this.value)" name="ProvinceID">
+                                @*@{
+                                        <option>@Resources.ProvinceOrCities</option>
+                                        foreach (var p in (List<Province>)ViewBag.listCity)
+                                        {
+                                            if (@p.Code.Equals(1))
+                                            {
+                                                <option value="@p.Code">@p.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@p.Code">@p.Name</option>
+                                            }
+                                        }
+                                    }*@
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">District</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" id="slDistrictAreaED" name="DistrictID">
+                                <option>All Districts</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-5"><label class="text-dark">Type</label></div>
+                        <div class="col-md-7">
+                            <select class="form-control" id="typeAreaED" name="IsActive">
+                                <option value="1">Active</option>
+                                <option value="2">De active</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="SaveEditServiceArea()"><i class="fa fa-save mr-1"></i>Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--  Modal add Q&A -->
+<!-- Modal Giờ cao điểm -->
+<div class="modal fade" id="mdAddRushHours">
+    <div class="modal-dialog">
+        <div class="modal-content-config ">
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Thêm giờ cao điểm</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="mb-20">
+                    <label>Khung giờ bắt đầu</label><span style="color:red"> *</span>
+                    <div class="form-group">
+                        <input type="time" class="form-control" id="conf_starttime" placeholder="Khung giờ bắt đầu" />
+                    </div>
+                </div>
+                <div class="mb-20">
+                    <label>Khung giờ kết thúc</label><span style="color:red"> *</span>
+                    <div class="form-group">
+                        <input type="time" class="form-control" id="conf_endtime" placeholder="Khung giờ kết thúc" />
+                    </div>
+                </div>
+                <div class="mb-20">
+                    <label>Phí giờ cao điểm</label><span style="color:red"> *</span>
+                    <input type="text" class="form-control number" id="conf_price" placeholder="Phí giờ cao điểm" />
+                </div>
+                <div class="mb-20">
+                    <label>Mô tả</label><span style="color:red"> *</span>
+                    <input type="text" class="form-control" id="conf_desc" placeholder="Mô tả" />
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-success" onclick="AddConfigTime()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal  add commission-->
+<div class="modal fade" id="mdAddCommnisisson">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Thêm hoa hồng</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <span>Tên</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-8">
+                        <input type="text" id="createComissionName" placeholder="Tên người dùng" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <span>Hoa hồng</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-6">
+                        <input type="text" id="createComissionValue" class="form-control" placeholder="Giá trị hoa hồng" />
+
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">%</span>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-success" onclick="saveConfigCommission()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Modal  sửa commission-->
+<div class="modal fade" id="mdEditCommnisisson">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4 class="modal-title">Sửa hoa hồng</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <input type="hidden" id="txtConfigComissionID" />
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <span>Tên</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-8">
+                        <input type="text" id="editComissionName" placeholder="Tên người dùng" class="form-control" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col col-4">
+                        <span>Hoa hồng</span><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-6">
+                        <input type="text" id="editComissionValue" class="form-control" placeholder="Giá trị hoa hồng" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">%</span>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                <button class="btn btn-success" onclick="saveEditConfigCommission()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal add service  giao hang-->
+<div id="mdAddServicePrice1" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4>Thêm giá dịch vụ</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại dịch vụ</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select class="form-control slTypeService" id="slTypeService" onchange="loadConfigDriver()">
+                            <option value="1">Tài xế</option>
+                            <option value="2">Giao hàng</option>
+                            <option value="3">Giao đồ ăn</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-1" id="typeShip" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại vận chuyển</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select id="TransportType" class="form-control">
+                            <option value="0">Chọn loại vận chuyển</option>
+                            <option value="1">Wesend</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-1" id="TypeVehicle" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Loại xe</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-7">
+                        <select class="form-control slTypeVehicle" id="slTypeVehicle">
+                            <option value="0">Chọn loại xe</option>
+                            @foreach (Data.DB.VehicleType obj in ViewBag.VehicleType)
+                            {
+                                <option value="@obj.ID">@obj.Name @*- @obj.Logo*@</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Mặc định số km đầu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="number" class="form-control number-type" id="FirstDistance" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">km</span>
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Giá mở cửa</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="text" class="form-control number" id="FirstPrice" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">VND</span>
+                </div>
+                <div class="row mt-1" style="margin-bottom: 10px">
+                    <div class="col col-5" style="margin-top: 7px">
+                        <strong>Giá các km sau</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col col-4">
+                        <input type="text" class="form-control number" id="PerKmPrice" />
+                    </div>
+                    <span style="margin-top: 8px; font-size: 15px">VND</span>
+                </div>
+                <div id="dfTypeShip">
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Mặc định số kg đầu</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="number" class="form-control number-type" id="FirstWeight" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">kg</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Tăng theo mỗi (kg)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="PerKg" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">VND</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Giá các kg tiếp theo</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="PerKgPrice" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">VND</span>
+                    </div>
+                    @*<div class="row mt-1">
+                            <div class="col col-5" style="margin-top: 7px">
+                                <strong>Phí thu hộ COD *</strong>
+                            </div>
+                            <div class="col col-4">
+                                <input type="text" class="form-control number" id="FeeCOD" />
+                            </div>
+                            <span style="margin-top: 8px; font-size: 15px">VND</span>
+                        </div>*@
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button class="btn btn-success" onclick="createTransportCost()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdAddTransportArea" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4>Thêm vùng vận chuyển</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="frmTransportArea" enctype="multipart/form-data">
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Tên</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-7">
+                            <input type="text" class="form-control" id="name_transport_area" name="Name" />
+                        </div>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Từ (km)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="number" class="form-control number-type" id="from_address" name="FromKm" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">km</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Đến (km)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="number" class="form-control number-type" id="to_address" name="ToKm" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">km</span>
+                    </div>
+                    <div class="row mt-1" id="" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Loại vận chuyển</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-7">
+                            <select id="type_transport" class="form-control" name="Type">
+                                <option value="1">Tiêu chuẩn</option>
+                                <option value="2">Nhanh</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Tăng theo (km)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="number" class="form-control number-type" name="PerKg" id="perkm" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">km</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Giá tăng (VND)</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-4">
+                            <input type="text" class="form-control number" id="perpricekm" />
+                        </div>
+                        <span style="margin-top: 8px; font-size: 15px">VND</span>
+                    </div>
+                    <div class="row mt-1" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Thời gian vận chuyển</strong><span style="color:red"> *</span>
+                        </div>
+                        <div class="col col-7">
+                            <input type="text" class="form-control" name="TimeShip" id="time_ship" />
+                        </div>
+                    </div>
+                    <div class="row mt-1" id="divSurcharge" style="margin-bottom: 10px">
+                        <div class="col col-5" style="margin-top: 7px">
+                            <strong>Nội tỉnh </strong>
+                        </div>
+                        <div class="col col-4">
+                            <input type="checkbox" class="form-control" id="val-isprovince" style="height:15px; margin-left: -60px; margin-top: 12px" />
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button class="btn btn-success" onclick="createTransportArea()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal add shiper && shipfood-->
+
+<div id="modalEditTransportCost"></div>
+<div id="modalEditCustomerRank"></div>
+<div id="modalEditTransportArea"></div>
+<div id="modalDetailTransportArea"></div>
+
+
+<script>
+    $(document).ready(function () {
+        $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+            localStorage.setItem('activeTab', $(e.target).attr('href'));
+        });
+        var activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            $('#myTab a[href="' + activeTab + '"]').tab('show');
+        }
+    });
+</script>
+
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+         //phan quyen nhap cho mdAddServicePrice
+
+        $(document).ready(function () {
+            $("#slTypeService").val();
+
+            var typeship = $("#slTypeShip");
+            var typevehicle = $("#slTypeVehicle");
+            var firstprice = $("#txtFirstPrice");
+            var nextprice = $("#txtNextPrice");
+            var firstkg = $("#txtFirstKg")
+            if ($("#slTypeService").val() == 2 ) {
+                $("#typeship").prop('disabled', true);
+                $("#typevehicle").prop('disabled', false);
+                $("#firstprice").prop('disabled', true);
+                $("#nextprice").prop('disabled', true);
+                $("#firstkg").prop('disabled', true);
+            }
+            else {
+                $("#typeship").prop('disabled', false);
+                $("#typevehicle").prop('disabled', true);
+                $("#firstprice").prop('disabled', false);
+                $("#nextprice").prop('disabled', false);
+                $("#firstkg").prop('disabled', false);
+
+            }
+             });
+
+    </script>*@
+
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>*@
+
+<script>
+    //$(function () {
+    //    $('#datetimepicker3').datetimepicker({
+    //        format: 'HH:mm'
+    //    });
+    //});
+
+    //$(function () {
+    //    $('#datetimepicker99').datetimepicker({
+    //        format: 'HH:mm'
+    //    });
+    //});
+    //$(function () {
+    //    $('#datetimepicker5').datetimepicker({
+    //        format: 'HH:mm'
+    //    });
+    //});
+    //$(function () {
+    //    $('#datetimepicker6').datetimepicker({
+    //        format: 'HH:mm'
+    //    });
+    //});
+
+    //phan quyen nhap cho mdAddServicePrice1
+    function loadConfigDriver() {
+        if ($("#slTypeService").val() == 2) {
+            $("#typeShip").removeClass("display-input");
+            $("#typeShip").addClass("show");
+            $("#TypeVehicle").removeClass("show");
+            $("#TypeVehicle").addClass("display-input");
+            $("#dfTypeShip").removeClass("display-input");
+            $("#dfTypeShip").addClass("show");
+            $("#divSurcharge").removeClass("show");
+            $("#divSurcharge").addClass("display-input");
+        }
+        else if ($("#slTypeService").val() == 1) {
+            $('#slTypeVehicle').attr('disabled', false);
+            $("#typeShip").removeClass("show");
+            $("#typeShip").addClass("display-input");
+            $("#TypeVehicle").removeClass("display-input");
+            $("#TypeVehicle").addClass("show");
+            $("#dfTypeShip").removeClass("show");
+            $("#dfTypeShip").addClass("display-input");
+            $("#divSurcharge").removeClass("display-input");
+            $("#divSurcharge").addClass("show");
+        }
+        else if ($("#slTypeService").val() == 3) {
+            $('#slTypeVehicle').attr('disabled', false);
+            $("#typeShip").removeClass("show");
+            $("#typeShip").addClass("display-input");
+            $("#TypeVehicle").removeClass("display-input");
+            $("#TypeVehicle").addClass("show");
+            $("#dfTypeShip").removeClass("show");
+            $("#dfTypeShip").addClass("display-input");
+            $("#divSurcharge").removeClass("display-input");
+            $("#divSurcharge").addClass("show");
+        }
+    }
+
+    // Nút tìm kiếm giá dịch vụ
+    function SearchConfigTransportCost() {
+        var _slcType = $('#slcType').val();
+        var _slcTypeVehice = $('#slcTypeVehice').val();
+        $.ajax({
+            url: '/Config/SearchConfigTranportCost',
+            data: {
+                Page: 1,
+                Type: _slcType,
+                VehicleTypeID: _slcTypeVehice,
+            },
+            success: function (response) {
+                $('#_TableTransportCost').html(response);
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        });
+    }
+
+    //Binding dữ liệu loại xe
+    function EditVehicleType(id) {
+        $.ajax({
+            url: '/Config/GetVehicleType',
+            type: 'GET',
+            data: {
+                id: id,
+            },
+            success: function (res) {
+                $("#txtVehicleTypeID").val(res.ID);
+                $("#editName").val(res.Name);
+                $("#editOrder").val(res.OrderIndex);
+                $("#txtVehicleTypeIcon").attr('src', res.Logo);
+                $("#txtIsActiveEdit").val(res.IsActive);
+                $("#IsMotorbikeEdit").prop("checked", false);
+                if (res.IsMotorbike === 1) {
+                    $("#IsMotorbikeEdit").prop("checked", true);
+                }
+
+                $("#editTypeVehicle").modal('show');
+            }
+        })
+    }
+
+    //Lưu khi sửa
+    function btnSaveEdit() {
+        var _id = $("#txtVehicleTypeID").val();
+        var _name = $("#editName").val();
+        var _orderDisplay = $("#editOrder").val();
+        var _icon = $("#txtVehicleTypeIcon").attr("src");
+        var _active = $("#txtIsActiveEdit").val();
+        var _isMotor = 0;
+        if ($('#IsMotorbikeEdit').prop('checked') == true)
+            _isMotor = 1;
+        $.ajax({
+            url: '/Config/SaveEditVehicleType',
+            type: 'POST',
+            data: {
+                id: _id,
+                Name: _name,
+                Logo: _icon,
+                IsActive: _active,
+                OrderIndex: _orderDisplay,
+                IsMotorbike: _isMotor
+            },
+            success: function (res) {
+                if (res) {
+                    swal({
+                        title: "",
+                        text: "Lưu thành công",
+                        icon: "success"
+                    });
+                    btnSearchVehicleType();
+                    $("#editTypeVehicle").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: "Lưu thất bại",
+                        icon: "error"
+                    })
+                    $("#editTypeVehicle").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+            }
+        })
+    }
+    //xóa loại xe
+    function DeleteVehicleType(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Config/DeleteVehicleType',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        swal({
+                            title: res.Message,
+                            icon: res.Status == SUCCESS ? 'success' : 'error'
+                        }).then((rp) => {
+                            if (rp) {
+                                btnSearchVehicleType();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+    //add icon
+    //$("#add_logo_license").off('click').on('click', function (e) {
+    //    e.preventDefault();
+    //    var fider = new CKFinder();
+
+    //    fider.selectActionFunction = function (fileUrl) {
+    //        $("#AddImgLogoLicense ").remove();
+    //        $("#AddLogoLicense").append('<img id="AddImgLogoLicense" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+    //        var url = window.location.origin + fileUrl;
+    //        $('#txtAddLogoPlace').val(url);
+    //    }
+    //    fider.popup();
+    //});
+    // tạo sự kiện edit img
+    $("#AddLogoLicense").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+            $("#AddLogoLicense").html('<img id="add-img" data-value="' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+        }
+        fider.popup();
+    });
+
+    //edit icon
+    $("#eiditVehicleTypeIcon").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#txtVehicleTypeIcon ").remove();
+            $("#editIcon").append('<img id="txtVehicleTypeIcon" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        var config = {};
+        config.chooseFilesOnDblClick = false;
+        if ($("#eiditVehicleTypeIcon").attr("data-id") != 0)
+            fider.popup(config);
+
+        $("#eiditVehicleTypeIcon").attr("data-id", 1);
+    });
+
+
+    //Tìm kiếm loại xe
+    function btnSearchVehicleType() {
+        var _vehicleName = $('#vehicleName').val();
+        var _isActive = $('#isActive').val();
+        $.ajax({
+            url: '/Config/SearchVehicleType',
+            data: {
+                page: 1,
+                vehicleName: _vehicleName,
+                isActive: _isActive,
+            },
+            success: function (response) {
+                $('#ListVehicleType').html(response);
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+    //Lưu khi thêm mới loại xe
+    function btnSave() {
+        debugger;
+        var _name = $("#addName").val();
+        var _order = $("#addOrder").val();
+        var _img = "";
+        _img = $("#add-img").attr("data-value");
+        var _isMotor = 0;
+        if ($('#IsMotorbike').prop('checked') == true)
+            _isMotor = 1;
+        if (_name == "" || _order == "" || _img == "" || _img == null) {
+            swal({
+                title: "",
+                text: "Hãy nhập đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Config/Create',
+            type: 'POST',
+            data: {
+                Name: _name,
+                OrderIndex: _order,
+                Logo: _img,
+                IsMotorbike: _isMotor
+            },
+            success: function (res) {
+                swal({
+                    title: res.Message,
+                    icon: res.Status == SUCCESS ? "success" : "error"
+                }).then((success) => {
+                    if (success) {
+                        $("#mdAddTypeVehicle").modal('hide');
+                        $('.modal-backdrop').remove();
+                        btnSearchVehicleType();
+                    }
+                })
+            }
+        })
+    }
+    //Tìm kiếm khu vực
+    function searchArea() {
+        var _provinceID = $('#calc_shipping_provinces').val();
+        var _districtID = $('#slDistrict').val();
+        $.ajax({
+            url: '/Config/SearchActiveArea',
+            data: {
+                page: 1,
+                districtId: _districtID,
+                provinceId: _provinceID,
+            },
+            success: function (response) {
+                $('#tblSearchArea').html(response);
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+    //xóa khu vực
+    function DeleteActiveArea(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                //$.ajax({
+                //    url: '/Config/DeleteActiveArea',
+                //    type: 'POST',
+                //    data: { id: id },
+                //    success: function (res) {
+                //        swal({
+                //            title: res.Message,
+                //            icon: res.Status == SUCCESS ? 'success' : 'error'
+                //        }).then((rp) => {
+                //            if (rp) {
+                //                searchArea();
+                //            }
+                //        })
+                //    }
+                //})
+                $.ajax({
+                    url: '/Config/DeleteActiveArea',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        if (res) {
+                            swal({
+                                title: "",
+                                text: "Xóa bản ghi thành công",
+                                icon: "success"
+                            });
+                            searchArea();
+                        }
+                        else {
+                            swal({
+                                title: "",
+                                //text: res.Exception,
+                                text: "Xóa bản ghi thất bại",
+                                icon: "error"
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+    //Lưu khi thêm mới khu vực
+    function saveActiveArea() {
+        var _districtID = $("#slDistrictModal").val();
+        var _type = $("#slType").val();
+        if (_districtID == "" || _type == "" || _districtID <= 0) {
+            swal({
+                title: "",
+                text: "Hãy nhập đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Config/createArea',
+            type: 'POST',
+            data: {
+                districtId: _districtID,
+                isActive: _type,
+            },
+            success: function (res) {
+                swal({
+                    title: res.Message,
+                    icon: res.Status == SUCCESS ? "success" : "error"
+                }).then((success) => {
+                    if (success) {
+                        $("#mdAddArea").modal('hide');
+                        $('.modal-backdrop').remove();
+                        searchArea();
+                    }
+                })
+            }
+        })
+    }
+    //binđing khu vực
+    function EditActiveArea(id) {
+        $.ajax({
+            url: '/Config/GetArea',
+            type: 'GET',
+            data: {
+                id: id,
+            },
+            success: function (res) {
+                $("#txtActiveAreaID").val(res.ID);
+                $("#sltProvinceId").val(res.ProvinceID);
+                $.ajax({
+                    url: "/Shop/LoadDistrict",
+                    data: { ProvinceID: res.ProvinceID },
+                    success: function (result) {
+                        $("#slDistrictModals").empty();
+                        $("#slDistrictModals").append("<option selected disabled hidden '>Quận/Huyện</option>");
+                        $.each(result, function () {
+                            var select = "<option value='" + this.ID + "'>" + this.Name + "</option>";
+                            $("#slDistrictModals").append(select);
+                        });
+                        $("#slDistrictModals").val(res.DistrictID);
+                    }
+                });
+                $("#sltType").val(res.IsActive);
+                $("#editActiveArea").modal('show');
+            }
+        })
+    }
+    //Lưu khi sửa khu vực
+    function btnSaveEditArea() {
+        var _id = $("#txtActiveAreaID").val();
+        var _districtID = $("#slDistrictModals").val();
+        var _type = $("#sltType").val();
+        if (_districtID == "" || _type == "" || _districtID <= 0) {
+            swal({
+                title: "",
+                text: "Hãy nhập đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Config/SaveEditAreaActive',
+            type: 'POST',
+            data: {
+                id: _id,
+                districtId: _districtID,
+                IsActive: _type,
+            },
+            success: function (res) {
+                if (res) {
+                    swal({
+                        title: "",
+                        text: "Lưu thành công",
+                        icon: "success"
+                    });
+                    searchArea();
+                    $("#editActiveArea").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: "Lưu thất bại",
+                        icon: "error"
+                    })
+                    $("#editActiveArea").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+            }
+        })
+    }
+    //Tìm kiếm Hoa hồng
+    function SearchCommission() {
+        var _nameCommission = $('#nameCommission').val();
+        $.ajax({
+            url: '/Config/SearchConfigCommission',
+            data: {
+                page: 1,
+                nameCommission: _nameCommission,
+            },
+            success: function (response) {
+                $('#tblSearchCommission').html(response);
+            },
+            error: function (result) {
+                console.log(result.responseText);
+            }
+        })
+    }
+    //xóa hoa hồng
+    function DeleteConfigCommission(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/Config/DeleteConfigCommission',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        if (res) {
+                            swal({
+                                title: "",
+                                text: "Xóa bản ghi thành công",
+                                icon: "success"
+                            });
+                            SearchCommission();
+                        }
+                        else {
+                            swal({
+                                title: "",
+                                text: "Xóa bản ghi thất bại",
+                                icon: "error"
+                            })
+                        }
+                    }
+                })
+            }
+        })
+    }
+    //Lưu khi thêm mới hoa hồng
+    function saveConfigCommission() {
+        var _createComissionName = $("#createComissionName").val();
+        var _createComissionValue = $("#createComissionValue").val();
+        if (_createComissionName == "" || _createComissionValue == "") {
+            swal({
+                title: "",
+                text: "Hãy nhập đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        if (_createComissionValue < 0 || _createComissionValue > 100) {
+            swal({
+                title: "",
+                text: "Giá trị hoa hồng phải có giá trị từ 0 đến 100",
+                icon: "error"
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Config/CreateConfigCommission',
+            type: 'POST',
+            data: {
+                commissionName: _createComissionName,
+                mastersBenefit: _createComissionValue,
+            },
+            success: function (res) {
+                if (res == 1) {
+                    swal({
+                        title: "",
+                        text: "Thêm mới thành công",
+                        icon: "success"
+                    });
+                    $("#mdAddArea").modal('hide');
+                    $('.modal-backdrop').remove();
+                    SearchCommission();
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: "Thêm mới thất bại",
+                        icon: "error"
+                    })
+                }
+            }
+        })
+    }
+    //Binding dữ liệu hoa hồng
+    function EditConfigCommission(id) {
+
+        $.ajax({
+            url: '/Config/GetConfigCommissions',
+            type: 'GET',
+            data: {
+                id: id,
+            },
+            success: function (res) {
+                $("#txtConfigComissionID").val(res.ID);
+                $("#editComissionName").val(res.CommissionName);
+                $("#editComissionValue").val(res.MastersBenefit);
+                $("#mdEditCommnisisson").modal('show');
+            }
+        })
+    }
+    //Lưu khi sửa hoa hồng
+    function saveEditConfigCommission() {
+        var _id = $("#txtConfigComissionID").val();
+        var _name = $("#editComissionName").val();
+        var _mastersBenefit = $("#editComissionValue").val();
+        var _isActive = 1;
+        if (_name == "" || _mastersBenefit == "") {
+            swal({
+                title: "",
+                text: "Hãy nhập đủ thông tin",
+                icon: "warning"
+            });
+            return;
+        }
+        if (_mastersBenefit < 0 || _mastersBenefit > 100) {
+            swal({
+                title: "",
+                text: "Giá trị hoa hồng phải có giá trị từ 0 đến 100",
+                icon: "error"
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Config/SaveEditConfigCommission',
+            type: 'POST',
+            data: {
+                id: _id,
+                CommissionName: _name,
+                mastersBenefit: _mastersBenefit,
+                IsActive: _isActive,
+            },
+            success: function (res) {
+                if (res) {
+                    swal({
+                        title: "",
+                        text: "Lưu thành công",
+                        icon: "success"
+                    });
+                    SearchCommission();
+                    $("#mdEditCommnisisson").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+                else {
+                    swal({
+                        title: "",
+                        text: "Lưu thất bại",
+                        icon: "error"
+                    })
+                    $("#mdEditCommnisisson").modal('hide');
+                    $('.modal-backdrop').remove();
+                }
+            }
+        })
+    }
+    //clear form khi thêm mới
+    function btnAddVehicleType() {
+        $('#addName').val('');
+        $('#addOrder').val('');
+        $("#AddLogoLicense").html('<i class="fa fa-camera" style="font-size:30px;"></i>');
+
+    }
+
+    function AddConfigTime() {
+
+        var start_time = $("#conf_starttime").val();
+        var end_time = $("#conf_endtime").val();
+        var price = $("#conf_price").val();
+        var desc = $("#conf_desc").val();
+        if (start_time == "" || end_time == "" || price == "" || desc == "") {
+            swal({
+                title: "Vui lòng nhập đầy đủ thông tin!",
+                icon: 'warning'
+            })
+            return;
+        }
+        var ckeckExistingArea = 0
+        $.each($('.val-configtime-id'), function () {
+            if ($(this).attr('data-startTime') == start_time && $(this).attr('data-endTime') == end_time) {
+                ckeckExistingArea = 1;
+            }
+        })
+        if (ckeckExistingArea > 0) {
+            swal({
+                title: "Giờ cao điểm đã được chọn trước đó!",
+                icon: 'warning'
+            })
+            return;
+        }
+        $("#mdAddRushHours").modal('hide');
+        var row =
+            '<tr class = "val-configtime-id"  data-startTime = "' + start_time + '" data-endTime = "' + end_time + '" data-Price = "' + price + '" data-Desc = "' + desc + '">' +
+            '<td>' +
+            '<input class="conf-time-input start-time" type="text" value="' + start_time + '" /> -' +
+            '<input class="conf-time-input end-time" type="text" value="' + end_time + '" />' +
+            '</td>' +
+            '<td>' +
+            '<input class="conf-time-input-w price number" type="text" value="' + price + '" />' + 'VND/km' +
+            '</td>' +
+            '<td>' +
+            '<input class="conf-time-input-w desc" type="text" value="' + desc + '" />' +
+            '</td>' +
+            '<td>' +
+            '<a onclick="deleteRow(this)" style="color: red; cursor: pointer;"><i class="fa fa-fw fa-trash"></i></a>' +
+            '</td>' +
+            '</tr >';
+        $("#configtime-table").append(row);
+
+    }
+
+    function deleteRow(del) {
+        $(del).closest('tr').remove();
+    }
+
+</script>

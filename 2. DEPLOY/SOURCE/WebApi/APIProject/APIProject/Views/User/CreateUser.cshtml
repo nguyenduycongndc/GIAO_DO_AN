@@ -1,0 +1,313 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using APIProject.Resource
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"> Add Account </legend>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <p class="text-dark"><strong>Information</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>User name:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="txtNameUser" />
+                            <p id="exusername" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>BirthDay:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control relative-icon-calendar date" id="txtDOB" />
+                            <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            <p id="exDOB" style="color:red">  </p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-5 mt-2">
+                            <p>Identity number:</p>
+                            
+                        </div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtIdentity"  type="number"/>
+                            <p id="exIdentity" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Sex:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" id="txtSex">
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Phone:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control " id="txtPhone" type="number" />
+                            <p id="exPhone" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Email:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="text" id="txtEmail" />
+                            <p id="exEmail" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Type account:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" id="select-user-create">
+                                <option value="@SystemParam.ROLE_ADMIN">Admin</option>
+                                <option value="@SystemParam.ROLL_ACCOUNTANT">@SystemParam.ROLL_ACCOUNTANT_STRING</option>
+                                <option value="@SystemParam.ROLL_MARKETING">@SystemParam.ROLL_MARKETING_STRING</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <p class="text-dark"><strong>Password</strong></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>New password:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="password"  id="txtPassword"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Confirm password:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="password" id="txtPasswordConfirm" />
+                            <i class=" text-success fa fa-check " id="iconChangePassword"></i>
+                            <p id="expass" style="color:red"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-12 text-right">
+                    <a href="/User/Index" class="btn btn-danger mr-3">Cancel</a>
+                    <button type="button" class="btn btn-success px-3" onclick="SaveUser();">Save</button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('.date').datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: 'c-70:c'
+        });
+    });
+    //check input
+    function checkinput() {
+        if ($('#txtNameUser').val() == "") {
+            $('#exusername').text("This field cannot be blank!");
+            $('#txtNameUser').focus();
+            return false;
+        }
+       
+         else if ($('#txtNameUser').val().length>100) {
+            $('#exusername').text("");
+            $('#exusername').text("User Name can only enter up to 100 characters!")
+            $('#txtNameUser').focus();
+            return false;
+        }
+        else if ($('#txtPhone').val() == "") {
+            $('#exusername').text("");
+            $('#exPhone').text("This field cannot be blank!")
+            $('#txtPhone').focus();
+            return false;
+        } else if ($('#txtPassword').val() == "") {
+            $('#exPhone').text("");
+            $('#expass').text("This field cannot be blank!")
+            $('#txtPassword').focus();
+            return false;
+        } else if ($('#txtEmail').val() == "") {
+            $('#expass').text("");
+            $('#exEmail').text("This field cannot be blank!")
+            $('#txtEmail').focus();
+            return false;
+        } else if ($('#txtIdentity').val() == "") {
+            $('#exEmail').text("");
+            $('#exIdentity').text("This field cannot be blank!")
+            $('#txtIdentity').focus();
+            return false;
+        }
+         else if ($('#txtDOB').val() == "")
+        {
+            $('#exIdentity').text("");
+            $('#exDOB').text("This field cannot be blank!")
+    
+              return false;
+        }
+        else if (!checkdatetime($('#txtDOB').val())) {
+            $('#exDOB').text("");
+            $('#exDOB').text("Birthday Invalid!")
+      
+            return false;
+        }
+
+        else {
+               $('#exDOB').text("");
+        }
+
+        return true;   
+    }
+    //save user
+    function SaveUser() {
+        var UserName = $('#txtNameUser').val();
+        var sex = $('#txtSex').val()==1?1:null;
+        var Phone = $('#txtPhone').val();
+        var DOB = $('#txtDOB').val();
+        var Identity = $('#txtIdentity').val();
+        var PassWord = $('#txtPassword').val();
+        var Email = $('#txtEmail').val();
+        var role = $("#select-user-create").val();
+        if (PassWord != $('#txtPasswordConfirm').val())
+        {
+            $('#expass').text("Password incorrect");
+        }
+        else if (checkinput())
+        {
+            $('#expass').text("");
+
+            if (checkEmailPhone(Email, Phone) != 0) {
+                if (checkEmailPhone(Email, Phone) == 1) {
+                    $('#exEmail').text("Invalid Email!");
+                }
+               
+                if (checkEmailPhone(Email, Phone) == 2) {
+                    $('#exEmail').text("");
+                    $('#exPhone').text("Invalid Phone Number!")
+                }
+                 
+               
+            }
+            else if (!/(^[0-9]{9}$)|(^[0-9]{12}$)/.test(Identity)) {
+                    $('#exPhone').text("");
+                    $('#exIdentity').text("Invalid Identity!")
+                }
+            else {
+                $('#exPhone').text("");
+                $.ajax({
+                    url: '/User/CreateUserNew',
+                    type: 'POST',
+                    data: {
+                        UserName: UserName,
+                        sex: sex,
+                        Phone: Phone,
+                        DOB: DOB,
+                        Identity: Identity,
+                        PassWord: PassWord,
+                        Email: Email,
+                        role: role
+                    },
+                    success: function (res) {
+                        if (res.Status == 1) {
+                            swal({
+                                title: " Success!",
+                                text: "Add user successfully",
+                                icon: "success",
+                                button: "Close!",
+                            }).then((will) => {
+                                if (will) {
+                                    location.reload();
+                                }
+
+                            })
+                        }
+                        else if (res.Exception == 2) {
+                            swal({
+                                title: " Faild!",
+                                text: "Phone number already exists !",
+                                icon: "warning",
+                                button: "Close!",
+                            })
+
+                        }
+                        else {
+                            swal({
+                                title: " Error!",
+                                icon: "Error",
+                                button: "Close!",
+                            })
+                        }
+                    }
+
+
+                })
+            }
+        }
+    }
+      $("#txtPasswordConfirm").on("keyup", function () {
+            var password = $('#txtPassword').val();
+            var confirm = $('#txtPasswordConfirm').val();
+            if (password == confirm) {
+                $('#iconChangePassword').show();
+            } else {
+                $('#iconChangePassword').hide();
+          }
+        });
+    
+</script>

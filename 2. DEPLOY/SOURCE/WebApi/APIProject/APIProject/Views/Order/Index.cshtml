@@ -1,0 +1,190 @@
+﻿@using Data.DB
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+
+<div class="" id="view">
+    <div id="init-view">
+
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-9 col-9 text-dark px-0">
+                        <h4>Order</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control input" id="txtName" placeholder="Enter order code or Washer name" />
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <select class="form-control" id="sl_order">
+                    <option value="0">Status</option>
+                    <option value="2">Pending</option>
+                    <option value="3">Approve</option>
+                    <option value="4">Complete</option>
+                    <option value="5">Reject</option>
+                </select>
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control relative-icon-calendar date input" id="dtFromDateIndex" placeholder="From date" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+            <div class="col-md-3 offset-md-0 col-sm-6 mt-1">
+                <input type="text" class="form-control relative-icon-calendar date input" id="dtTodateIndex" placeholder="To date" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-primary btn_search" id="btnSearch" onclick="SearchOrder()"><i class="fa fa-search"></i> @Resources.Search</button>
+                </div>
+                <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                    <button class="btn btn-danger" id="btnFilter" onclick="ClearFilterOrder()">@Resources.ClearFilter</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" id="ListOrder">
+                @{
+                    Html.RenderAction("Search", "Order", new { page = 1, search = "", status = ViewBag.status, fromDate = "", toDate = "" });
+                }
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="editOrder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title custom_title text-danger" id="exampleModalLabel">Order Detail</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="fr_add_point">
+                    <div class="modal-body" id="">
+                        <div class="col-md-6">
+                            <b>Washer Information</b>
+                        </div>
+                        <div class="row pb-3"></div>
+                        <div class="row pb-3">
+                            <div class="col-md-5 col-sm-12 col-12">
+                                <div><i class="fa fa-user"></i> Name: </div>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-12">
+                                <span id="lb_name">Nguyễn Xuân Quang</span>
+                                <input type="hidden" id="txt_id" />
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-5 col-sm-12 col-12">
+                                <div><i class="glyphicon glyphicon-earphone"></i> Phone: </div>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-12">
+                                <span id="lb_phone">0983203891</span>
+                            </div>
+                        </div>
+                        @*<div class="row pb-3">
+            <div class="col-md-5 col-sm-12 col-12">
+                <div><i class="fa fa-map-marker"></i> Address: </div>
+            </div>
+            <div class="col-md-7 col-sm-12 col-12">
+                <span id="lb_address">244 Cầu Giấy</span>
+            </div>
+        </div>*@
+                        <div class="row pb-3">
+                            <div class="col-md-5 col-sm-12 col-12">
+                                <div><i class="glyphicon glyphicon-time"></i> Create Date: </div>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-12">
+                                <span lb_createdDate>29/06/2020 11:28</span>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-5 col-sm-12 col-12">
+                                <span><i class="glyphicon glyphicon-list"></i> Status:</span>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-12">
+                                <select class="form-control" id="sl_status">
+                                    <option value="3">Approve</option>
+                                    <option value="4">Complete</option>
+                                    <option value="5">Reject</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row pb-3 div_Reason d-none" data-show="1" >
+                            <div class="col-md-5 col-sm-12 col-12">
+                                <span><i class="fa fa-sticky-note-o" aria-hidden="true"></i> Reason:</span>
+                            </div>
+                            <div class="col-md-7 col-sm-12 col-12">
+                               <textarea placeholder="Enter reason " class="form-control" id="txt_Reason"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <b>Order detail</b>
+                        </div>
+                        <div class="row pb-3"></div>
+                        <div class="row pb-3">
+                            <div class="col-md-12 col-sm-12 col-12">
+                                <table border="1" cellpadding="5" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Quantity</th>
+                                            <th>Price</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="listOrderDetail">
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row pb-3">
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12">Base price</div>
+                            <div class="col-md-3 col-sm-12 col-12 text-danger" id="lb_Base">1.500.000 đ</div>
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12">Coupon Code</div>
+                            <div class="col-md-3 col-sm-12 col-12 text-danger" id="lb_Coupon">1.500.000 đ</div>
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12"></div>
+                            <div class="col-md-3 col-sm-12 col-12">Total</div>
+                            <div class="col-md-3 col-sm-12 col-12 text-danger" id="lb_total">1.500.000 đ</div>
+                        </div>
+                        <div class="modal-footer row">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-arrow-circle-left"></i> Back</button>
+                            <button type="submit" onclick="ChangeStatusOrder()" id="btnSaveAdd" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+<script>
+    $("#sl_status").change(function () {
+        $("#txt_Reason").val("");
+        if ($(".div_Reason").attr("data-show") == 0 && $(this).val() == 5) {
+            $(".div_Reason").removeClass("d-none");
+        }
+        else {
+            if (!$(".div_Reason").hasClass("d-none")) {
+                $(".div_Reason").addClass("d-none");
+            }
+        }
+
+    })
+
+</script>

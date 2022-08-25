@@ -1,0 +1,128 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@model List<DataConfigTransportAreaPriceDetail>
+
+<div class="modal fade" id="DetailTransportArea" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h4>Chi tiết giá vận chuyển</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="val-transport-area-id" type="hidden"/>
+                <div class="row mb-10">
+                    <div class="col-md-4">
+                        <input type="number" name="Weight" class="form-control number-type" id="input-weight" placeholder="Nhập số kg" />
+
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" name="Price" class="form-control number" id="input-price" placeholder="Nhập giá tiền" />
+
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-success" onclick="createTransportWeight()"><i class="fa fa-save mr-1"></i>Lưu</button>
+                    </div>
+
+                </div>
+                <form id="frmDetailTransportArea" enctype="multipart/form-data">
+                    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                        <thead class="text-center text-white bg-thead">
+                            <tr>
+                                <th>Nấc kg (kg)</th>
+                                <th>Tiền vận chuyển (VND)</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center" id="transport-weight-table">
+                            @{
+                                foreach (var data in Model)
+                                {
+                                    <tr class="class-tr-transportweight" data-transport-weight="@data.Weight" data-transport-price="@data.Price">
+                                        <td>
+                                            <input class="conf-time-input transport-weight number-type" type="number" value="@data.Weight" />
+                                        </td>
+                                        <td>
+                                            <input class="conf-time-input transport-price number" type="text" value="@string.Format("{0:#,0}", Convert.ToDecimal(@data.Price))" />    
+                                        </td>
+                                        <td>
+                                            <a title="Xóa" class="cursor-pointer mr-2" onclick="deleteRowTable(this)">
+                                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Thoát</button>
+                <button class="btn btn-success" onclick="AddTransportWeight()"><i class="fa fa-save mr-1"></i>Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('.number-type').keydown(function (e) {
+        if (e.keyCode == 69 || e.keyCode == 189 || e.keyCode == 188)
+            return false;
+    });
+
+    $('.number').keyup(function () {
+        $val = cms_decode_currency_format($(this).val());
+        $(this).val(cms_encode_currency_format($val));
+    });
+
+    function createTransportWeight() {
+        val_weight = $("#input-weight").val();
+        val_price = $("#input-price").val();
+        if (val_weight == "" || val_price == "") {
+            swal({
+                title: "Vui lòng nhập đầy đủ thông tin!",
+                icon: 'warning'
+            })
+            return;
+        }
+
+        var ckeckExistingArea = 0
+        $.each($('.class-tr-transportweight'), function () {
+            if ($(this).attr('data-transport-weight') == val_weight && $(this).attr('data-transport-price') == val_price) {
+                ckeckExistingArea = 1;
+            }
+        })
+        if (ckeckExistingArea > 0) {
+            swal({
+                title: "Giá vận chuyển đã được chọn trước đó!",
+                icon: 'warning'
+            })
+            return;
+        }
+
+        var row =
+            '<tr class = "class-tr-transportweight"  data-transport-weight = "' + val_weight + '" data-transport-price = "' + val_price + '">' +
+                '<td>' +
+                    '<input class="conf-time-input transport-weight number-type" type="number" value="' + val_weight + '" />' +
+                '</td>' +
+                '<td>' +
+                    '<input class="conf-time-input transport-price number" type="text" value="' + val_price + '" />' +
+                '</td>' +
+                '<td>' +
+                    '<a onclick="deleteRowTable(this)" style="color: red; cursor: pointer;"><i class="btnDelete fa fa-fw fa-trash-o"></i></a>' +
+                '</td>' +
+            '</tr >';
+        $("#transport-weight-table").append(row);
+    }
+
+    function deleteRowTable(del) {
+        $(del).closest('tr').remove();
+    }
+</script>
+
+

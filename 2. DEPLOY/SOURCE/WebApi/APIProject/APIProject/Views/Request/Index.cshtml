@@ -1,0 +1,157 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Utils
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-9 text-dark px-0">
+                <h4><i class="fa fa-fw fa-gift"></i> Request Management</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-5">
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <input type="text" class="form-control" id="txtEmail" placeholder="Washer name or phone" />
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <select class="form-control" id="txtStatus">
+            <option class="text-black-50" value="">@Resources.Status</option>
+            <option value="2">Pending</option>
+            <option value="3">Approve</option>
+            <option value="1">Done</option>
+            <option value="0">Refuse</option>
+        </select>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <input type="text" class="form-control relative-icon-calendar date" id="dtFromdateIndex" placeholder="@Resources.FromDate" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+        <input type="text" class="form-control relative-icon-calendar date" id="dtTodateIndex" placeholder="@Resources.ToDate" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+
+<div class="row pt-40">
+    <div class="col-md-12">
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-success" onclick="changeStatusRequest(null)" style="width:115px;"><i class="fa fa-check-circle-o"></i> Approve</button>
+        </div>
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-outline-success" style="width:115px;" onclick="changeStatusRequest(@Constant.STATUS_TRANSACTION_SUCCESS)"><i class="fa fa-check-circle-o"></i> Done</button>
+        </div>
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-danger" onclick="changeStatusRequest(10)" style="width:115px;"><i class="fa fa-close"></i> Reject</button>
+        </div>
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-primary btn_search" id="btnSearch" onclick="searchRequestCR()" style="width:115px;"><i class="fa fa-search"></i> @Resources.Search</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" id="tableRequest">
+        @{
+            Html.RenderAction("Search", "Request", new { Page = 1 });
+        }
+    </div>
+</div>
+
+<!-- start modal request detail -->
+<div id="divRequestDetail">
+
+</div>
+<!-- end modal -->
+<!-- The Modal -->
+<div class="modal fade" id="mdRequestDT">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Request infomation</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4"> <h5 class="ml-3">List request</h5></div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md" id="lstRequestDT">
+                            <thead class="text-center text-white bg-thead">
+                                <tr>
+                                    <th>Washer</th>
+                                    <th>Phone</th>
+                                    <th>Amount</th>
+                                    <th>Bank</th>
+                                    <th>Acount</th>
+                                    <th>Owner</th>
+                                    <th>Date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center" id="tblRequestDT"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer text-center">
+                <button type="button" onclick="AcceptAndExportLstRequest(@Constant.STATUS_TRANSACTION_APPROVE,1)" class="btn btn-success" data-dismiss="modal"><i class="fa fa-save mr-1"></i>Accept</button>
+                <button class="btn btn-outline-success" onclick="AcceptAndExportLstRequest(@Constant.STATUS_TRANSACTION_APPROVE, null)"><i class="fa fa-download mr-1"></i>Accept and export</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" id="mdDetailReject">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Reason for reject</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label class="">Content</label>
+                <textarea class="form-control"id="txtContentReject"></textarea>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="changeStatusRequest(@Constant.STATUS_TRANSACTION_FLASE)" ><i class="fa fa-save mr-1"></i>Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.showModalRequest').click(function () {
+
+    });
+
+    function exportExcel() {
+        var fromDate = $("#txtRequestFromDate").val();
+        var toDate = $("#txtRequestToDate").val();
+        var status = $("#cbbStatus").val();
+        var type = $("#cbbType").val();
+        var codeOrName = $("#txtRequestCodeSearch").val();
+        window.location.href = "/Request/ExportRequest?fromDate=" + fromDate + "&toDate=" + toDate + "&status=" + status + "&typeRequest=" + type + "&codeOrCusName=" + codeOrName;
+    }
+
+    function RemoveTr(event) {
+        $(event.target).closest("tr").remove();
+    }
+</script>

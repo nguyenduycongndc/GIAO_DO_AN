@@ -1,0 +1,66 @@
+﻿@using Data.Utils
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+@using Data.DB
+<div class="card">
+    <div class="card-header sticky">
+        <div class="col-md-12">
+            <div class="breadcrumb-holder">
+                <div class="row mb-3 mt-3">
+                    <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                        <h4><i class="fa fa-fw fa-shopping-basket"></i> Cửa hàng</h4>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col col-md-3 offset-md-0 col-12" style="padding-right:0px">
+                <input type="text" class="form-control" placeholder="Mã, tên, email, SĐT cửa hàng" id="txt-search-key" />
+            </div>
+            <div class="col-md-3 col-12">
+                <select id="val-status" class="form-control" onchange="SearchShop()">
+                    <option selected disabled hidden>--Trạng thái--</option>
+                    <option value="@SystemParam.ACTIVE">Hoạt động</option>
+                    <option value="@SystemParam.DEACTIVE">Ngừng hoạt động</option>
+                </select>
+            </div>
+            <div class="col-md-3 col-12">
+                <input type="text" class="form-control relative-icon-calendar date" id="txt-from-date" placeholder="Từ ngày" />
+                <i class="fa fa-calendar absolute-icon-calendar date"></i>
+            </div>
+            <div class="col-md-3 col-12">
+                <input type="text" class="form-control relative-icon-calendar date" id="txt-to-date" placeholder="Đến ngày" />
+                <i class="fa fa-calendar absolute-icon-calendar"></i>
+            </div>
+            <div class="col-md-4 col-12 offset-md-8 text-right mt-1">
+                <button class="btn btn-primary" onclick="SearchShop()"><i class="fa fa-search"></i>Tìm kiếm</button>
+                <button class="btn btn-dekko width-btn-create-batch showModalCreate" data-toggle="modal" data-target="#addShop" onclick="window.location='/Shop/Create'"><i class="fa fa-fw fa-plus"></i> Thêm cửa hàng</button>
+
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-12" id="TableShop">
+                @{ Html.RenderAction("Search", "Shop", new { Page = 1 });}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<div class="row" id="modalEditShop">
+
+</div>
+
+
+
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyAVKaTr6pjVc6Pa4QP8ZTuZ-dl349k_ZLE" type="text/javascript"></script>

@@ -1,0 +1,75 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<ActiveAreaModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Huyện</th>
+            <th>Tỉnh</th>
+            <th>Trạng thái</th>
+            <th>Thời gian</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="6">
+                        Không có dữ liệu!
+                    </td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.DistrictName</td>
+                        <td>@item.ProvinceName</td>
+                        @{
+                            if (item.IsActive == 1)
+                            {
+                                <td>Hoạt động</td>
+                            }
+                            else
+                            {
+                                <td>Ngừng hoạt động</td>
+
+                            }
+                        }
+                        <td>@item.CreatedDate.ToString("dd/MM/yyyy")</td>
+                        <td class="width2btn">
+                            <a title="Sửa" class="cursor-pointer" onclick="EditActiveArea(@item.ID);">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a title="Xóa" class="cursor-pointer" onclick="DeleteActiveArea(@item.ID)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchActiveArea", "Config", new { page, districtId = ViewBag.districtId, provinceId = ViewBag.provinceId }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "tblSearchArea" })
+        )
+    </div>
+</div>

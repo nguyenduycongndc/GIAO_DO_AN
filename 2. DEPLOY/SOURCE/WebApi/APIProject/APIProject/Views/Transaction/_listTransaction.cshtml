@@ -1,0 +1,253 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<GetTransactionModel>
+@{
+    UserDetailOutputModel ss = (UserDetailOutputModel)HttpContext.Current.Session["Login"];
+}
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+
+    <thead class="text-center text-white align-center bg-thead">
+
+    <thead class="text-center text-white bg-thead">
+
+        <tr>
+            <th>@Resources.No</th>
+            <th>
+                @Resources.Code
+            </th>
+            <th class="wrap">@Resources.CustomerName</th>
+            <th class="wrap">Type of order</th>
+            <th>Car</th>
+            <th class="widthCreatedDate">Date of Request service</th>
+            <th>Actual Reservation</th>
+            <th width="16%" class="pd-lr-30">Address</th>
+            <th>Washer name</th>
+            <th>Package service</th>
+            <th>Addition service</th>
+            <th>Service status</th>
+            <th>Payment status</th>
+            <th width="8%">Function</th>
+            @*<th><input type="checkbox" id="checkAll" /></th>*@
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="15">@Resources.NoData.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.Code_For_Province</td>
+                        <td>@item.CustomerName</td>
+                        @{
+                            if (item.IsBokingNow == 1)
+                            {
+                                <td>Booking now</td>
+                            }
+                            else
+                            {
+                                <td>App order</td>
+                            }
+                        }
+                        <td>@item.CarDetail</td>
+                        <td>@item.CreatDateSTR</td>
+                        <td>@item.BookingDateSTR</td>
+                        <td>@item.Address</td>
+                        <td>@item.WasheName</td>
+                        <td>@item.ServiceName</td>
+                        @{
+                            if (item.listIndex.Count == 0)
+                            {
+                                <td>No service </td>
+                            }
+                            else if (item.listIndex.Count == 1)
+                            {
+                                <td>@(ViewBag.listService.IndexOf(item.listIndex[0]) + 1)</td>
+                            }
+                            else
+                            {
+                                string listservice = "";
+                                for (int i = 0; i < item.listIndex.Count; i++)
+                                {
+                                    if (i == item.listIndex.Count - 1)
+                                    {
+                                        listservice += ViewBag.listService.IndexOf(item.listIndex[i]) + 1;
+                                    }
+                                    else
+                                    {
+                                        listservice += ViewBag.listService.IndexOf(item.listIndex[i]) + 1 + ",";
+                                    }
+
+                                }
+                                <td><b>@listservice</b></td>
+                            }
+                        }
+                        @{
+                            if (item.Status == 0)
+                            {
+                                if (item.PaymentType == 2)
+                                {
+                                    if (item.ComboName.Length > 0)
+                                    {
+                                        if (item.CreateDate.AddMinutes(10) >= DateTime.Now)
+                                        {
+                                            <td style="color:red"><b>Unpaid</b></td>
+                                        }
+                                        else if (String.IsNullOrEmpty(item.WasherCode) || item.WasherCode.Length == 0)
+                                        {
+                                            <td style="color:red"><b>Payment failed</b></td>
+                                        }
+                                        else
+                                        {
+                                            <td style="color:red"><b>@item.StatusStr</b></td>
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        if (item.CreateDate.AddMinutes(10) >= DateTime.Now)
+                                        {
+                                            <td style="color:red"><b>Unpaid</b></td>
+                                        }
+                                        else if (item.TransactionStatus.HasValue && item.TransactionStatus == 2)
+                                        {
+                                            <td style="color:red"><b>Payment failed</b></td>
+                                        }
+                                        else
+                                        {
+                                            <td style="color:red"><b>@item.StatusStr</b></td>
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                    <td style="color:red"><b>@item.StatusStr</b></td>
+                                }
+
+                            }
+                            else if (item.Status == 1 || item.Status == 9)
+                            {
+                                <td><b>@item.StatusStr</b></td>
+                            }
+                            else if (item.Status == 2)
+                            {
+                                <td style="color:#3498DB"><b>@item.StatusStr</b></td>
+                            }
+                            else if (item.Status == 3)
+                            {
+                                <td style="color:#239B56"><b>@item.StatusStr</b></td>
+                            }
+                            else if (item.Status == 4)
+                            {
+                                <td><b>@item.StatusStr</b></td>
+                            }
+                            else if (item.Status == 5 || item.Status == 6)
+                            {
+                                <td style="color:#E67E22"><b>@item.StatusStr</b></td>
+                            }
+                            else
+                            {
+                                <td>@item.StatusStr</td>
+                            }
+
+
+
+
+
+                        }
+
+                        @{
+                            if (item.PaymentType == 1)
+                            {
+                                <td>CASH</td>
+                            }
+                            else if (item.PaymentType == 2)
+                            {
+                                <td>VNPAY</td>
+                            }
+                            else
+                            {
+                                <td>Momo</td>
+                            }
+                        }
+                        <td>
+                            <a href="javascript:void(0);" title="@Resources.Detail." class="cursor-pointer">
+                                <i class="btnEdit glyphicon glyphicon-upload" onclick="TransactionDetail(@item.ID);"></i>
+                            </a>
+                            <a href="javascript:void(0);" onclick="showMdCancel(@item.ID,@ss.Role)" title="@Resources.Cancel." class="cursor-pointer">
+                                <i class="btnX fa fa-times"></i>
+                            </a>
+                            <a href="javascript:void(0);" title="@Resources.Delete." class="cursor-pointer">
+                                <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteTransaction(@item.ID,@ss.Role);"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+
+                }
+            }
+        }
+    </tbody>
+</table>
+
+<!-- The Modal cancel transaction -->
+<div class="modal fade" id="mdContentCancelTransaction">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Content cancel transaction</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <label class="">Content</label>
+                <input id="valIDTransaction" type="hidden" />
+                <textarea class="form-control" id="txtContentCancelTransaction" style="height:100px;" placeholder="Enter content cancel transaction"></textarea>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="CancelTransaction($('#valIDTransaction').val())"><i class="fa fa-save mr-1"></i>Save</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function showMdCancel(id, role) {
+        if (role == 2) {
+            swal({
+                title: "Permission denied",
+                text: "",
+                icon: "warning"
+            });
+            return;
+        }
+        $('#valIDTransaction').val(id);
+        $('#mdContentCancelTransaction').modal('show');
+    }
+</script>
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("Search", "Transaction", new { page = page, search = ViewBag.Search, fromDate = ViewBag.FromDate, toDate = ViewBag.ToDate, status = ViewBag.Status, serviceID = ViewBag.ServiceID, Addservice = ViewBag.Addservice }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListTransaction", LoadingElementId = "modalLoad" })
+        )
+    </div>
+</div>

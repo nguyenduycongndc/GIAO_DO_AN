@@ -1,0 +1,226 @@
+﻿@using Data.Model.APIWeb
+@using System.Web;
+@model ListShopOutputModel
+@using Data.Utils
+@{ string fullUrl = Util.getFullUrl(); }
+<style>
+    .pac-container {
+        z-index: 9999;
+    }
+</style>
+<div class="modal fade" id="EditShop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-fw fa-shopping-basket"></i> Sửa cửa hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <form id="frm-edit-shop-info" enctype="multipart/form-data">
+
+
+                    <div class="row"> <h6 class="pl-2"><strong>Thông tin cửa hàng</strong></h6></div>
+                    <div class="row ">
+                        <div class="col col-md-6 text-center">
+                            <span>Ảnh đại diện <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            <input name="ID" type="hidden" value="@Model.ID" />
+                            <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_place">
+                                <div class="news">
+                                    <div class="article" id="AddLogoPlace">
+                                        <input type="hidden" name="Avartar" id="avatar" value="@Model.Avartar" />
+                                        <img id="AddImgLogoPlace" src="@(fullUrl + Model.Avartar)" class="col-md-12 px-0 contentImg" alt="your image" />
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col col-md-6 text-center">
+                            <span>Giấy phép kinh doanh <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                            <a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_license">
+                                <div class="news">
+                                    <div class="article" id="AddLogoLicense">
+                                        <input type="hidden" name="License" id="license" value="@Model.License" />
+                                        <img id="AddImgLogoLicense" src="@(fullUrl + Model.License)" class="col-md-12 px-0 contentImg" alt="your image" />
+                                    </div>
+                                </div>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-2 text-center">
+                        <div class="col col-md-4 col-12">
+                            <span>Tên cửa hàng: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <input value="@Model.Name" id="txt-name" name="Name" type="text" class="form-control" placeholder="Nhập tên cửa hàng" />
+                        </div>
+                    </div>
+                    <div class="row mt-2 text-center">
+                        <div class="col col-md-4 col-12">
+                            <span>Số điện thoại: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <input value="@Model.Phone" id="txt-phone" name="Phone" type="text" class="form-control" placeholder="Nhập số điện thoại" />
+                        </div>
+
+                    </div>
+                    <div class="row mt-2 text-center">
+                        <div class="col col-md-4 col-12">
+                            <span>Email: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <input value="@Model.Email" id="txt-email" name="Email" type="text" class="form-control" placeholder="Nhập E-mail" />
+                        </div>
+
+                    </div>
+
+                    <div class="row mt-2 text-center">
+                        <div class="col col-md-4 col-12">
+                            <span>Trạng thái: </span>
+                        </div>
+                        <div class="col-md-8 col-12">
+                            <select class="form-control" id="val-status" name="Status">
+                                <option value="@SystemParam.ACTIVE" @(Model.Status.Equals(SystemParam.ACTIVE) ? Html.Raw("selected") : Html.Raw(""))>Hoạt động</option>
+                                <option value="@SystemParam.DEACTIVE" @(Model.Status.Equals(SystemParam.DEACTIVE) ? Html.Raw("selected") : Html.Raw(""))>Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4 col-12 text-left">
+                            <strong>Địa chỉ</strong>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 pt-2">
+                            <span>Địa chỉ Google Map <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col-md-8 col-xs-6">
+                            <div class="row">
+                                <div class="col-md-12 col-xs-12 mt-2">
+                                    <input type="text" class="form-control" name="Address" value="@Model.Address" id="txt-address" placeholder="Enter address" />
+                                    <input type="hidden" id="latiShopEdit" name="Lati" value="@Model.Lati" />
+                                    <input type="hidden" id="longtiShopEdit" name="Long" value="@Model.Long" />
+                                </div>
+                                @*<div class="col-md-12 col-xs-12 mt-2">
+                                        <input type="text" class="form-control" id="txtLat" placeholder="lat" />
+                                    </div>
+                                    <div class="col-md-12 col-xs-12 mt-2">
+                                        <input type="text" class="form-control" id="txtLong" placeholder="long" />
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <!--chèn select hiển thị quận huyện, tỉnh thành phố-->
+                    <div class="row mt-2">
+                        <div class="col col-md-4 col-12">
+                            <span>Tỉnh / Thành phố: <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <select class="form-control" name="ProvinceID" id="val-province-id" required="" onchange="LoadDistrictEdit(this.value,'')">
+                                @foreach (Data.DB.Province obj in ViewBag.lstProvince)
+                                {
+                    <option value="@obj.ID" @(obj.ID == Model.ProvinceID ? Html.Raw("selected") : Html.Raw(""))>@obj.Name</option>}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col col-md-4 col-12">
+                            <span>Quận / Huyện <span class="text-danger text-bold" style="font-size:18px">*</span></span>
+                        </div>
+                        <div class="col col-md-8 col-12">
+                            <select class=" form-control" name="DistrictID" id="val-district-id" required=""> </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary px-3" onclick="saveEditShop()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var input = document.getElementById('txt-address');
+    var autocomplete = new google.maps.places.Autocomplete(input, {
+        language: ["vi"],
+        input: ["hanoi"],
+    });
+    autocomplete.setComponentRestrictions(
+        { 'country': ['VN'] });
+    $(function () {
+
+        autocomplete.addListener('place_changed', fillInAddress);
+
+        $("#txt-address").focusin(function () {
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    infowindow.close();
+
+                }
+            });
+        });
+    });
+
+    function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        if (typeof place.geometry !== "undefined") {
+            $("#latiShopEdit").val(place.geometry.location.lat());
+            $("#longtiShopEdit").val(place.geometry.location.lng());
+        }
+    }
+
+</script>
+<script type="text/javascript">
+
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddLogoPlace ").empty();
+            var url = fileUrl.replace(window.location.origin, "");
+            $("#AddLogoPlace").append(' <input type="hidden" name="Avartar" id="avatar" value="' + url + '" /><img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+        }
+        fider.popup();
+    });
+    //license image
+    $("#add_logo_license").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddLogoLicense ").empty();
+            var url = fileUrl.replace(window.location.origin, "");
+            $("#AddLogoLicense").append(' <input type="hidden" name="License" id="license" value="' + url + '" /> <img id="AddImgLogoLicense" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+        }
+        fider.popup();
+    });
+</script>
+
+
+<script type="text/javascript">
+
+    $( document ).ready(function() {
+      LoadDistrictEdit(@Model.ProvinceID,@Model.DistrictID)
+    });
+    function LoadDistrictEdit(prvID,districtID) {
+
+        $.ajax({
+            url: "/Shop/LoadDistrict",
+            data: { ProvinceID: prvID },
+            success: function (result) {
+                $("#val-district-id").empty();
+                $("#val-district-id").append("<option value='' selected  disabled hidden>Quận/ Huyện</option>");
+                $.each(result, function (i, item) {
+                    var select = "<option " + (districtID==item.ID?'selected':'') + " value='" + item.ID + "'>" + item.Name + "</option>";
+                    $("#val-district-id").append(select);
+                });
+            }
+        });
+    }
+</script>

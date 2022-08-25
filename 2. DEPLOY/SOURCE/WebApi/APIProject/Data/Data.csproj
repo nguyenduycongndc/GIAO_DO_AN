@@ -1,0 +1,706 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A7181C06-E2D0-481A-96E1-D3BA89F63295}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Data</RootNamespace>
+    <AssemblyName>Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BCrypt.Net-Next, Version=4.0.2.0, Culture=neutral, PublicKeyToken=1e11be04b6288443, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net-Next.4.0.2\lib\net452\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Firebase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FirebaseDatabase.net.3.3.3\lib\netstandard1.1\Firebase.dll</HintPath>
+    </Reference>
+    <Reference Include="FireSharp, Version=2.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FireSharp.2.0.4\lib\portable-net45+sl5+wp8+win8\FireSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="IdentityModel, Version=3.10.10.0, Culture=neutral, PublicKeyToken=e7877f4675df049f, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.3.10.10\lib\net452\IdentityModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.7.1\lib\net45\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.7.1\lib\net45\Microsoft.IdentityModel.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.5.3.0\lib\net451\Microsoft.IdentityModel.Protocols.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocols.OpenIdConnect.5.3.0\lib\net451\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.7.1\lib\net45\Microsoft.IdentityModel.Tokens.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.4.1.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.4.1.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.4.1.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.1.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OpenIdConnect, Version=4.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OpenIdConnect.4.1.1\lib\net45\Microsoft.Owin.Security.OpenIdConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions, Version=1.0.12.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop, Version=1.0.168.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.168\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="N.EntityFramework.Extensions, Version=1.3.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\N.EntityFramework.Extensions.1.3.5\lib\net45\N.EntityFramework.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.2.0.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.PdfGenerator.1.2.0\lib\net45\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="Okta.AspNet, Version=1.8.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Okta.AspNet.1.8.0\lib\net452\Okta.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Okta.AspNet.Abstractions, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Okta.AspNet.Abstractions.3.2.0\lib\net452\Okta.AspNet.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.3.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.3.9\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpRaven, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpRaven.2.4.0\lib\net45\SharpRaven.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\netstandard1.1\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Device.Portable, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3f6d3f5f65b761a0, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Device.Location.Portable.1.0.0\lib\System.Device.Portable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.7.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.7.1\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\netstandard1.1\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http.Extensions, Version=2.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives, Version=4.2.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.2.28\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Reactive.Core, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Core.3.1.1\lib\net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Interfaces.3.1.1\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Linq.3.1.1\lib\net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.PlatformServices.3.1.1\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=3.0.1000.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Reactive.Windows.Threading.3.1.1\lib\net45\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\netstandard1.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard1.0\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Business\AddressBusiness.cs" />
+    <Compile Include="Business\BookingBusiness.cs" />
+    <Compile Include="Business\CartBusiness.cs" />
+    <Compile Include="Business\CategoryBusiness.cs" />
+    <Compile Include="Business\ConfigBusiness.cs" />
+    <Compile Include="Business\CouponBusiness.cs" />
+    <Compile Include="Business\CustomerBusiness.cs" />
+    <Compile Include="Business\EmailBusiness.cs" />
+    <Compile Include="Business\GenericBusiness.cs" />
+    <Compile Include="Business\LoginBusiness.cs" />
+    <Compile Include="Business\NewsBusiness.cs" />
+    <Compile Include="Business\OrderServiceBusiness.cs" />
+    <Compile Include="Business\PushNotifyBusiness.cs" />
+    <Compile Include="Business\NotifyBusiness.cs" />
+    <Compile Include="Business\OneSignalBusiness.cs" />
+    <Compile Include="Business\ReportBusiness.cs" />
+    <Compile Include="Business\RequestAPIBusiness.cs" />
+    <Compile Include="Business\ResponseBusiness.cs" />
+    <Compile Include="Business\ServiceCategoryBusiness.cs" />
+    <Compile Include="Business\ServicePriceBusiness.cs" />
+    <Compile Include="Business\ShiperBusiness.cs" />
+    <Compile Include="Business\ShipperBusiness.cs" />
+    <Compile Include="Business\TransactionDeliveryBusiness.cs" />
+    <Compile Include="Business\TransactionFoodBusiness.cs" />
+    <Compile Include="Business\UserBusiness.cs" />
+    <Compile Include="Business\VNPayBusiness.cs" />
+    <Compile Include="Business\VNPAY_CS_ASPX.cs" />
+    <Compile Include="Business\TransactionHistoryBusiness.cs" />
+    <Compile Include="Business\WalletBusiness.cs" />
+    <Compile Include="Business\ShopBusiness.cs" />
+    <Compile Include="DB\AppVersion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Area.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Bank.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\BankMember.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CarShiper.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Cart.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CategoryNew.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ComplainOrder.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Config.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ConfigCommission.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ConfigTime.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ConfigTransportArea.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ConfigTransportCost.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ConfigTransportWeight.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Coupon.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CouponCustomer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Customer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CustomerLocation.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\CustomerRank.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\District.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\HistoryRankingPoint.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Member.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\MembersTransactionHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DB\News.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Notification.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrderService.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrderServiceDetail.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrderServiceImage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\OrderServiceStatusHistory.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Policy.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Promotion.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Province.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\QA.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\RequestWithdraw.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Service.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ServiceImage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ServicePrice.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Shiper.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ShiperArea.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ShiperImage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Shop.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\ShopImage.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\sysdiagram.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Toping.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\User.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\VehicleType.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DB\Wallet.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\AddressModel.cs" />
+    <Compile Include="Model\APIApp\ActiveAgentCodeModel.cs" />
+    <Compile Include="Model\APIApp\AgentModel.cs" />
+    <Compile Include="Model\APIApp\BookingDriverOutputModel.cs" />
+    <Compile Include="Model\APIApp\BrankOutputModel.cs" />
+    <Compile Include="Model\APIApp\CarAndParkModel.cs" />
+    <Compile Include="Model\APIApp\CarBrandOutputAPIModel.cs" />
+    <Compile Include="Model\APIApp\CardOutputModel.cs" />
+    <Compile Include="Model\APIApp\CarOutputModel.cs" />
+    <Compile Include="Model\APIApp\CartModel.cs" />
+    <Compile Include="Model\APIApp\ChangePointOutputModel.cs" />
+    <Compile Include="Model\APIApp\ChangeStatusModel.cs" />
+    <Compile Include="Model\APIApp\ConfigModel.cs" />
+    <Compile Include="Model\APIApp\ConfigOutputModel.cs" />
+    <Compile Include="Model\APIApp\CouponOutputModel.cs" />
+    <Compile Include="Model\APIApp\CustomerCartModel.cs" />
+    <Compile Include="Model\APIApp\CustomerLocationModel.cs" />
+    <Compile Include="Model\APIApp\FindShipperInputModel.cs" />
+    <Compile Include="Model\APIApp\DataPageListOutputModel.cs" />
+    <Compile Include="Model\APIApp\GetReviewShopOutputModel.cs" />
+    <Compile Include="Model\APIApp\GoogleMapModel.cs" />
+    <Compile Include="Model\APIApp\GooglePlaceAPI.cs" />
+    <Compile Include="Model\APIApp\IntroAppOutputModel.cs" />
+    <Compile Include="Model\APIApp\ListBankOutputModel.cs" />
+    <Compile Include="Model\APIApp\ListCarBrandModel.cs" />
+    <Compile Include="Model\APIApp\ListOrderServiceDetail.cs" />
+    <Compile Include="Model\APIApp\ListQAoutputModel.cs" />
+    <Compile Include="Model\APIApp\ListServiceCategory.cs" />
+    <Compile Include="Model\APIApp\ListShopOuputModel.cs" />
+    <Compile Include="Model\APIApp\ListWalletHistoryModel.cs" />
+    <Compile Include="Model\APIApp\LocationOutputModel.cs" />
+    <Compile Include="Model\APIApp\MemberPointHistory.cs" />
+    <Compile Include="Model\APIApp\OrderVNPayOutputModel.cs" />
+    <Compile Include="Model\APIApp\ProductCateModel.cs" />
+    <Compile Include="Model\APIApp\ProductModel.cs" />
+    <Compile Include="Model\APIApp\RankOutputModel.cs" />
+    <Compile Include="Model\APIApp\RateDataInputModel.cs" />
+    <Compile Include="Model\APIApp\RequesTransactionModel.cs" />
+    <Compile Include="Model\APIApp\RequestWithDrawInputModel.cs" />
+    <Compile Include="Model\APIApp\ReviewInputModel.cs" />
+    <Compile Include="Model\APIApp\ReviewModel.cs" />
+    <Compile Include="Model\APIApp\ServiceBusinessModel.cs" />
+    <Compile Include="Model\APIApp\ShiperNearModel.cs" />
+    <Compile Include="Model\APIApp\ThreadCancelModel.cs" />
+    <Compile Include="Model\APIApp\TokenOutputModel.cs" />
+    <Compile Include="Model\APIApp\ConfirmCodeInputModel.cs" />
+    <Compile Include="Model\APIApp\FacebookOutputModel.cs" />
+    <Compile Include="Model\APIApp\CreateCustomerAppInputModel.cs" />
+    <Compile Include="Model\APIApp\CreateRequestAppInputModel.cs" />
+    <Compile Include="Model\APIApp\CustomerDetailOutputModel.cs" />
+    <Compile Include="Model\APIApp\GetGiftPointInputModel.cs" />
+    <Compile Include="Model\APIApp\AddPointIntPutModel.cs" />
+    <Compile Include="Model\APIApp\GoogleOutputModel.cs" />
+    <Compile Include="Model\APIApp\HomeScreenOutPutModel.cs" />
+    <Compile Include="Model\APIApp\ItemOutputModel.cs" />
+    <Compile Include="Model\APIApp\ListCardModel.cs" />
+    <Compile Include="Model\APIApp\ListGiftByTypeOutputModel.cs" />
+    <Compile Include="Model\APIApp\ListNotifiedByCustomerIDOutputModel.cs" />
+    <Compile Include="Model\APIApp\LoginAppInputModel.cs" />
+    <Compile Include="Model\APIApp\NewsAppOutputModel.cs" />
+    <Compile Include="Model\APIApp\PackageModel.cs" />
+    <Compile Include="Model\APIApp\ProvinceAndDistricModel.cs" />
+    <Compile Include="Model\APIApp\ShopOutputModel.cs" />
+    <Compile Include="Model\APIApp\TransportAreaModel.cs" />
+    <Compile Include="Model\APIApp\updateConfigServiceModel.cs" />
+    <Compile Include="Model\APIApp\UpdateLocationDriverModel.cs" />
+    <Compile Include="Model\APIApp\UserInforOutputModel.cs" />
+    <Compile Include="Model\APIApp\WasherRequestOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ComplainDetailOuputModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigCustomerRank.cs" />
+    <Compile Include="Model\APIWeb\AdditionServiceModel.cs" />
+    <Compile Include="Model\APIWeb\AreaOutputModel.cs" />
+    <Compile Include="Model\APIWeb\BankAgentViewModel.cs" />
+    <Compile Include="Model\APIWeb\CarBrandViewModel.cs" />
+    <Compile Include="Model\APIWeb\CarCustomerViewModel.cs" />
+    <Compile Include="Model\APIWeb\CarSegmentViewModel.cs" />
+    <Compile Include="Model\APIWeb\CategoryModel.cs" />
+    <Compile Include="Model\APIWeb\CategoryViewModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigCommissionViewModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigDataModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigTransportAreaInputModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigTransportAreaModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigTransportCostOuputModel.cs" />
+    <Compile Include="Model\APIWeb\ConfigTransportWeightInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateAgentInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateBatchInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateCardWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateItemInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateNewsInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateShopInputModel.cs" />
+    <Compile Include="Model\APIWeb\CreateTransactionModel.cs" />
+    <Compile Include="Model\APIWeb\CreateWarrantyWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\CustomerDetailOutputModel.cs" />
+    <Compile Include="Model\APIWeb\CustomerDetailViewModel.cs" />
+    <Compile Include="Model\APIWeb\CustomerOrderHistoryModel.cs" />
+    <Compile Include="Model\APIWeb\CustomerTagInputModel.cs" />
+    <Compile Include="Model\APIWeb\DashBoardDetailOutputModel.cs" />
+    <Compile Include="Model\APIWeb\DataConfigTransportAreaPriceDetail.cs" />
+    <Compile Include="Model\APIWeb\DefineProvincodeModel.cs" />
+    <Compile Include="Model\APIWeb\ExcelWarrantyCardOutput.cs" />
+    <Compile Include="Model\APIWeb\GetBatchDetailInputModel.cs" />
+    <Compile Include="Model\APIWeb\GetListBatchInputModel.cs" />
+    <Compile Include="Model\APIWeb\GetListCustomerInputModel.cs" />
+    <Compile Include="Model\APIWeb\GetListHistoryMemberPointInputModel.cs" />
+    <Compile Include="Model\APIWeb\GetListNewsWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\GetListUserWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\JsonResultModel.cs" />
+    <Compile Include="Model\APIWeb\ListComplainOuputModel.cs" />
+    <Compile Include="Model\APIWeb\ListCouponModel.cs" />
+    <Compile Include="Model\APIWeb\ListItemOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListOrderHistory.cs" />
+    <Compile Include="Model\APIWeb\ListRequestChecked.cs" />
+    <Compile Include="Model\APIWeb\ListServiceCategoryModel.cs" />
+    <Compile Include="Model\APIWeb\ListServicePriceModelWeb.cs" />
+    <Compile Include="Model\APIWeb\ListServicePriceOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListStaticGiftModel.cs" />
+    <Compile Include="Model\APIWeb\ListUserWebOutputModel.cs" />
+    <Compile Include="Model\APIWeb\HistoryGivePointWebOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListBatchOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListCustomerOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListGiftWebOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListHistoryMessageOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListNewsWebOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListRequestOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListWalletModel.cs" />
+    <Compile Include="Model\APIWeb\LoginWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\MemberTransactionViewModel.cs" />
+    <Compile Include="Model\APIWeb\NotifyDataModel.cs" />
+    <Compile Include="Model\APIWeb\NotifyInputModel.cs" />
+    <Compile Include="Model\APIWeb\OrderDetailEditOutput.cs" />
+    <Compile Include="Model\APIWeb\OrderOutputModel.cs" />
+    <Compile Include="Model\APIWeb\OrderProductModel.cs" />
+    <Compile Include="Model\APIWeb\OrderServiceModel.cs" />
+    <Compile Include="Model\APIWeb\OverViewModel.cs" />
+    <Compile Include="Model\APIWeb\PointDetailOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ProductOfBatchModel.cs" />
+    <Compile Include="Model\APIWeb\ProductViewModel.cs" />
+    <Compile Include="Model\APIWeb\QAModel.cs" />
+    <Compile Include="Model\APIWeb\RankingViewModel.cs" />
+    <Compile Include="Model\APIWeb\ReportCustomerModel.cs" />
+    <Compile Include="Model\APIWeb\RequestDetailWebOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ListShopOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ServiceViewModel.cs" />
+    <Compile Include="Model\APIWeb\ShiftOutputModel.cs" />
+    <Compile Include="Model\APIWeb\ShiperInputModel.cs" />
+    <Compile Include="Model\APIWeb\ShiperReportOuputModel.cs" />
+    <Compile Include="Model\APIWeb\ShipperDetailOutputModelWeb.cs" />
+    <Compile Include="Model\APIWeb\ShopHistoryBusinessModel.cs" />
+    <Compile Include="Model\APIWeb\StatisticPaymentOuputModel.cs" />
+    <Compile Include="Model\APIWeb\StatisticRevenueOutputModel.cs" />
+    <Compile Include="Model\APIWeb\SystemResult.cs" />
+    <Compile Include="Model\APIWeb\TimeLineOutputModel.cs" />
+    <Compile Include="Model\APIWeb\TransactionDeliveryModel.cs" />
+    <Compile Include="Model\APIWeb\TransactionFoodModel.cs" />
+    <Compile Include="Model\APIWeb\TransactionModel.cs" />
+    <Compile Include="Model\APIWeb\TypeCarModel.cs" />
+    <Compile Include="Model\APIWeb\UpdateCustomerRankModel.cs" />
+    <Compile Include="Model\APIWeb\UpdateGiftInputModel.cs" />
+    <Compile Include="Model\APIWeb\UpdatePassModel.cs" />
+    <Compile Include="Model\APIWeb\UpdatePasswordUserWebInputModel.cs" />
+    <Compile Include="Model\APIWeb\UserDetailOutputModel.cs" />
+    <Compile Include="Model\APIWeb\CardDetailOutputModel.cs" />
+    <Compile Include="Model\APIWeb\VehicleModel.cs" />
+    <Compile Include="Model\APIWeb\VehicleOutputModel.cs" />
+    <Compile Include="Model\APIWeb\WalletModel.cs" />
+    <Compile Include="Model\APIWeb\WarrantyCardOutput.cs" />
+    <Compile Include="Model\APIWeb\WasherReportModel.cs" />
+    <Compile Include="Model\ChartModel.cs" />
+    <Compile Include="Model\ComboServiceDetailModel.cs" />
+    <Compile Include="Model\CommissionModel.cs" />
+    <Compile Include="Model\CreateAgentArea.cs" />
+    <Compile Include="Model\EmailInputModel.cs" />
+    <Compile Include="Model\ListServiceModel.cs" />
+    <Compile Include="Model\MomoInpushOrder.cs" />
+    <Compile Include="Model\OneSignalModel.cs" />
+    <Compile Include="Model\OneSignalOutputModel.cs" />
+    <Compile Include="Model\OTPInputModel.cs" />
+    <Compile Include="Model\PushNotify.cs" />
+    <Compile Include="Model\ShipperOutputModel.cs" />
+    <Compile Include="Model\ShopModel\MenuShopModel.cs" />
+    <Compile Include="Model\ShopModel\ServicePriceDetailModel.cs" />
+    <Compile Include="Model\VATOrderModel.cs" />
+    <Compile Include="Model\VNPayOutputModel.cs" />
+    <Compile Include="Model\VnpOutputModel.cs" />
+    <Compile Include="Model\VnpViewModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\EnumConstant.cs" />
+    <Compile Include="Utils\SystemParam.cs" />
+    <Compile Include="Utils\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
+    <None Include="App.Config" />
+    <None Include="Content\bootstrap-tagsinput.less" />
+    <EntityDeploy Include="DB\Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DB\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </None>
+    <None Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="packages.config" />
+    <None Include="Scripts\bootstrap-tagsinput-angular.min.js.map" />
+    <None Include="Scripts\bootstrap-tagsinput.min.js.map" />
+    <None Include="Scripts\jquery-1.12.4.min.map" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Content\bootstrap-tagsinput-typeahead.css" />
+    <Content Include="Content\bootstrap-tagsinput.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="DB\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="DB\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap-tagsinput-angular.js" />
+    <Content Include="Scripts\bootstrap-tagsinput-angular.min.js" />
+    <Content Include="Scripts\bootstrap-tagsinput.js" />
+    <Content Include="Scripts\bootstrap-tagsinput.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery-1.12.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.12.4.js" />
+    <Content Include="Scripts\jquery-1.12.4.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

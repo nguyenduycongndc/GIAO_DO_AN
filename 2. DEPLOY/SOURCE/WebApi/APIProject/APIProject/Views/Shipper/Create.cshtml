@@ -1,0 +1,406 @@
+﻿@using Data.Utils;
+@using Data.DB
+@{ ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="card">
+    <div class="card-header sticky">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row">
+                    <div class="col-md-10 col-sm-9 col-xs-8 col-lg-10">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px"> Thêm tài xế</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-3 col-lg-2">
+                        <div style="padding-top: 10px">
+                            <button class="btn btn-primary" style="width:100px;" onclick="saveAddShip()">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="frm-add-shiper" style="width:100%">
+            <div class="col-md-12" style="margin-top: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div class="col-md-12">
+                        <div class="row mb-2 mt-2">
+                            <div class="col-md-12">
+                                <div style="font-weight: 600; font-size: 17px;"> Thông tin tài xế</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-2">
+                                <label for="fname" style="margin-top: 7px; margin-right: 20px">Ảnh đại diện <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="hidden" id="avatar" name="Avatar" value="" />
+                                <div id="AddLogoPlace" class="mt-2">
+                                    <i class="fa fa-camera" style="font-size:30px;">
+                                        <img id="AddImgLogoPlace" class="col-md-12 px-0 contentImg" />
+                                    </i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Họ và tên <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" name="Name" id="txt-name" class="form-control" placeholder="Họ và tên" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Ngày sinh</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control relative-icon-calendar date" name="DOB" placeholder="Ngày sinh" />
+                                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">CMND/CCCD <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control number-type" id="card-id" name="Identify" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Giới tính</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select id="sex" name="Sex" class="form-control" style="height: 38px !important">
+                                            <option selected value="@SystemParam.MALE">Nam</option>
+                                            <option value="@SystemParam.FEMALE">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Số điện thoại <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" name="Phone" id="txt-phone" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Email <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input type="text" id="txt-email" name="Email" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4 col-12">
+                                <div class="row">
+                                    <label class="col-6">Đánh dấu là shiper nội bộ:</label>
+                                    <input class="form-control col-1" type="checkbox" id="val-is-internal" style="height:20px" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Loại tài xế</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select id="isVip" name="IsVip" class="form-control" >
+                                            <option selected value="@SystemParam.SHIPPER_NORMAL">Thường</option>
+                                            <option value="@SystemParam.SHIPPER_VIP">VIP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-2">
+                            <div class="col-12">
+                                <fieldset class="scheduler-border">
+                                    <legend class="scheduler-border">Địa chỉ</legend>
+                                    <div class="row">
+                                        <div class="col-md-2 col-sm-12"><div class="row"><label>Địa chỉ cụ thể:</label></div></div>
+                                        <div class="col-md-9 offset-md-1 col-sm-12">
+                                            <textarea class="form-control" name="Address" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                        </div>
+                        @*<div class="row mb-2 mt-2">
+                            <div class="col-md-12">
+                                <div style="font-weight: 600; font-size: 17px;"> Địa chỉ</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-2">
+                                        <label for="fname" style="margin-top: 7px">Địa chỉ cụ thể</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" name="Address" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+            </div>
+            <div style="float: right" class="col-md-12 col-sm-12 col-xs-12 col-lg-6">
+                <div style="margin-top: 20px; margin-bottom: 20px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Thông tin xe</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5" style="margin-right: 20px">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Loại xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+
+                                                <select class="form-control" name="VehicleTypeID" id="val-verhicle-id">
+                                                    <option selected disabled hidden>Chọn loại xe</option>
+                                                    @foreach (Data.DB.VehicleType obj in ViewBag.VehicleType)
+                                                    {
+                                        <option value="@obj.ID">@obj.Name</option>
+}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Dòng xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input id="txt-car-brand" class="form-control" name="CarBrand" placeholder="Dòng xe">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5" style="margin-right: 20px">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Hãng xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input id="txt-car-model" name="CarModel" class="form-control" placeholder="Hãng xe" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Biển số <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input class="form-control" name="LicensePlate" id="txt-number-plate" placeholder="Biển số" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; margin-bottom: 40px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div class="row">
+                                <div class="col-md-6 col-12" style="font-weight: 600; font-size: 17px; padding: 15px 0px">
+                                    Ảnh CMND/ CCCD <span class="text-danger text-bold" style="font-size:18px">*</span>
+                                </div>
+                                <div class="col-md-6 col-12 text-left mt-2">
+                                    <i class="fa fa-camera" style="font-size:30px;" id="AddLogoCMND"></i>
+                                </div>
+                            </div>
+                            <div class="row mt-3" id="div-add-card-image-shiper"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float: left" class="col-md-12 col-sm-12 col-xs-12 col-lg-6">
+                <div style="margin-top: 20px; margin-bottom: 20px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Hoa hồng <span class="text-danger text-bold" style="font-size:18px">*</span></div>
+                            </div>
+
+                            <div class="row" style="padding-bottom:5%">
+                                <div class="col-md-4">
+                                    <label for="fname" style="margin-top: 7px">Mức hoa hồng</label>
+                                </div>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="ComissionID" id="val-id-commission" required="">
+                                        <option selected disabled hidden>Mức hoa hồng</option>
+                                        @foreach (Data.DB.ConfigCommission obj in ViewBag.Conf)
+                                        {
+                            <option value="@obj.ID">
+                                @obj.Name - @obj.MastersBenefit
+                            </option>
+}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; margin-bottom: 40px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px">Khu vực hoạt động <span class="text-danger text-bold" style="font-size:18px">*</span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <select class="form-control" id="val-area">
+                                                        <option selected disabled hidden>--Chọn khu vực--</option>
+                                                        @foreach (Data.DB.Area obj in ViewBag.area)
+                                                        {
+                                            <option value="@obj.ID">
+                                                @obj.District.Name
+                                            </option>
+}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <button class="btn btn-success" type="button" style="margin-bottom: 20px" onclick="LoadShipperArea()">Add</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                                <thead class="text-center text-white align-center bg-thead">
+                                                <thead class="text-center text-white bg-thead">
+                                                    <tr>
+                                                        <th scope="col">Quận / Huyện</th>
+                                                        <th scope="col"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="shiper-area-table">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        localStorage.removeItem('ListProvince')
+    });
+    // tạo sự kiện edit img
+    $("#AddLogoPlace").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        //
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+            $("#AddLogoPlace").html('<img style="width: 20%; height:20%" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+            $('#avatar').val(value);
+        }
+        fider.popup();
+    });
+    $("#AddLogoCMND").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        //
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+
+            $("#div-add-card-image-shiper").append('<div class="col-md-6 col-12 mt-2 img"> <i class="fa fa-times-circle text-danger float-right" onclick="removeImg($(this))"></i><img class="rounded col-12 card-img-shiper"  data-value="' + value + '" src="' + fileUrl + '" alt="your image" /></div>');
+            $('.fa-times-circle').hide();
+            $('.img').hover(function () {
+                $(this).find(".fa-times-circle").show()
+            }, function () {
+                $(this).find(".fa-times-circle").hide();
+            })
+        }
+        fider.popup();
+    });
+
+    function removeImg(img) {
+        img.closest(".img").remove();
+    }
+
+    //$("#txtEditPoint").maskMoney({ precision: 0 });
+    function LoadShipperArea() {
+        var districID = $("#val-area").val();
+        var districtName = $("#val-area :selected").text();
+        if (districID == null) {
+            swal({
+                title: "Vui lòng chọn lại khu vực!",
+                icon: 'warning'
+            })
+            return;
+        }
+        var ckeckExistingArea = 0
+        $.each($('.val-district-id'), function () {
+            if ($(this).attr('data-id') == districID) {
+                ckeckExistingArea = 1;
+            }
+        })
+        if (ckeckExistingArea > 0) {
+            swal({
+                title: "Khu vực đã được chọn trước đó!",
+                icon: 'warning'
+            })
+            return;
+        }
+        var row =
+            '<tr class="val-district-id" data-id="' + districID + '">' +
+            '<td>' + districtName + '</td>' +
+            '<td>' +
+            '<a onclick="deleteRow(this)" style="color: red"><i class="fa fa-fw fa-trash"></i></a>' +
+            '</td>' +
+            '</tr >';
+        $("#shiper-area-table").append(row);
+    }
+    function deleteRow(del) {
+        $(del).closest('tr').remove();
+    }
+
+</script>
+

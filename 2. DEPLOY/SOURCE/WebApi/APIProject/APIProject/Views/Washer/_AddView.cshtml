@@ -1,0 +1,381 @@
+﻿@model List<Data.Model.APIApp.ProvinceModel>
+@using APIProject.Resource
+<style>
+    .dropify-wrapper {
+        height: 160px !important;
+        width: 160px !important;
+    }
+</style>
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Add washer</h4>
+            </div>
+            <div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                <a class="btn btn-dekko" href="javascript:void(0);" onclick="window.location='/Washer/Index'"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 col-xs-12">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Washer information</legend>
+            <div class="row pb-2">
+                <div class="col-md-3 col-xs-12">
+                    <label class="fw-normal l-height-160">Avatar:</label>
+                </div>
+                <div class="col-md-9 col-xs-12">
+                    <a href="javascript:void(0)" class="text-bold mb-3" style="color: #5A5A5A;" id="add_avatar">
+                        <div>
+                            <div class="article position-relative" id="AddAvatar" style="margin-left: 50px;">
+                                <img id="AddImgAvartar" src="/Uploads/files/add_img.png" class="contentImg" alt="your image" />
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!--Tên-->
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Full name <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="text" class="form-control" id="input-add-name" name="name" required placeholder="Enter name">
+
+                </div>
+            </div>
+            <!--Ngày sinh-->
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Birthday <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-xs-12 ">
+                    <input type="text" class="form-control relative-icon-calendar date" id="dtBirthdayIndex" placeholder="Choose birthday" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Identity number <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="number" class="form-control" id="input-add-identity" name="identityNumber" required placeholder="Enter identity number">
+
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Phone <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="number" class="form-control" id="input-add-phone" name="phone" required placeholder="Enter phone">
+
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Email <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="text" class="form-control" id="input-add-email" name="email" required placeholder="Enter email">
+
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Password <span style="color:red;top:5px;right:0px;font-size:15px">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="password" class="form-control" id="input-add-password" name="password" required placeholder="Enter password">
+
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12" style="padding-right:0px;">
+                    <label class="fw-normal">Confirm password <span style="color:red;">(*)</span> :</label>
+                </div>
+                <div class="col-md-8 col-sm-12 col-12" style="position:relative">
+                    <input type="password" class="form-control" id="input-add-confirm" name="confirm" required placeholder="Confirm password">
+                </div>
+            </div>
+            <div class="row pb-2">
+                <div class="col-md-4 col-xs-12" style="padding-right:0px;">
+                    <label class="fw-normal">In House <span style="color:red;">(*)</span> :</label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label valCheckbox">
+                        <input type="checkbox" class="form-check-input form-control checkbox" value="1" style="height:15px;" checked id="in-house">
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <div class="col-md-6 col-xs-12">
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Identity card</legend>
+            <div class="row">
+                <div class="col-md-1 col-xs-12">
+                    <label class="fw-normal l-height-80">Image</label>
+                </div>
+                <div class="col-md-11 col-xs-12 inlineblock" id="add-image-identity">
+                    <a href="" class="text-bold mb-3 inlineblock mr-1" id="_addImg">
+                        <img id="Imgtag" src="/Uploads/files/add_img.png" width="80" height="80" alt="Chọn" />
+                    </a>
+                    <div class="imgShop inlineblock">
+                        <div class="article inlineblock" id="_divAddImg">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Priority Area</legend>
+            <div class="row">
+                <div class="col-md-2 col-xs-12 text-center">
+                    <label class="fw-normal">Area</label>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <select class="form-control" id="provinceArea" onchange="LoadDistrict()">
+                        @{
+                            if (Model.Count <= 0)
+                            {
+                                <option class="text-black-50" value="0">Provinces</option>
+                            }
+                            else
+                            {
+                                <option class="text-black-50" value="0">Provinces</option>
+                                foreach (var item in Model)
+                                {
+                                    <option value="@item.ProvinceCode">@item.ProvinceName</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4 col-xs-12">
+                    <select class="form-control" id="districtArea">
+                        <option class="text-black-50" value="0">District</option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-xs-12 pl_4">
+                    <button class="btn btn-success btn_Add" onclick="AddPriorityArea()">Add</button>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                        <thead class="text-center text-white">
+                            <tr>
+                                <th>Order</th>
+                                <th>
+                                    District
+                                </th>
+                                <th class="wrap">Province</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center priority-area" data-id="@ViewBag.MaxArea"></tbody>
+
+                    </table>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="scheduler-border">
+
+            <legend class="scheduler-border">Commission</legend>
+            <div class="row">
+                <div class="col-md-4 col-xs-12">
+                    <label class="fw-normal">Commisssion level</label>
+                </div>
+                <div class="col-md-8 col-xs-12">
+                    <select class="form-control" id="commission">
+                        <option class="text-black-50" value="0">-- select --</option>
+                    </select>
+                </div>
+
+            </div>
+        </fieldset>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-success" id="btnAdd" onclick="CreateWasher()">@Resources.Add</button>
+        </div>
+        <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+            <button class="btn btn-danger" id="btnFilter" onclick="window.location='/Washer/Index'">@Resources.Cancel</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.date').datepicker({
+            dateFormat: "dd/mm/yy",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: 'c-70:c'
+        });
+        LoadCommission();
+    })
+    function LoadCommission() {
+        $.ajax({
+            url: '/Washer/GetConfigCommission',
+            type: 'GET',
+            success: function (res) {
+                $.each(res, function () {
+                    $("#commission").append('<option value="' + this.ID + '">' + this.Name + ' - ' + this.MastersBenefit + '%</option>')
+                })
+            }
+        })
+    }
+    function LoadDistrict() {
+        var provinceCode = $("#provinceArea").val();
+        $.ajax({
+            url: '/Washer/GetDistrictByProvince',
+            type: 'GET',
+            data: { ProvinceCode: provinceCode },
+            success: function (res) {
+                $("#districtArea").empty();
+                $("#districtArea").append('<option class="text-black-50" value="0">Provinces</option>');
+                $.each(res, function () {
+                    $("#districtArea").append('<option value="' + this.AreaCode + '">' + this.DistrictName + '</option>')
+                });
+            }
+        })
+    }
+
+    function AddPriorityArea() {
+        var provinceValue = $("#provinceArea").val();
+        var areaValue = $("#districtArea").val();
+        if (provinceValue != 0 && areaValue != 0) {
+            var provinceName = $("#provinceArea option:selected").text();
+            var districtName = $("#districtArea option:selected").text();
+            if ($(".priority-area > tr").length == 0) {
+                $(".priority-area").append('<tr><td class="display-priority" data-id="1">1</td><td class="district-tr" data-id="' + areaValue + '">' + districtName + '</td><td class="province-tr" data-id="' + provinceValue + '">' + provinceName + '</td><td><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Delete" class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteArea(event)"></i></a></td></tr>')
+            }
+            else {
+                var check = false;
+                $.each($(".priority-area > tr"), function () {
+                    var districtId = $(this).find(".district-tr").data('id');
+                    var provinceId = $(this).find(".province-tr").data('id');
+                    if (districtId == areaValue && provinceId == provinceValue) {
+                        swal({
+                            title: "",
+                            text: "This area was selected",
+                            icon: "warning",
+                        });
+                        check = true;
+                        return;
+                    }
+                });
+                if (check == false) {
+                    setTimeout(function () {
+                        var display = parseInt($(".priority-area > tr").last().find(".display-priority").text());
+                        display++;
+                        if ($('.priority-area').children("tr").length < $('.priority-area').attr("data-id")) {
+                            $(".priority-area").append('<tr><td class="display-priority">' + display + '</td><td class="district-tr" data-id="' + areaValue + '">' + districtName + '</td><td class="province-tr" data-id="' + provinceValue + '">' + provinceName + '</td><td><a href="javascript:void(0);" data-toggle="tooltip" data-placement="top" title="Delete" class="cursor-pointer"><i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteArea(event)"></i></a></td></tr>');
+                        }
+                        else {
+                            swal({
+                                title: "",
+                                text: "Count area is bigger than max area!",
+                                icon: "warning",
+                            });
+                        }
+                    }, 300);
+                }
+
+            }
+        }
+        else {
+            swal({
+                title: "",
+                text: "Please choose full information",
+                icon: "warning",
+            });
+        }
+
+
+    }
+
+    function DeleteArea(event) {
+        $(event.target).closest("tr").remove();
+        $.each($(".priority-area > tr > td:first-child"), function (index, value) {
+            $(this).text(index + 1);
+        })
+    }
+    $("#AddImgAvartar").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgAvartar ").remove();
+            $("#AddAvatar").append('<img id="AddImgAvartar" src="' + fileUrl + '" class="border-dekko contentImg" alt="your image" onclick="ChangeImage($(this));"/><i title="Xóa" onclick="DeleteAvatar();" class="fa fa-2x fa-remove remove-avatar display-none" data="img1" style="position:absolute;top:-14px;color: #ff0000;"></i>');
+            //var url = window.location.origin + fileUrl;
+            //$('#txtAddLogoPlace').val(url);
+            $("#AddAvatar").mouseover(function () {
+                $(this).find(".remove-avatar").removeClass("display-none");
+            });
+            $("#AddAvatar").mouseout(function () {
+                $(this).find(".remove-avatar").addClass("display-none");
+            });
+        }
+        fider.popup();
+    });
+</script>
+<!--CKFinder-->
+<script type="text/javascript">
+    var count = 0;
+    $("#_addImg").off('click').on('click', function (e) {
+        e.preventDefault();
+        count++;
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            $("#_divAddImg").append('<div class="Imgs mr-2" id="img' + count + '" style ="box-sizing:border-box;display:inline-block;margin-top:10px;position: relative;"><img class="_lstImage max-wh-150" src="' + fileUrl + '" onclick="ChangeImage($(this));" /><i  title ="Xóa" onclick="DeleteImage(event);" src="' + fileUrl + '" class="fa fa-2x fa-remove icon-remove display-none" data="img' + count + '" style="position:absolute;top:-14px;right:1px;color: #ff0000;"></i></div>');
+            var listUrl = $("#_txturlImage").val();
+            if (listUrl == "") {
+                listUrl = fileUrl;
+                $("#_txturlImage").val(listUrl);
+            }
+            else {
+                var url = listUrl + "," + fileUrl;
+                $("#_txturlImage").val(url);
+            }
+            $(".Imgs").mouseover(function () {
+                $(this).find(".icon-remove").removeClass("display-none");
+            });
+            $(".Imgs").mouseout(function () {
+                $(this).find(".icon-remove").addClass("display-none");
+            });
+        }
+        fider.popup();
+    });
+    function ChangeImage($url) {
+        var fider = new CKFinder();
+        fider.selectActionFunction = function (fileUrl) {
+            var url_old = $url.attr('src');
+            $url.attr('src', fileUrl);
+            if (fileUrl != url_old) {
+                var str = $('#_txturlImage').val();
+                $('#_txturlImage').val(str.replace(url_old, fileUrl));
+            }
+        }
+        fider.popup();
+        $("#AddAvatar").append('<i title="Xóa" onclick="DeleteAvatar();" class="fa fa-2x fa-remove remove-avatar display-none" data="img1" style="position:absolute;top:-14px;color: #ff0000;"></i>')
+    }
+    function DeleteImage(event) {
+        $(event.target).closest("div").remove();
+    }
+    function DeleteAvatar() {
+        $("#AddAvatar").empty();
+        $("#AddAvatar").append('<img id="AddImgAvartar" src="/Uploads/files/add_img.png" class="contentImg" alt="your image" onclick="ChangeImage($(this));"/>');
+    }
+</script>

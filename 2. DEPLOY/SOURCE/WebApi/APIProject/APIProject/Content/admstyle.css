@@ -1,0 +1,35 @@
+﻿.col-25 {
+    float: left;
+    width: 25%;
+    margin-top: 6px;
+}
+
+.col-75 {
+    float: left;
+    width: 75%;
+    margin-top: 6px;
+}
+
+.mr-20{
+    margin-right: 20px !important;
+}
+
+.mt-7{
+    margin-top: 7px !important;
+}
+
+.mb-10{
+    margin-bottom: 10px !important
+}
+
+
+.txt-shipper{
+    margin-right: 15px;
+    margin-top: 7px;
+}
+
+.txt-shipper2{
+    margin-right: 15px;
+    margin-top: 7px;
+    margin-left: 20px;
+}

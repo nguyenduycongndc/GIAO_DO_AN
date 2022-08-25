@@ -1,0 +1,455 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Utils
+@using APIProject.Resource
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-10 col-9 text-dark px-0">
+                <h4><a href="/News/Index"> <  Thêm bài viết </a></h4>
+            </div>
+            @*<div class="col-md-2 col-sm-2 col-3 text-right px-0">
+                    <a class="btn btn-outline-secondary" href="/News/Index"><i class="fa fa-fw fa-arrow-left"></i> Come back</a>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@*<div class="col-md-12 mb-5 mt-2">
+    <div class="row">
+        <div class="col-md-2 col-sm-12 col-12">
+            <span class="text-center">Category</span>
+        </div>
+        <div class="col-md-3 col-sm-12 col-12">
+            <select class="form-control" id="txtCategoryID">
+                @{
+                    foreach (var data in ViewBag.itemNewsProduct)
+                    {
+                        <option value="@data.CategoryID">@data.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2 col-sm-12 col-12">
+            <span class="text-center">Account</span>
+        </div>
+        <div class="col-md-3 col-sm-12 col-12">
+            <select class="form-control" id="txtAccountCreate" disabled>
+
+                <option value="1">Customer</option>
+
+            </select>
+        </div>
+    </div>*@
+
+
+<div class="row pb-3">
+    <div class="col-md-3"><label>Tiêu đề bài viết</label></div>
+    <div class="col-md-8">
+        <input type="text" class="form-control" id="txtTitleCreate" placeholder="Điền tiêu đề bài viết" required />
+    </div>
+    <p id="exTitle" style="color:red;padding-left:130px"></p>
+</div>
+<div class="row pb-3">
+    <div class="col-md-3"><label>Mô tả</label></div>
+    <div class="col-md-9">
+        <textarea class="form-control" rows="3" id="txtDescriptionCreate" placeholder="Thêm mô tả..." required></textarea>
+    </div>
+    <p id="exDescription" style="color:red ;padding-left:130px"></p>
+</div>
+<div class="row pb-3">
+    <div class="col-md-3"><label>Danh mục</label></div>
+    <div class="col-md-3 col-sm-12 col-12">
+        <select class="form-control" id="txtType">
+            <option value="@SystemParam.NEWS_TYPE_NEWS">Tin tức</option>
+            <option value="@SystemParam.NEWS_TYPE_PROMOTION">Khuyến mãi</option>
+            <option value="@SystemParam.NEWS_TYPE_BANER_HOME">Banner Home</option>
+            <option value="@SystemParam.NEWS_TYPE_BANER_FOOD">Banner Food</option>
+            <option value="@SystemParam.NEWS_TYPE_QA">Câu hỏi thường gặp</option>
+            <option value="@SystemParam.NEWS_TYPE_ADVERTISEMENT">Quảng cáo</option>
+        </select>
+    </div>
+
+    @*<div class="col-md-1"><label>Thứ tự hiển thị</label></div>
+        <div class="col-md-3 col-sm-12 col-12">
+            <select class="form-control" id="txtOrderDisplay">
+
+                @{
+                    int k = 0;
+                    for (int i = 1; i <= ViewBag.order; i++)
+                    {
+                        <option value="@i">@i</option>
+                        k = i;
+                    }
+                    k++;
+                    <option value="@k">@k</option>
+                }
+            </select>
+        </div>*@
+</div>
+
+<div class="row pb-3 d-none" id="showlink">
+    <div class="col-md-3"><label>Link</label></div>
+    <div class="col-md-9">
+        <input class="form-control" id="txtlink" placeholder="Enter link" />
+    </div>
+    <p id="exDescription" style="color:red ;padding-left:130px"></p>
+</div>
+
+<div class="row mt-3 mb-3">
+
+    <div class="col-md-3 col-sm-12 col-12">
+        <label>Ảnh minh họa</label>
+    </div>
+    <div class="col-md-3 col-sm-12 col-12">
+        <div id="AddLogoPlace" class="mt-2">
+            <i class="fa fa-camera" style="font-size:30px;"></i>
+        </div>
+        <!--<a href="" class="text-bold mb-3" style="width:100%;height:100%; color: #5A5A5A;" id="add_logo_place" data-id="1">
+        <div class="news">
+            <div class="article position-relative" id="AddLogoPlace">
+
+                <img id="AddImgLogoPlace" src="~/Content/images/add_photo-512 (1).png" class="col-md-12 px-0 contentImg" alt="your image" />-->
+        @*<i title="Delete" id="deleteimg" onclick="DeleteAvatar();" class="fa fa-2x fa-remove remove-avatar d-none" data="img1" style="position:absolute;top: -14px;left: 150px;color: #ff0000;z-index: 999;"></i>*@
+        <!--</div>
+            </div>
+        </a>-->
+    </div>
+</div>
+<div class="row pb-3 mt-3">
+
+    <div class="col col-md-3">
+        <label>Thứ tự hiển thị</label>
+    </div>
+    <div class="col col-md-2">
+        <input class="form-control" id="txtOrderDisplay" type="number" />
+    </div>
+
+</div>
+
+<div class="row pb-3">
+    <div class="col-md-12 col-sm-12 col-12">
+        <label>Nội dung</label>
+        <textarea name="editor" class="form-control mb-3" id="txtContentCreate"></textarea>
+        <p id="exContent" style="color:red"></p>
+    </div>
+</div>
+
+
+@*<div class="col-md-12 border-form mt-2"></div>*@
+
+<div class="row pb-2 pt-2 text-right">
+    <div class="col-md-12 col-sm-12 col-12 txtBeauty">
+        <button class="btn btn-success" onclick="javaScript:AddNew();"><i class="fa fa-fw fa-check"></i>Đăng bài</button>
+        <button class="btn btn-primary" onclick="javaScript:draffNew()"><i class="fa-fw fa-stack-overflow"></i>Lưu nháp</button>
+        <a class="btn btn-danger" href="/News/Index"><i class="fa fa-fw fa-close"></i>Hủy</a>
+
+    </div>
+</div> <!-- END col-md-8 panel form create -->
+
+
+<script>
+
+    $(document).ready(function () {
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+        $("#checkBanner").change(function () {
+            if ($(this).prop("checked")) {
+                $("#showlink").removeClass("d-none");
+
+            }
+            else {
+                $("#showlink").addClass("d-none");
+            }
+        })
+        CKEDITOR.replace('editor', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+
+
+
+
+
+    });
+
+
+
+    function DeleteAvatar() {
+        $("#add_logo_place").attr("data-id", 0);
+        $('#AddImgLogoPlace').attr("src", "/Uploads/files/add_img.png");
+        $('#deleteimg').addClass("d-none");
+    }
+
+
+    $("#AddLogoPlace").mouseover(function () {
+        if ($('#AddImgLogoPlace').attr("src") != "/Uploads/files/add_img.png") {
+
+            $('#deleteimg').removeClass("d-none");
+        }
+    });
+
+    $("#AddLogoPlace").mouseout(function () {
+        $('#deleteimg').addClass("d-none");
+    });
+
+
+    $("#add_logo_place").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder();
+
+        fider.selectActionFunction = function (fileUrl) {
+            $("#AddImgLogoPlace ").remove();
+            $("#AddLogoPlace").append('<img id="AddImgLogoPlace" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko contentImg" alt="your image" />');
+            var url = window.location.origin + fileUrl;
+            $('#txtAddLogoPlace').val(url);
+        }
+        var config = {};
+        config.chooseFilesOnDblClick = false;
+        if ($("#add_logo_place").attr("data-id") != 0)
+            fider.popup(config);
+
+        $("#add_logo_place").attr("data-id", 1);
+    });
+
+    //checkinput
+    function checkinput() {
+        if ($('#txtTitleCreate').val() == "") {
+            $('#exTitle').text("");
+            $('#exTitle').text("This field cannot be blank!");
+            $('#txtTitleCreate').focus();
+            return false;
+        }
+        else if ($('#txtDescriptionCreate').val() != "" && $('#txtDescriptionCreate').val().length > 200) {
+            $('#exTitle').text("");
+            $('#exDescription').text("Description can only enter up to 200 characters!");
+            $('#txtDescriptionCreate').focus();
+            return false;
+        }
+        else if (CKEDITOR.instances['txtContentCreate'].getData() == "") {
+            $('#exDescription').text("");
+            $('#exContent').text("This field cannot be blank!");
+            $('#txtContentCreate').focus();
+            return false;
+        }
+        $('#exContent').text("");
+        return true;
+    }
+    // tạo sự kiện edit img
+    $("#AddLogoPlace").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+            $("#AddLogoPlace").html('<img id="AddImgLogoPlace" data-value="' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+        }
+        fider.popup();
+    });
+    function draffNew() {
+        var _name = "không có";
+        //var CategoryID = $('#txtCategory').val();
+        var Title = $('#txtTitleCreate').val();
+        var Description = $('#txtDescriptionCreate').val();
+        var Content = $.trim(CKEDITOR.instances['txtContentCreate'].getData())
+        var UrlImage = $('#AddImgLogoPlace').attr("data-value");
+        var OrderDisplay = $('#txtOrderDisplay').val();
+        var Status = 2;
+        var Type = $('#checkNoty').prop("checked") ? 1 : 0;
+        var Type = $('#txtType').val();;
+        var TypeSend = 1;
+        var _isActive = 1;
+        var IsBanner = $('#checkBanner').prop("checked") ? 1 : 0;
+        var Link = IsBanner == 1 ? $("#txtlink").val() : null;
+        if (OrderDisplay == "") {
+            swal({
+                title: " Failed!",
+                text: "Thứ tự hiển thị không được để trống!",
+                icon: "warning",
+                button: "Close",
+            })
+        } else {
+
+            $.ajax({
+                url: '/News/DraffNewWeb',
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    Name: _name,
+                    //CategoryID: CategoryID,
+                    Title: Title,
+                    Description: Description,
+                    Content: Content,
+                    UrlImage: UrlImage,
+                    OrderDisplay: OrderDisplay,
+                    Status: Status,
+                    Type: Type,
+                    IsBanner: IsBanner,
+                    TypeSend: TypeSend,
+                    IsActive: _isActive,
+                    Link: Link
+                }),
+                success: function (res) {
+                    //if (res == 1) {
+                    //    swal({
+                    //        title: " Success!",
+                    //        text: "Thêm mới thành công!",
+                    //        icon: "success",
+                    //        button: "Close",
+                    //    }).then((will) => {
+                    //        if (will) {
+                    //            location.reload();
+                    //        }
+
+                    //    })
+                    //}
+                    //else {
+                    //    swal({
+                    //        title: " Failed!",
+                    //        text: "Thên mới thất bại!",
+                    //        icon: "warning",
+                    //        button: "Close",
+                    //    })
+                    //}
+                    swal({
+                        title: res.Message,
+                        icon: res.Status == SUCCESS ? 'success' : 'error'
+                    }).then((rp) => {
+                        if (rp) {
+                            location.reload();
+                        }
+                    })
+                },
+                error: function (ex) {
+                    swal({
+                        title: " Failed!",
+                        text: "Thên mới thất bại!",
+                        icon: "warning",
+                        button: "Close",
+                    })
+                }
+            })
+        }
+    }
+
+    //add News
+
+    function AddNew() {
+        var _name = "không có";
+        var Title = $('#txtTitleCreate').val();
+        var Description = $('#txtDescriptionCreate').val();
+        var Content = $.trim(CKEDITOR.instances['txtContentCreate'].getData())
+        var UrlImage = $('#AddImgLogoPlace').attr("data-value");
+        var OrderDisplay = $('#txtOrderDisplay').val();
+        var Status = 1;
+        var Type = $('#txtType').val();;
+        var TypeSend = 1;
+        var _isActive = 1;
+        var IsBanner = $('#checkBanner').prop("checked") ? 1 : 0;
+        var Link = IsBanner == 1 ? $("#txtlink").val() : null;
+        if (OrderDisplay == "") {
+            swal({
+                title: " Failed!",
+                text: "Thứ tự hiển thị không được để trống!",
+                icon: "warning",
+                button: "Close",
+            })
+        } else {
+            $.ajax({
+                url: '/News/CreateNewWeb',
+                type: 'POST',
+                dataType: "json",
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    Name: _name,
+                    Title: Title,
+                    Description: Description,
+                    Content: Content,
+                    UrlImage: UrlImage,
+                    OrderDisplay: OrderDisplay,
+                    Status: Status,
+                    Type: Type,
+                    IsBanner: IsBanner,
+                    TypeSend: TypeSend,
+                    IsActive: _isActive,
+                    Link: Link
+                }),
+                success: function (res) {
+                    //    if (res == 1) {
+                    //        swal({
+                    //            title: " Success!",
+                    //            text: "Thêm mới thành công!",
+                    //            icon: "success",
+                    //            button: "Close",
+                    //        }).then((will) => {
+                    //            if (will) {
+                    //                location.reload();
+                    //            }
+
+                    //        })
+                    //    }
+                    //    else {
+                    //        swal({
+                    //            title: " Failed!",
+                    //            text: "Thên mới thất bại!",
+                    //            icon: "warning",
+                    //            button: "Close",
+                    //        })
+                    //    }
+                    swal({
+                        title: res.Message,
+                        icon: res.Status == SUCCESS ? 'success' : 'error'
+                    }).then((rp) => {
+                        if (rp) {
+                            location.reload();
+                        }
+                    })
+                },
+                error: function (ex) {
+                    swal({
+                        title: " Failed!",
+                        text: "Thên mới thất bại!",
+                        icon: "warning",
+                        button: "Close",
+                    })
+                }
+            })
+        }
+    }
+
+
+</script>
+<style>
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 23px;
+        width: 23px;
+        background-color: #eee;
+    }
+</style>

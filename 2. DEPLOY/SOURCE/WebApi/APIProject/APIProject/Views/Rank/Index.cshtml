@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="breadcrumb-holder">
+            <div class="row mb-3 mt-3">
+                <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                    <h4 class="color-blue"> Rank Management</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-4 col-xs-12">
+            <input type="text" class="form-control" id="txtName" placeholder="Rank name" />
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtFromDate" placeholder="@Resources.FromDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <input type="text" class="form-control relative-icon-calendar date" id="dtToDate" placeholder="@Resources.FromDate" />
+            <i class="fa fa-calendar absolute-icon-calendar"></i>
+        </div>
+    </div>
+    <div class="row pt-40">
+        <div class="col-md-12">
+            <div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                <button class="btn btn-primary btn_search" id="btnSearch" style="width:115px;" onclick="SearchRanking()"><i class="fa fa-search"></i> @Resources.Search</button>
+            </div>
+            @*<div class="mt-1  mb-1 pull-right pr-10 pb-10">
+                <button class="btn btn-success" id="btnAdd" onclick="window.location='/Rank/AddRank'">Add</button>
+            </div>*@
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" id="ListRank">
+            @{
+                Html.RenderAction("Search", "Rank", new { page = 1, name = "", fromDate = "", toDate = "" });
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".sidebar-scroll").scrollTop(2000);
+    });
+</script>
+
+
+

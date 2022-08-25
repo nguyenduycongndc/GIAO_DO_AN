@@ -1,0 +1,57 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using APIProject.Resource
+@model  PointDetailOutputModel
+
+
+<div class="modal fade" id="detailPoint" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fa fa-fw fa-exchange"></i> @Resources.TransactionDetail</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body ">
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.TransactionCode</label>
+                    <div class="col-md-8 text-bold text-primary">@Model.AddPointCode</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.TransactionType</label>
+                    <div class="col-md-8">@Util.GetNameType(Model.Type)</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.DayTransaction</label>
+                    <div class="col-md-8">@Model.GetStringCreateDate</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.Point</label>
+                    <div class="col-md-8">@String.Format("{0:n0}", Model.Point)</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.Surplus</label>
+                    <div class="col-md-8">@String.Format("{0:n0}", Model.Balance)</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.Customers</label>
+                    <div class="col-md-8">@Model.CustomerName</div>
+                </div>
+                <div class="row pt-3">
+                    <label class="col-md-4">@Resources.Address</label>
+                    <div class="col-md-8">@Model.Address</div>
+                </div>
+                <div class="row pt-3 pb-3">
+                    <label class="col-md-4">@Resources.PhoneNumber</label>
+                    <div class="col-md-8">@Model.Phone</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">@Resources.Close</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+

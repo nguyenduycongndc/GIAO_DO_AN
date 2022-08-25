@@ -1,0 +1,155 @@
+﻿@using Data.Model.APIWeb
+@using PagedList;
+@using PagedList.Mvc
+@using Data.Utils
+@using APIProject.Resource
+@model IPagedList<ListNewsWebOutputModel>
+
+<table class="table table-hover table-bordered table-responsive-sm table-responsive-md text-center">
+
+    <thead class="text-center text-white align-center bg-thead">
+
+    <thead class="text-white text-center bg-thead">
+
+        <tr>
+            <th>STT</th>
+            <th>Tiêu đề</th>
+            <th>Danh mục</th>
+            <th>Người tạo</th>
+            <th>Ngày tạo</th>
+            <th>Thứ tự hiển thị</th>
+            <th>Trạng thái</th>
+            @*<th class="widthCreatedDate">Create date</th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count <= 0)
+            {
+                <tr>
+                    @*<td colspan="20">@Resources.NoData.</td>*@
+                    <td colspan="21">Không có dữ liệu</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+
+                foreach (var data in Model)
+                {
+                    <tr>
+                        @{
+                            if (data.IsActive == 1)
+                            {
+                                <td>@stt</td>
+
+                                if (data.Title != "")
+                                {
+                                    <td>@data.Title</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold font-italic font-13" style="color: #5f5f5f;"> @Resources.HaveNotBeenUpdated</td>
+                                }
+                                switch (data.Type)
+                                {
+                                    case 0:
+                                        <td>Khác</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_NEWS:
+                                        <td>Tin tức</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_PROMOTION:
+                                        <td>Khuyến mãi</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_BANER_HOME:
+                                        <td>Banner Home</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_BANER_FOOD:
+                                        <td>Banner Food</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_QA:
+                                        <td>Câu hỏi thường gặp</td>
+                                        break;
+                                    case SystemParam.NEWS_TYPE_ADVERTISEMENT:
+                                        <td>Quảng cáo</td>
+                                        break;
+                                }
+                                if (data.CreateUser != null)
+                                {
+                                    <td>@data.CreateUser </td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold font-italic font-13" style="color: #5f5f5f;"> @Resources.HaveNotBeenUpdated</td>
+                                }
+
+                                if (data.CreateDate != null)
+                                {
+                                    <td>@data.CreateDate.Value.ToString("dd/MM/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold font-italic font-13" style="color: #5f5f5f;"> @Resources.HaveNotBeenUpdated</td>
+                                }
+
+                                if (data.OrderDisplay > 0)
+                                {
+                                    <td>@data.OrderDisplay</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold font-italic font-13" style="color: #5f5f5f;"> @Resources.HaveNotBeenUpdated</td>
+                                }
+                                if (data.Status == 1)
+                                {
+                                    <td>Đã đăng</td>
+                                }
+                                else
+                                {
+                                    <td>Tin Nháp</td>
+
+                                }
+                                @*if (data.CreateDate != null)
+                                {
+                                    <td>@data.CreateDate</td>
+                                }
+                                else
+                                {
+                                    <td class="font-weight-bold font-italic font-13" style="color: #5f5f5f;"> @Resources.HaveNotBeenUpdated</td>
+                                }*@
+                                <td class="width2btn">
+
+                                    <a href="/News/UpdateNews?id=@data.ID" title="Edit">
+                                        <i class="btnEdit btnEdit glyphicon glyphicon-upload cursor-pointer" id="btnEditNotify"></i>
+                                    </a>
+
+                                    <a href="javascript:void(0);" title="Delete " class="cursor-pointer" onclick="DeleteNews(@data.ID)">
+                                        <i class="btnDelete fa fa-fw fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            }
+
+
+                            stt++;
+                        }
+
+                    </tr>
+                }
+            }
+
+        }
+    </tbody>
+
+</table>
+
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchView", "News", new { page = page, Title = ViewBag.Title, Status = ViewBag.Status}),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "TableNews" })
+        )
+    </div>
+</div>

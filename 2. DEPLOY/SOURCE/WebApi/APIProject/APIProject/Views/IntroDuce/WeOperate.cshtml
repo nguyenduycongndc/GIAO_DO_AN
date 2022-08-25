@@ -1,0 +1,261 @@
+﻿
+@{
+    ViewBag.Title = "WeOperate";
+    Layout = "~/Views/Shared/_LayoutWeb.cshtml";
+}
+
+<main style="overflow:hidden; font-family:'Open Sans'">
+    <!-- Banner-->
+    <div class="banner">
+        <div>
+            <img src="~/Content/images/banner_hop_tac.png" width="100%" />
+        </div>
+    </div>
+    <!-- End Banner-->
+    <div class="main_driver_2 mb-5">
+        <div class="row ">
+            <div class="col-md-8 col-sm-8 col-8 offset-2">
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 card-body mt-5" style="background: #FFFFFF; box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.12); border-radius: 8px; height: auto">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-center">
+                                    <h1 class="title-operate">HỢP TÁC CÙNG WESHIP</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" placeholder="Tên đối tác" id="business_name" />
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" placeholder="Người đại diện" id="business_chain" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-4">
+                                <select class="form-control" name="select_provinces" id="select_provinces" required="" onchange="loadListCity(this.value)">
+                                    <option value="0">Tỉnh/Thành phố</option>
+                                    @foreach (Data.DB.Province obj in ViewBag.Province)
+                                    {
+                                        <option value="@obj.ID">
+                                            @obj.Name
+                                        </option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mt-4">
+                                <select class=" form-control" name="select_district" id="select_district" required="">
+                                    <option value="0">Quận/Huyện</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-4">
+                                <input type="number" class="form-control number-type" placeholder="Số điện thoại" id="business_phone" min="1" />
+                            </div>
+                            <div class="col-md-6 mt-4">
+                                <input type="email" class="form-control" placeholder="Email" id="business_email" />
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <select id="business_type" name="business_type" class="form-control">
+                                    <option value="0" selected disabled hidden>Loại hình hợp tác</option>
+                                    <option value="Đối tác mở gian hàng trên WeShip">Đối tác mở gian hàng trên WeShip</option>
+                                    <option value="Đối tác mở Đại lý nhượng quyền">Đối tác mở Đại lý nhượng quyền</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <textarea id="business_desc" class="form-control" placeholder="Lời nhắn" rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2rem">
+                            <div class="col-md-12">
+                                <button class="btn form-control" style="background: #FF6E1E; border-radius: 8px; color:white" onclick="Send_Cooperate()">
+                                    GỬI YÊU CẦU
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 mt-5">
+                        <div style="text-align:center">
+                            <img class="img-fluid mw-100 h-auto" style="border-radius:8px" src="~/Content/images/girl_weship.png" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="pricing-card-area section-bg" style="padding-top:2%">
+        <div class="container mb-80">
+            <!-- Section Tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:3%; padding-bottom: 6%">Lý do nên dùng WESHIP</h2>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock.png" />
+                            <div class="title_style">Quản trị đơn hàng</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Hệ thống Quản trị đơn hàng chuyên nghiệp, dễ dàng khi sử dụng. </p>
+                    </div>
+
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_1.png" />
+                            <div class="title_style">Đội ngũ nhân viên</div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Đội ngũ nhân viên thân thiện, nhiệt huyết, giao hàng nhanh chóng và tận tâm. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_2.png" />
+                            <div class="title_style">Dịch vụ tiện lợi </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Đặt đồ ăn, đồ uống  nhanh chóng, biết rõ nguồn gốc đảm bảo an toàn thực phẩm. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/clock_3.png" />
+                            <div class="title_style">Đặt xe nhanh hơn</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Bắt xe nhanh, giá cước rẻ và được biết trước. </p>
+                    </div>
+                </div>
+                <div class="reason-choose">
+                    <div class="row">
+                        <div class="wrapper">
+                            <img src="~/Content/images/roket1h.png" width="42px" />
+                            <span class="title_style">Mua sắm tiện ích</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-5">
+                        <p>Mua sắm tiện ích an toàn, nhiều mặt hàng thiết yếu với đời sống. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--<section class="pricing-card-area section-bg" style="padding-top:2%">
+        <div class="container">-->
+    <!-- Section Tittle -->
+    <!--<div class="row d-flex justify-content-center">
+                <div class="col-xl-7 col-lg-8">
+                    <div class="section-tittle text-center">
+                        <h2 style="color:orangered; font-size: 30px; padding-top:3%; padding-bottom: 2%">Tại sao nên chọn WESHIP</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row row mt-5 mb-5">
+            <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img src="~/Content/images/we_1.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <b>Tiếp cận khách hàng</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div>
+                            <p class="text-center">Mang thương hiệu của bạn đến với nhiều khách hàng hơn mỗi ngày</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img src="~/Content/images/we_2.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <b>Giao hàng 24/7</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div>
+                            <p class="text-center">Đội ngũ đối tác tài xế luôn sẵn sàng để giao món ngon trong một nốt nhạc.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 col-xs-12 col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img src="~/Content/images/we_3.png" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <b>Tăng doanh thu hiệu quả</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <div>
+                            <p class="text-center">Nhiều người vào app hơn, nhiều khách hàng tiềm năng hơn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+
+</main>
+

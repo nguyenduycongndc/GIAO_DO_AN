@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.Model.APIApp
+
+<div class="" id="View">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header sticky">
+                <div class="row mt-3 ml-3">
+                    <div class="col-md-12 col-sm-9 col-8 text-dark px-0">
+                        <h4>Siêu tốc nội thành</h4>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                            <div class="col-md-3 col-12">
+                                <input type="text" class="form-control" id="txtTranDeliveryName" placeholder="Nhập mã, SĐT, tên khách hàng" />
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <select class="form-control" id="slTranDeliveryStatus">
+                                    <option class="text-black-50" value="">--Trạng thái--</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DENY">Đơn Shipper bị từ chối</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PENDING">Đơn Shipper chờ tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_DELIVERY">Đơn Shipper đang tiếp nhận</option>
+                                    <option value="@SystemParam.ORDER_STATUS_PICK_UP">Đơn Shipper đã lấy hàng</option>
+                                    <option value="@SystemParam.ORDER_STATUS_FINISH">Đơn Shipper hoàn thành</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranDeliveryFromdate" placeholder="Từ ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                            <div class="col-md-3 col-12">
+                                <input type="text" class="form-control relative-icon-calendar date" id="dtTranDeliveryTodate" placeholder="Đến ngày" />
+                                <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-md-3 col-12">
+                        <select class="form-control" id="slIsVip">
+                            <option class="text-black-50" value="">--Loại đơn hàng--</option>
+                            <option value="@SystemParam.SHIPPER_NORMAL">Đơn thường</option>
+                            <option value="@SystemParam.SHIPPER_VIP">Đơn VIP</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select class="form-control" name="calc_shipping_provinces" id="slProvince" onchange="loadListDistrict(this.value)">
+                            <option value="">Tỉnh / Thành phố</option>
+                            @foreach (Data.DB.Province obj in ViewBag.Province)
+                            {
+                                <option value="@obj.ID">
+                                    @obj.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-12">
+                        <select class=" form-control" name="calc_shipping_district" id="slDistrict" >
+                            <option value="">Quận / Huyện</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 col-12" style="text-align: end">
+                        @{
+                            if (ViewBag.roleLoginTranDelivery == 2 || ViewBag.roleLoginTranDelivery == 3 || ViewBag.roleLoginTranDelivery == 4 || ViewBag.roleLoginTranDelivery == 6 || ViewBag.roleLoginTranDelivery == 7)
+                            {
+                                <button hidden id="btnExport" class="btn btn-primary" onclick="exportExcelDelivery()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                            else
+                            {
+                                <button id="btnExport" class="btn btn-primary" onclick="exportExcelDelivery()"><i class="fa fa-download mr-1"></i>Xuất excel</button>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--modal addTransaction-->
+                <!--end modal-->
+                <div class="row">
+                    <div class="col-md-12" id="ListTransactionDelivery">
+                        @{
+                            Html.RenderAction("SearchTransactionDelivery", "TransactionDelivery", new { page = 1});
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#txtTranDeliveryName').change(function (e) {
+            SearchTransactionDelivery();
+        });
+        $('#slTranDeliveryStatus').change(function (e) {
+            SearchTransactionDelivery();
+        });
+        $('#dtTranDeliveryFromdate').change(function (e) {
+            SearchTransactionDelivery();
+        });
+        $('#dtTranDeliveryTodate').change(function (e) {
+            SearchTransactionDelivery();
+        });
+        $('#slIsVip').change(function (e) {
+            SearchTransactionDelivery();
+        });
+         $('#slProvince').change(function (e) {
+            SearchTransactionDelivery();
+         });
+         $('#slDistrict').change(function (e) {
+            SearchTransactionDelivery();
+        });
+    });
+    function SearchTransactionDelivery() {
+        debugger;
+        var _tranName = $('#txtTranDeliveryName').val();
+        var _tranStatus = $('#slTranDeliveryStatus').val();
+        var _fromDate = $('#dtTranDeliveryFromdate').val();
+        var _toDate = $('#dtTranDeliveryTodate').val();
+        var _isVIP = $('#slIsVip').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+
+        $.ajax({
+            url: '/TransactionDelivery/SearchTransactionDelivery',
+            type: 'GET',
+            data: {
+                page: 1,
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+                isVip: _isVIP,
+                provinceID: provinceID,
+                districtID:districtID
+                //id: _id
+            },
+            success: function (result) {
+                $('#ListTransactionDelivery').html(result);
+            }
+        })
+    }
+    //xóa
+    function DeleteTranDelivery(id) {
+        swal({
+            title: "Bạn chắc chắn muốn xóa bản ghi này không?",
+            text: "",
+            icon: "warning",
+            buttons: ["Cancel", "OK"],
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    url: '/TransactionDelivery/DeleteTransactionDeliverys',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (res) {
+                        swal({
+                            title: res.Message,
+                            icon: res.Status == SUCCESS ? 'success' : 'error'
+                        }).then((rp) => {
+                            if (rp) {
+                                searchUser();
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }
+    //xuất excel
+    function exportExcelDelivery() {
+        debugger;
+        var _tranName = $('#txtTranDeliveryName').val();
+        var _tranStatus = $('#slTranDeliveryStatus').val();
+        var _fromDate = $('#dtTranDeliveryFromdate').val();
+        var _toDate = $('#dtTranDeliveryTodate').val();
+        var _isVIP = $('#slIsVip').val();
+        var provinceID = $('#slProvince').val();
+        var districtID = $('#slDistrict').val();
+        $.ajax({
+            type: "POST",
+            url: "/TransactionDelivery/ExportExcelTransactionDelivery",
+            cache: false,
+            data: {
+                searchKey: _tranName,
+                status: _tranStatus,
+                fromDate: _fromDate,
+                toDate: _toDate,
+                isVip: _isVIP,
+                provinceID: provinceID,
+                districtID:districtID
+
+            },
+            success: function (data) {
+                window.location = '/TransactionDelivery/Download';
+            },
+            error: function (data) {
+                swal({
+                    title: " Failed!",
+                    text: "Lưu thất bại",
+                    icon: "warning",
+                    button: "Close",
+                })
+            }
+        });
+    }  
+</script>
+

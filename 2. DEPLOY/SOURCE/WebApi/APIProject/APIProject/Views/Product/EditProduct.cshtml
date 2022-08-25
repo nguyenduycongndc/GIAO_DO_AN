@@ -1,0 +1,193 @@
+﻿
+@{
+    ViewBag.Title = "EditProduct";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Data.Model.APIApp;
+@model ProductDetailViewModel
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Edit Product</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<fieldset class="scheduler-border" style="background-color:#FFF;">
+    <legend class="scheduler-border">Information</legend>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Code</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="txtCode" maxlength="15" value="@Model.Code" disabled/>
+                    <input type="hidden" value="@Model.ProductID" id="productId"/>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Name EN</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="txtName" value="@Model.Name"/>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Name VN</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="txtNameVN" value="@Model.NameVN"/>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Category</span>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" id="sl_category">
+                        @{
+                            foreach (var item in ViewBag.listCate)
+                            {
+                                <option value="@item.ID">@item.Name</option>
+                            }
+                        }
+                        
+                        @*<option value="0">Product category</option>*@
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Quantity</span>
+                </div>
+                <div class="col-md-6">
+                    <input type="text" id="txtQuantity" class="form-control number" value="@Model.QTY" maxlength="8"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Price</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" id="txtPrice" class="form-control number" value="@Model.BasePriceStr" maxlength="12"/>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Promote</span>
+                </div>
+                <div class="col-md-5 position-relative">
+                    <input type="number" class="form-control" id="txtAmountCoupon" value="@Model.Discount" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Display order</span>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" class="form-control number" id="txtDisplayOrder" value="@Model.DisplayOrder" maxlength="10"/>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Status</span>
+                </div>
+                <div class="col-md-5">
+                    <select class="form-control" id="sl_status">
+                        <option value="1">Active</option>
+                        <option value="0">Deactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-12 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Description</label>
+            <textarea name="editor" class="form-control mb-3" id="txtContentCreate">@Model.Description</textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <label style="padding: 0 0 8px 19px;">Image</label>
+        <div class="col-md-12 col-sm-12 col-12 divimage" style="display:flex">
+            @{
+                foreach (var image in Model.ListImage)
+                {
+                    <div style="width:150px" class="divimagehidden mr-2" id="' + index + '"><input type="file" class="dropify" data-height="150" data-default-file="@image" name="UrlImage" onchange="Imagechang(event)" /></div>
+                }
+            }
+            <div style="width:150px" class="divimagehidden mr-2" id="' + index + '"><input type="file" class="dropify" data-height="150"  name="UrlImage" onchange="Imagechang(event)" /></div>
+            @*<div style="width:150px " class="divimagehidden mr-2">
+            <input type="file" class="dropify" data-height="150" data-default-file="" name="UrlImage" onchange="Imagechang()" />
+        </div>*@
+        </div>
+    </div>
+</fieldset>
+<div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-success plr-25 mr-3" onclick="EditProduct()">Save</button>
+    <button class="btn btn-danger plr-25" onclick="window.location='/Product/Index'">Back</button>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.dropify').dropify({
+            messages: {
+                default: 'Click to select image',
+                replace: 'Click to select another image',
+                remove: 'Delete image'
+            }
+        });
+        $.each($('.dropify-clear'), function () {
+            $(this).attr('onclick', 'removeImage(event)');
+        })
+        // ProductDetail(@Model);
+        $("#sl_category").val(@Model.CategoryID);
+        $("#sl_status").val(@Model.Status);
+       
+            CKEDITOR.replace('editor', {
+                height: 300,
+                disableObjectResizing: true
+            });
+
+            CKEDITOR.on('dialogDefinition', function (ev) {
+                var dialogName = ev.data.name;
+                var dialogDefinition = ev.data.definition;
+                //var editorO = ev.data.definition.dialog.getParentEditor();
+
+                if (dialogName == 'image' || dialogName == 'image2') {
+                    var infoTab = dialogDefinition.getContents('info');
+
+                    if (dialogName == 'image') {
+                        infoTab.remove('txtHeight');
+                        infoTab.remove('txtWidth');
+                        infoTab.remove('ratioLock');
+                    }
+                    else {
+                        infoTab.remove('height');
+                        infoTab.remove('width');
+                        infoTab.remove('lock');
+                    }
+                }
+            });
+
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+        //setTimeout(function () {
+        //    $('.dropify-clear').click(function () {
+        //        console.log("div need remove:");
+        //        $(this).closest('.divimagehidden').remove();
+        //    })
+        //}, 2000);
+    });
+
+
+</script>
+

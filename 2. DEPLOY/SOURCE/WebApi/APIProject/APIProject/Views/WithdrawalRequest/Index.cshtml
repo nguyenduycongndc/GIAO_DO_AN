@@ -1,0 +1,217 @@
+﻿@using Data.Utils
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row"><div class="col col-12 mt-3"><h4>Yêu cầu rút tiền</h4></div></div>
+<div class="row mt-2">
+    <div class=" col-12 col-md-3 col-sm-6 mt-1"><input id="txtName" class="form-control" type="text" placeholder="Mã, tên, SĐT tài xế" /></div>
+    <div class="col-12 col-md-3 col-sm-6 mt-1">
+        <select class="form-control" id="slStatus">
+            <option value="">--Trạng thái--</option>
+            <option value="@SystemParam.STATUS_REQUEST_WAITING">Đang chờ duyệt</option>
+            <option value="@SystemParam.STATUS_REQUEST_SUCCESS">Chấp nhận</option>
+            <option value="@SystemParam.STATUS_REQUEST_CANCEl">Từ chối</option>
+            <option value="@SystemParam.STATUS_REQUEST_COMPLETE">Hoàn thành</option>
+        </select>
+    </div>
+    <div class="col-12 col-md-3 col-sm-6 mt-1">
+        <input id="dtFromdate" type="text" class="form-control relative-icon-calendar date" placeholder="Từ ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+    <div class="col-12 col-md-3 col-sm-6 mt-1">
+        <input type="text" id="dtTodate" class="form-control relative-icon-calendar date" placeholder="Đến ngày" />
+        <i class="fa fa-calendar absolute-icon-calendar"></i>
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-md-6"></div>
+    <div class="col col-6">
+        <div class="row">
+            <div class="col col-12 text-right">
+                <button class="btn btn-primary mr-1" id="SearchRequestWithDraw" onclick="SearchRequestWithDraw()"><i class="fa fa-search mr-10"></i>Tìm kiếm</button>
+                <button class="btn btn-warning mr-1" onclick="DoneRequestWithDraw()"><i class="fa fa-check-circle-o mr-10"></i>Hoàn thành</button>
+                <button class="btn btn-danger mr-1" data-toggle="modal" data-target="#reject-request"><i class="fa fa-times-circle mr-10"></i>Từ chối</button>
+                <button class="btn btn-success" onclick="ApproveRequestWithDraw()"><i class="fa fa-check-circle mr-10"></i>Chấp nhận</button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="row mt-2"></div>
+<div class="row">
+    <div class="col-md-12" id="TableWithdrawalRequest">
+        @{ Html.RenderAction("Search", "WithdrawalRequest", new { });}
+    </div>
+</div>
+
+<div class="modal fade" id="reject-request">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header" style="background-color: seagreen; color: white">
+                <h5 class="modal-title">Từ chối yêu cầu</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="col-md-12 col-12">
+                    <textarea class="form-control" cols="4" id="txt-reason" placeholder="Nhập lý do từ chối"></textarea>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <div style="">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" style="width: 100px">Thoát</button>
+                    <button type="button" class="btn btn-success" style="width: 100px" data-dismiss="modal" onclick="RefuseRequestWithDraw() ">Lưu</button>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function SearchRequestWithDraw() {
+
+        var name = $('#txtName').val();
+        var status = $('#slStatus').val();
+        var fromdate = $('#dtFromdate').val();
+        var todate = $('#dtTodate').val();
+        $.ajax({
+            url: "/WithdrawalRequest/Search/",
+            data: { Name: name, Status: status, Fromdate: fromdate, Todate: todate },
+            success: function (rs) {
+
+                $("#TableWithdrawalRequest").html(rs)
+            },
+        })
+    }
+    function RefuseRequestWithDraw() {
+        var reason = ReplaceSpace($('#txt-reason').val());
+        if (reason.length == 0) {
+            swal("Thông báo", "Vui lòng nhập lý do từ chối!", "warning");
+            return;
+        }
+
+
+        if (localStorage.getItem("ListCus") == "" || localStorage.getItem("ListCus") == null) {
+            swal("Thông báo", "Vui lòng chọn yêu cầu rút tiền để từ chối", "warning");
+            return;
+        }
+        else {
+            var lstIdShiper = localStorage.getItem("ListCus")
+
+            $.ajax({
+                url: "/WithdrawalRequest/DenyWithDraw",
+                data: { lstIdShiper: lstIdShiper, reason: reason },
+                beforeSend: function () {
+                    $('#modalLoad').modal('show');
+                },
+                success: function (rs) {
+                    $('#modalLoad').modal('hide');
+                    if (rs == SUCCESS) {
+                        swal("Thông báo", "Yêu cầu đã bị từ chối thành công", "success")
+                            .then((sc) => {
+                                if (sc)
+                                    location.reload();
+                            });
+                    }
+                    else {
+                        swal({
+                            title: "Yêu cầu không thể từ chối !",
+                            icon: 'error'
+                        })
+                    }
+
+                },
+            })
+        }
+    }
+    function ApproveRequestWithDraw() {
+        if (localStorage.getItem("ListCus") == "" || localStorage.getItem("ListCus") == null) {
+            swal("Thông báo", "Vui lòng chọn yêu cầu rút tiền để chấp nhận", "warning");
+        }
+        else {
+            var lstIdShiper = localStorage.getItem("ListCus")
+
+            $.ajax({
+                url: "/WithdrawalRequest/AcceptWithDraw",
+                data: { lstIdShiper: lstIdShiper, type: 1 },
+                beforeSend: function () {
+                    $('#modalLoad').modal('show');
+                },
+                success: function (rs) {
+                    $('#modalLoad').modal('hide');
+                    if (rs == SUCCESS) {
+                        swal("Thông báo", "Yêu cầu đã được chấp nhận thành công", "success")
+                            .then((sc) => {
+                                if (sc)
+                                    location.reload();
+                            });
+                    }
+                    else {
+                        swal({
+                            title: "Yêu cầu không thể chấp nhận !",
+                            icon: 'error'
+                        })
+                    }
+                },
+            })
+            SearchRequestWithDraw();
+
+        }
+    }
+    function DoneRequestWithDraw() {
+
+
+        if (localStorage.getItem("ListCus") == "" || localStorage.getItem("ListCus") == null) {
+            swal("Thông báo", "Vui lòng chọn yêu cầu rút tiền để hoàn thành", "warning");
+        }
+        else {
+            var lstIdShiper = localStorage.getItem("ListCus")
+
+            $.ajax({
+                url: "/WithdrawalRequest/AcceptWithDraw",
+                data: { lstIdShiper: lstIdShiper, type: 2 },
+                beforeSend: function () {
+                    $('#modalLoad').modal('show');
+                },
+                success: function (rs) {
+                    $('#modalLoad').modal('hide');
+                    if (rs == SUCCESS) {
+                        swal("Thông báo", "Yêu cầu đã được hoàn thành", "success")
+                            .then((sc) => {
+                                if (sc)
+                                    location.reload();
+                            });
+                    }
+                    else {
+                        swal({
+                            title: "Yêu cầu không thể hoàn thành !",
+                            icon: 'error'
+                        })
+                    }
+                },
+            })
+            SearchRequestWithDraw();
+
+        }
+    }
+    //enter then search:
+    $(window).keypress(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            SearchRequestWithDraw();
+        }
+    });
+
+</script>
+

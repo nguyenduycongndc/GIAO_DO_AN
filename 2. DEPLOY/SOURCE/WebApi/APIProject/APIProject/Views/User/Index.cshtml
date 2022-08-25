@@ -1,0 +1,182 @@
+﻿
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+@using APIProject.Resource
+@using Data.Utils
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 text-dark px-0">
+                <h4><i class="fa fa-user-secret" aria-hidden="true"></i> Tài khoản</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-2 sticky">
+    <div class="col-md-4 offset-md-0 col-sm-3 mt-1">
+        <input type="text" class="form-control " id="txt-key-search" placeholder="Tên hoặc số điện thoại tài khoản" />
+    </div>
+
+    <div class="mr-3 mt-1 ml-3">
+        <button class="btn btn-primary" onclick="searchUser()"><i class="fa fa-search"></i> @Resources.Search</button>
+    </div>
+    <div class="mr-3 mt-1">
+        <button type="button" class="btn btn-success" data-toggle="modal" style="width:110px" data-target="#add-user-account"><i class="fa fa-fw fa-plus"></i> Thêm </button>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12" id="tbl-user">
+        @{ Html.RenderAction("Search", "User", new { Page = 1 }); }
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="add-user-account" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color:#1E8449 ">
+                <h5 class="modal-title"> <i class="fa fa-plus-square" aria-hidden="true"></i>&nbsp Thêm tài khoản</h5>
+                <button type="button" class="close " style="color:red" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Tên người dùng</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-name" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Email</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-email" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Số điện thoại</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <input type="text" class="form-control" id="txt-phone" maxlength="10" />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Loại tài khoản</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12">
+                        <select class="form-control" id="typeUser">
+                            <option value="@SystemParam.TYPE_ROLE_ADMIN">Admin</option>
+                            <option value="@SystemParam.TYPE_ROLE_MANAGEMENT">Quản lý điểm giao dịch</option>
+                            <option value="@SystemParam.TYPE_ROLE_TELLERS">Giao dịch viên</option>
+                            <option value="@SystemParam.TYPE_ROLE_BUSINESS">Kinh Doanh</option>
+                            <option value="@SystemParam.TYPE_ROLE_MARKETING">Marketing</option>
+                            <option value="@SystemParam.TYPE_ROLE_ACCOUNTANT">Kế toán</option>
+                            <option value="@SystemParam.TYPE_ROLE_BUSINESS_MANAGEMENT">Quản lý Kinh doanh</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Mật khẩu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12 input-group" id="show_hide_password">
+                        <input class="form-control" type="password" id="txt-pass" placeholder="Mật khẩu !" />
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-3 col-xs-12 col-sm-12">
+                        <strong>Xác nhận mật khẩu</strong><span style="color:red"> *</span>
+                    </div>
+                    <div class="col-md-9 col-xs-12 col-sm-12 input-group" id="confirmPassword">
+                        <input class="form-control" type="password" id="txt-pass-confirm" placeholder="Xác nhận mật khẩu !" />
+                        <div class="input-group-addon">
+                            <a href=""><i class="fa fa-eye-slash btn btn-secondary" aria-hidden="true" style="font-size:24px"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2 float-right">
+                    <div class="modal-footer">
+                        <button type="button" style="width:100px" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+                        <button type="button" style="width:100px" id="btnadduser" class="btn btn-success" onclick="saveUser()">Thêm mới</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="divUserDetail">
+
+</div>
+<script>
+    $(document).ready(function () {
+        $(".sidebar-scroll").scrollTop(2000);
+    })
+    $(document).on('keypress', function (e) {
+        if (e.which == 13) {
+            searchUser();
+        }
+    });
+    // show mật khẩu
+    $(document).ready(function () {
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+
+    // show confirm mật khẩu
+    $(document).ready(function () {
+
+        $("#confirmPassword a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#confirmPassword input').attr("type") == "text") {
+                $('#confirmPassword input').attr('type', 'password');
+                $('#confirmPassword i').addClass("fa-eye-slash");
+                $('#confirmPassword i').removeClass("fa-eye");
+            } else if ($('#confirmPassword input').attr("type") == "password") {
+                $('#confirmPassword input').attr('type', 'text');
+                $('#confirmPassword i').removeClass("fa-eye-slash");
+                $('#confirmPassword i').addClass("fa-eye");
+            }
+        });
+    });
+
+    // tạo tài khoản
+    function isNumeric(s) {
+    var re = new RegExp("^[0-9,]+$");
+    return re.test(s);
+}
+    // validate Mật khẩu và confirm mật khẩu
+    @*function isCheck(s) {
+        var se = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+        return se.test(s);
+    }*@
+</script>

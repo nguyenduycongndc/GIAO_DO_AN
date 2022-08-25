@@ -1,0 +1,205 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using APIProject.Resource
+
+@*<div class="" >*@
+<div class="col-md-12 mt-3">
+    <div class="card">
+        <div class="card-header sticky">
+            <div class="row mb-2" id="View">
+                <div class="col col-md-3 offset-md-0 col-12" style="padding-right:0px">
+                    <input id="txtCateMa" type="text" class="form-control" placeholder="Mã, tên sản phẩm" />
+                </div>
+                <div class="col col-md-3 col-12">
+                    <select id="txtCateIsActive" class="form-control text-center" name="Trạng thái" placeholder="Trạng thái">
+                        <option value="">Trạng thái</option>
+                        <option value="1">Hoạt động</option>
+                        <option value="2">Ngừng hoạt động</option>
+                    </select>
+                </div>
+                <div class="col-md-3 col-12">
+                    <input type="text" class="form-control relative-icon-calendar date" id="txtCateFromdate" placeholder="Từ ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar date"></i>
+                </div>
+                <div class="col-md-3 col-12">
+                    <input type="text" class="form-control relative-icon-calendar date" id="txtCateTodate" placeholder="Đến ngày" />
+                    <i class="fa fa-calendar absolute-icon-calendar"></i>
+                </div>
+                <div class="col-md-4 col-12 offset-md-8 text-right mt-1">
+                    <button class="btn btn-primary" onclick="SearchServiceCategory();"><i class="fa fa-search"></i>Tìm kiếm</button>
+                    <button class="btn btn-dekko width-btn-create-batch showModalCreate" data-toggle="modal" data-target="#addProduceCategory" onclick="clearModalAdd();"><i class="fa fa-fw fa-plus-circle"></i> Thêm danh mục</button>
+
+
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12" id="ListCategory">
+                    @{
+                        Html.RenderAction("SearchServiceCategory", "ServiceCategory", new { page = 1,});
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!--modal addSCategory-->
+<div class="modal fade" id="addProduceCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title custom_title" id="exampleModalLabel">Thêm danh mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="fr_add_point">
+                <div class="modal-body" id="">
+                    <div class="row p-1">
+                        <div class="col col-md-4 text-left">
+                            <span>Ảnh</span>
+
+                        </div>
+                        <div class="col col-md-6">
+                            <div id="AddLogoPlace" class="mt-2">
+                                <i class="fa fa-camera" style="font-size:30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-4">
+                            <span>Mã danh mục:</span>
+                        </div>
+                        <div class="col-7">
+
+                            <input type="text" class="form-control" id="addCodeCategory" placeholder="Điền mã danh mục" />
+
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col col-4">
+                            <span>Tên danh mục:</span>
+                        </div>
+                        <div class="col-7">
+
+                            <input type="text" class="form-control" id="addNameCategory" placeholder="Điền tên danh mục" />
+
+                        </div>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-4">
+                            <span>Thứ tự hiển thị:</span>
+                        </div>
+                        <div class="col-7">
+
+                            <input type="number" class="form-control" id="addOrderCategory" placeholder="Thứ tự hiển thị..." />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer row">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                    <button type="button" onclick="AddServiceCategory()" id="btnSaveAdd" class="btn btn-success">Thêm</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<!--modal editProductCategory-->
+<div class="modal fade" id="editServicesCategory" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title custom_title" id="exampleModalLabel">Sửa danh mục</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="fr_add_point">
+                <div class="modal-body" id="">
+                    <input type="hidden" id="txtCateID" />
+                    <div class="row pb-3">
+                        <div class="col-md-4 col-sm-12 col-12">
+                            <span>Icon:</span>
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-12">
+                            <div id="editLogoPlace" class="mt-2">
+                                <img id="editImgLogoPlace" src="" data-value="" class="col-md-12 px-0 contentImg" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <input type="hidden" id="txt_id" />
+                        <div class="col-md-4 col-sm-12 col-12">
+                            <span>Tên danh mục:</span>
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-12">
+                            <input type="text" class="form-control" name="code" id="txtCateName">
+                        </div>
+                    </div>
+                    <div class="row pb-3">
+                        <div class="col-md-4 col-sm-12 col-12">
+                            <span>Thứ tự hiển thị:</span>
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-12">
+                            <input type="number" class="form-control" name="nameEN" id="txtCateOrderDisplay" placeholder="Thứ tự hiển thị">
+                        </div>
+                    </div>
+
+                    <div class="row pb-3">
+                        <div class="col-md-4 col-sm-12 col-12">
+                            <span>Trạng thái:</span>
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-12">
+                            <select id="txtCateIsActiveEdit" class="form-control text-center" name="Trạng thái">
+                                <option value="1">Hoạt động</option>
+                                <option value="2">Ngừng hoạt động</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer row">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Hủy</button>
+                        <button type="button" onclick="SaveServiceCategory();" class="btn btn-success">Lưu</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // tạo sự kiện edit img
+    $("#AddLogoPlace").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+            $("#AddLogoPlace").html('<img id="add-img" data-value="' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+        }
+        fider.popup();
+    });
+   
+    $("#editLogoPlace").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        fider.selectActionFunction = function (fileUrl) {
+            $("#editLogoPlace ").empty();
+            var value = fileUrl.replace(location.origin, '');
+            $("#editLogoPlace").html('<img id="editImgLogoPlace" data-value="' + value + '" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+        }
+        fider.popup();
+    });
+
+
+</script>
+

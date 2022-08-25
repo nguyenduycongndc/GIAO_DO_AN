@@ -1,0 +1,368 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<OrderServiceModel>
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+
+    <thead class="text-center text-white align-center bg-thead">
+
+    <thead class="text-center text-white bg-thead">
+
+        <tr>
+            <th>@Resources.No</th>
+            <th>
+                @Resources.Code
+            </th>
+            <th class="wrap">@Resources.CustomerName</th>
+            <th class="wrap">Car</th>
+            <th>Date</th>
+            <th class="widthCreatedDate">Address</th>
+            <th>Washer name</th>
+            <th>Package</th>
+            <th>Base price</th>
+            <th>Discount</th>
+            <th>Total price</th>
+            <th>ExportVAT</th>
+            <th>Payment type</th>
+            <th>Function</th>
+            <th><input type="checkbox" id="check-all-invoice" onchange="checkallInvoice();" /></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="20">@Resources.NoData.</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var item in Model)
+                {
+    <tr>
+        <td>@stt</td>
+        <td class="InvoiceCode">@item.Code</td>
+        <td class="InvoiceCusName">@item.CustomerName</td>
+        <td class="InvoiceCar">@item.CarDetail</td>
+        <td class="InvoiceDate">@item.DateStr</td>
+        <td>@item.Address</td>
+        <td class="InvoiceWsName">@item.WasherName</td>
+        <td class="InvoicePackage">@item.PackageName</td>
+        <td>@item.PriceStr</td>
+        <td>@item.DiscountStr</td>
+        <td class="InvoicePrice">@item.TotalPriceStr</td>
+        @if (item.IsExportVAT.HasValue && item.IsExportVAT.Value.Equals(1))
+        {
+            <td>Export</td>
+        }
+        else if (item.IsExportVAT.HasValue && item.IsExportVAT.Value.Equals(2))
+        {
+            <td>Exported</td>
+        }
+        else
+        {
+            <td></td>
+        }
+        @if (item.PaymentType.Equals(Data.Utils.Constant.PAYMENT_TYPE_VNP))
+        {
+            <td class="InvoiceType">VNPay</td>
+        }
+        else if (item.PaymentType.Equals(Data.Utils.Constant.PAYMENT_TYPE_CASH))
+        {
+            <td class="InvoiceType">Cash</td>
+        }
+        else
+        {
+            <td class="InvoiceType">Momo</td>
+        }
+        <td>
+            <a href="javascript:void(0);"  title="@Resources.Detail." class="cursor-pointer">
+                <i class="btnEdit glyphicon glyphicon-upload" data-toggle="modal" data-target="#viewModal" onclick="GetInvoiceDetail(@item.ID);"></i>
+            </a>
+            @*<a href="/Invoice/GetPDF?Id=@item.ID" data-toggle="tooltip" data-placement="top" style="padding-left:3px" title="Print" class="cursor-pointer">
+                <i class="fa fa-print font-20" aria-hidden="true" data-toggle="modal" data-target="" onclick=""></i>
+            </a>*@
+        </td>
+        <td class="idinputcheck"><input type="checkbox" class="form-check checkbox checkboxcus" data-id="@item.ID"  /></td>
+    </tr>
+                    stt++;
+                }
+            }
+        }
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("Search", "Invoice", new { Page = page, searchKey = ViewBag.CodeOrName, PaymentType = ViewBag.PaymentType, ServiceID = ViewBag.ServiceId, AgentID = ViewBag.AgentId, FromDateStr = ViewBag.FromDate, ToDateStr = ViewBag.ToDate, IsExport= ViewBag.IsExport }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListInvoice" })
+        )
+    </div>
+</div>
+<div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width:540px !important;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"> <strong>Invoice Information</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="frmInvoiceInformation" method="get">
+                <div class="modal-body text-left ml-4 mr-4">
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Invoice Code:</span></div>
+                        <div class="col-md-7" style="color: blue" id="invoiceCode"><span></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Customer</span></div>
+                        <div class="col-md-7"><span id="customerName"></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Phone number</span></div>
+                        <div class="col-md-7"><span id="phoneDetail">0965520566</span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Address</span></div>
+                        <div class="col-md-7"><span id="addressDetail">30 Nguyễn Trãi Thanh Xuân, Hà Nội</span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Date</span></div>
+                        <div class="col-md-7"><span id="dateDetail">9:25 25/03/2020</span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Vehicle Information</span></div>
+                        <div class="col-md-7"><span id="licencePlate"></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Type payment</span></div>
+                        <div class="col-md-7"><span id="paymentDetail"></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Washer</span></div>
+                        <div class="col-md-7"><span id="washerCode">CM202003-01</span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Execution Time</span></div>
+                        <div class="col-md-7"><span id="execution"></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Promocode</span></div>
+                        <div class="col-md-7"><span id="promocode"></span></div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-5"><span>Use point</span></div>
+                        <div class="col-md-7"><span id="usePoint"></span></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <table class="table-bordered" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Service Package</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listPackage">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-6 offset-md-6">
+                            <div class="row">
+                                <div class="col-md-5"><span>Price:</span></div>
+                                <div class="col-md-7"><span><strong id="priceDetail"></strong></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5"><span>Discount</span></div>
+                                <div class="col-md-7">
+                                    <span><strong id="discount"></strong></span><br />
+                                    @*<span>(-100.000VNĐ)</span>*@
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5"><span>Total:</span></div>
+                                <div class="col-md-7"><span style="color:red" id="total"><strong></strong></span></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer text-center">
+                        <div class="container-fluid">
+                            <button type="button" class="btn btn-danger px-5 mr-3" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="mdGetVAT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width:540px !important;">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center border-bottom-0">
+                <h5 class="modal-title color-red text-center" id="exampleModalLabel"><strong>HÓA ĐƠN<br /> GIÁ TRỊ GIA TĂNG</strong></h5><br />
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>*@
+            </div>
+            <div class="text-center">
+                <span>Ngày @DateTime.Now.Day tháng @DateTime.Now.Month năm @DateTime.Now.Year</span>
+            </div>
+            <form id="frmInvoiceInformation" method="get">
+                <div class="modal-body text-left ml-4 mr-4">
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <span class="inlineblock">Tên văn phòng:</span>
+                            <span class="inlineblock" id="OFficeName">.....................................</span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <span class="inlineblock">Mã số thuế:</span>
+                            <span class="inlineblock" id="OfficeVAT"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <span class="inlineblock">Địa chỉ:</span>
+                            <span class="inlineblock" id="OfficeAddress"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <span class="inlineblock">Tên khách hàng:</span>
+                            <span class="inlineblock" id="CustomerName"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <span class="inlineblock">Kiểu thanh toán:</span>
+                            <span class="inlineblock" id="PaymentType"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <table class="table-bordered" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th>Tên gói</th>
+                                        <th>Số lượng</th>
+                                        <th>Đơn vị tính</th>
+                                        <th>Đơn giá</th>
+                                        <th>Thành tiền</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listServiceVAT">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    @*<div class="row mt-4">
+                            <div class="col-md-6 offset-md-6">
+                                <div class="row">
+                                    <div class="col-md-5"><span>Price:</span></div>
+                                    <div class="col-md-7"><span><strong id="priceDetail"></strong></span></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5"><span>Discount</span></div>
+                                    <div class="col-md-7">
+                                        <span><strong id="discount"></strong></span><br />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5"><span>Total:</span></div>
+                                    <div class="col-md-7"><span style="color:red" id="total"><strong></strong></span></div>
+                                </div>
+                            </div>
+
+                        </div>*@
+
+                    <div class="modal-footer text-center">
+                        <div class="container-fluid">
+                            <button type="button" class="btn btn-danger px-5 mr-3" data-dismiss="modal">Close</button>
+                            <button type="button" id="exportPDF" class="btn btn-success px-5">Export PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#exportPDF').click(function () {
+        //return html2canvas($('#viewModal'), {
+        //    background: "#ffffff",
+        //    onrendered: function (canvas) {
+        //        var myImage = canvas.toDataURL("image/jpeg,4.0");
+        //        var pdf = new jsPDF('p', 'mm', 'a4');
+        //        // Adjust width and height
+        //        //var imgWidth = (canvas.width * 40) / 240;
+        //        //var imgHeight = (canvas.height * 40) / 240;
+        //        var imgWidth = pdf.internal.pageSize.getWidth();
+        //        var imgWidth = pdf.internal.pageSize.getHeight();
+        //        // jspdf changes
+        //        pdf.addImage(myImage, 'JPEG', 0, 0, imgWidth, imgHeight); // 2: 19
+        //        pdf.save('Invoice.pdf');
+        //    }
+        //});
+        var HTML_Width = $("#mdGetVAT").width();
+        var HTML_Height = $("#mdGetVAT").height();
+        var top_left_margin = 15;
+        var PDF_Width = HTML_Width + (top_left_margin * 2);
+        var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+        var canvas_image_width = HTML_Width;
+        var canvas_image_height = HTML_Height;
+
+        var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+        html2canvas($("#mdGetVAT")[0], { allowTaint: true }).then(function (canvas) {
+            canvas.getContext('2d');
+
+            console.log(canvas.height + "  " + canvas.width);
+
+
+            var imgData = canvas.toDataURL("image/jpeg", 1.0);
+            var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+            pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+            for (var i = 1; i <= totalPDFPages; i++) {
+                pdf.addPage(PDF_Width, PDF_Height);
+                pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+            }
+
+            pdf.save("invoice.pdf");
+        });
+        //doc.fromHTML($('#viewModal').html(), 15, 15, {
+        //    'width': 170,
+        //    'elementHandlers': specialElementHandlers
+        //});
+        //doc.save('sample-file.pdf');
+    });
+    function checkallInvoice() {
+        if ($("#check-all-invoice").prop("checked") == true) {
+            $.each($(".checkboxcus"), function () {
+                $(this).prop("checked", true);
+            })
+        }
+        else {
+            $.each($(".checkboxcus"), function () {
+                $(this).prop("checked", false);
+            })
+        }
+    };
+
+</script>
+

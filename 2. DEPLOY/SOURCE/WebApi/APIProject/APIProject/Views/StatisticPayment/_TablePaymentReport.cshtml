@@ -1,0 +1,78 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<StatisticPaymentOuputModel>
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th class="width-stt">STT</th>
+            <th>Số hóa đơn</th>
+            <th>Khách hàng</th>
+            <th>Loại hình</th>
+            <th>Thời gian đặt</th>
+            <th>Tổng tiền</th>
+            <th>Hình thức thanh toán</th>
+            <th>Tài xế</th>
+            <th>Hoa hồng</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+
+        @{ if (Model.Count() == 0)
+                        {
+            <tr>
+                <td colspan="9">Không có dữ liệu</td>
+            </tr> }
+                        else
+                        {
+                            int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                            foreach (var data in Model)
+                            {
+    <tr>
+        <td>@stt</td>
+        <td>@data.ID</td>
+        <td>@data.cusName</td>
+        @{ switch (data.bookingType)
+            {
+                case SystemParam.SHIP_DRIVER:
+    <td>@SystemParam.SHIP_DRIVER_STR</td> break;
+                            case SystemParam.SHIP_PACKAGE:
+    <td>@SystemParam.SHIP_PACKAGE_STR</td> break;
+                            case SystemParam.SHIP_FOOD:
+    <td>@SystemParam.SHIP_FOOD_STR</td> break;
+                            default:
+    <td></td> break;
+                        } }
+        <td>@data.bookingDate.ToString(SystemParam.CONVERT_DATETIME_HAVE_HOUR)</td>
+        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.totalPrice))</td>
+        @{ if (data.paymentType.Equals(SystemParam.PAYMENT_TYPE_ON_DELIVERY))
+            {
+    <td>@SystemParam.PAYMENT_TYPE_ON_DELIVERY_STR</td>
+ }
+else
+{
+    <td>@SystemParam.PAYMENT_TYPE_VN_PAY_STR</td>
+} }
+        <td>@data.shiperName</td>
+
+        <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.shiperCommission))</td>
+    </tr> stt++;
+                            }
+                        } }
+
+    </tbody>
+</table>
+<input type="hidden" id="txtPageCurrent" value="@ViewBag.PageCurrent" class="txtPageCurrent" />
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(Model, Page => Url.Action("SearchPaymentReport", new { Page, searchKey = ViewBag.searchKey, bookingType = ViewBag.bookingType, paymentType = ViewBag.paymentType,provinceID = ViewBag.provinceID,districtID=ViewBag.districtID , fromDate = ViewBag.fromDate, toDate = ViewBag.toDate }),
+              PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions()
+              {
+                  HttpMethod = "GET",
+                  UpdateTargetId = "tablePaymentReport",
+                  LoadingElementId = "modalLoad"
+              })
+              )
+    </div>
+</div>

@@ -1,0 +1,73 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@model PagedList.IPagedList<VehicleTypeModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+    <thead class="text-center text-white bg-thead">
+        <tr>
+            <th>STT</th>
+            <th>Loại xe</th>
+            <th>Trạng Thái</th>
+            <th>Thứ tự ưu tiên</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count == 0)
+            {
+                <tr>
+                    <td colspan="5">
+                        Không có dữ liệu!
+                    </td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@item.Name</td>
+                        @{
+                            if (item.IsActive == 1)
+                            {
+                                <td>Hoạt động</td>
+                            }
+                            else
+                            {
+                                <td>Ngừng hoạt động</td>
+
+                            }
+                        }
+                        <td>@item.OrderIndex</td>
+                        <td class="width2btn">
+                            <a title="Sửa" class="cursor-pointer" onclick="EditVehicleType(@item.ID);">
+                                <i class="btnEdit fa fa-fw fa-edit"></i>
+                            </a>
+                            <a title="Xóa" class="cursor-pointer" onclick="DeleteVehicleType(@item.ID)">
+                                <i class="btnDelete fa fa-fw fa-trash-o"></i>
+
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+
+
+    </tbody>
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchVehicleType", "Config", new { page, vehicleName = ViewBag.vehicleName}),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListVehicleType" })
+        )
+    </div>
+</div>

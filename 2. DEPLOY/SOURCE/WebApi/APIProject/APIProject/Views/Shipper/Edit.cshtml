@@ -1,0 +1,426 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.DB
+@using PagedList.Mvc
+@model ShipperDetailOutputModelWeb
+@{ ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="shipper" style="font-family:'Open Sans'">
+    <div class="row ml-1">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row">
+                    <div class="col-md-10 col-sm-9 col-xs-8 col-lg-10">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px"> Sửa tài xế</div>
+                    </div>
+                    <div class="col-md-2 col-sm-2 col-xs-3 col-lg-2 mt-2">
+                        <div style="padding-top: 10px">
+                            <button class="btn btn-primary" type="button" style="width:100px;" onclick="SaveEditShiperInfo()">Lưu</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <form id="frm-edit-shiper-info" enctype="multipart/form-data" class="mw-100 w-100">
+            <div class="col-md-12" style="margin-top: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div class="col-md-12">
+                        <div class="row mb-2 mt-2">
+                            <div class="col-md-12">
+                                <div style="font-weight: 600; font-size: 17px;"> Thông tin tài xế</div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-2">
+                                <label for="fname" style="margin-top: 7px; margin-right: 20px">Ảnh đại diện <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                <input type="hidden" name="ID" value="@Model.ID" />
+                                <input id="avatar" type="hidden" name="Avatar" value="@Model.Avatar" />
+                            </div>
+                            <div class="col-md-10">
+                                <div id="add-avatar" class="mt-2">
+                                    <img src="@Model.Avatar" class="rounded col-3 card-img-shiper" alt="Alternate Text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Họ và tên <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input value="@Model.Name" name="Name" type="text" id="txt-name" class="form-control" placeholder="Họ và tên" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Ngày sinh</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input value="@Model.DOB" type="text" class="form-control relative-icon-calendar date" name="DOB" placeholder="Ngày sinh" />
+                                        <i class="fa fa-calendar absolute-icon-calendar"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">CMND/CCCD <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input value="@Model.Identify" type="text" name="Identify" class="form-control" id="card-id" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Giới tính</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select name="Sex" class="form-control" style="height: 38px !important">
+                                            <option @(Model.Sex.Equals(SystemParam.MALE) ? Html.Raw("selected") : Html.Raw("")) value="@SystemParam.MALE">Nam</option>
+                                            <option @(Model.Sex.Equals(SystemParam.FEMALE) ? Html.Raw("selected") : Html.Raw("")) value="@SystemParam.FEMALE">Nữ</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Số điện thoại <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input value="@Model.Phone" type="text" id="txt-phone" name="Phone" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Email <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <input value="@Model.Email" type="text" id="txt-email" name="Email" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3 mt-3">
+                            <div class="col-md-4 col-12">
+                                <div class="row">
+                                    <label class="col-6">Đánh dấu là shiper nội bộ:</label>
+                                    <input class="form-control col-1" type="checkbox" id="val-is-internal" @(Model.IsInternal.Equals(SystemParam.ACTIVE) ? Html.Raw("checked") : Html.Raw("")) style="height:20px" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-3">
+                                        <label for="fname" style="margin-top: 7px">Loại tài xế</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                        <select name="IsVip" id="IsVip" class="form-control" style="height: 38px !important">
+                                            <option @(Model.IsVip.Equals(SystemParam.SHIPPER_NORMAL) ? Html.Raw("selected") : Html.Raw("")) value="@SystemParam.SHIPPER_NORMAL">Thường</option>
+                                            <option @(Model.IsVip.Equals(SystemParam.SHIPPER_VIP) ? Html.Raw("selected") : Html.Raw("")) value="@SystemParam.SHIPPER_VIP">VIP</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2 mt-2">
+                            <div class="col-md-12">
+                                <div style="font-weight: 600; font-size: 17px;"> Địa chỉ</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" style="margin-bottom: 20px">
+                                    <div class="col-md-2">
+                                        <label for="fname" style="margin-top: 7px">Địa chỉ cụ thể</label>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" id="txt-address" name="Address" rows="3">@Model.Address</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float: right" class="col-md-12 col-sm-12 col-xs-12 col-lg-6">
+                <div style="margin-top: 20px; margin-bottom: 20px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Thông tin xe</div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5" style="margin-right: 20px">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Loại xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <select class="form-control" name="VehicleTypeID" id="val-verhicle-id">
+                                                    @foreach (Data.DB.VehicleType dt in ViewBag.VehicleType)
+                                                    {
+                                                        <option @(dt.ID.Equals(Model.VehicleTypeID) ? Html.Raw("selected") : Html.Raw("")) value="@dt.ID">@dt.Name</option>
+}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Dòng xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input value="@Model.CarBrand" id="txt-car-brand" name="CarBrand" class="form-control" placeholder="Dòng xe">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-5" style="margin-right: 20px">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Hãng xe <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input value="@Model.CarModel" id="txt-car-model" name="CarModel" class="form-control" placeholder="Hãng xe" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-5">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <label for="fname" style="margin-top: 7px">Biển số <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                                <input value="@Model.LicensePlate" class="form-control" name="LicensePlate" id="txt-number-plate" placeholder="Biển số" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; margin-bottom: 40px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-6 col-12" style="font-weight: 600; font-size: 17px; padding: 15px 0px">
+                                        Ảnh CMND/ CCCD <span class="text-danger text-bold" style="font-size:18px">*</span>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <i class="fa fa-camera mt-2" style="font-size:30px;" id="add-card-image-shiper"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row" id="div-add-card-image-shiper">
+                                    @{ foreach (var dt in Model.lstImgIdentify)
+                                        {
+                                            <div class="col-md-6 col-12 mt-2 img">
+                                                <i class="fa fa-times-circle text-danger float-right" onclick="removeImg($(this))"></i>
+                                                <img class="rounded col-12 card-img-shiper" data-value="@dt" src="@dt" alt="your image" />
+                                            </div> } }
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="float: left" class="col-md-12 col-sm-12 col-xs-12 col-lg-6">
+                <div style="margin-top: 20px; margin-bottom: 20px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Hoa hồng</div>
+                            </div>
+
+                            <div class="row" style="padding-bottom:5%">
+                                <div class="col-md-4">
+                                    <label for="fname" style="margin-top: 7px">Mức hoa hồng <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                </div>
+                                <div class="col-md-7">
+                                    <select class="form-control" name="ComissionID" id="val-id-commission">
+                                        @foreach (Data.DB.ConfigCommission dt in ViewBag.Conf)
+                                        {
+                                            <option @(dt.ID.Equals(Model.ComissionID) ? Html.Raw("selected") : Html.Raw("")) value="@dt.ID">@dt.Name</option>
+}
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; margin-bottom: 40px">
+                    <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                        <div style=" margin-left: 20px">
+                            <div>
+                                <div style="font-weight: 600; font-size: 17px; padding: 15px 0px">Khu vực hoạt động</div>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <label for="fname" style="margin-top: 7px">Khu vực <span class="text-danger text-bold" style="font-size:18px">*</span></label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="val-area">
+                                            <option selected disabled hidden>--Quận/Huyện--</option>
+                                            @foreach (Data.DB.Area obj in ViewBag.Area)
+                                            {
+                                                <option value="@obj.ID">
+                                                    @obj.District.Name
+                                                </option>
+}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <button type="button" class="btn btn-success" style="margin-bottom: 20px" onclick="LoadShipperArea()">Add</button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                            <thead class="text-center text-white align-center bg-thead">
+                                            <thead class="text-center text-white bg-thead">
+                                                <tr>
+                                                    <th scope="col">Quận / Huyện</th>
+                                                    <th scope="col"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="shiper-area-table">
+                                                @foreach (var i in Model.LstAreaShiper)
+                                                {
+                                                    <tr class="val-district-id" data-id="@i.ID">
+                                                        @foreach (Data.DB.Area obj in ViewBag.Area)
+                                                        {
+                                                            if (obj.ID == i.ID)
+                                                            {
+                                                                <td>@obj.District.Name</td>
+}
+                                                        }
+                                                        <td>
+                                                            <a onclick="deleteRow(this)" style="color: red"><i class="fa fa-fw fa-trash"></i></a>
+                                                        </td>
+                                                    </tr>
+}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#tabShipper').addClass('active');
+        $('.fa-times-circle').hide();
+        $('.img').hover(function () {
+            $(this).find(".fa-times-circle").show()
+        }, function () {
+            $(this).find(".fa-times-circle").hide();
+        })
+    })
+    // tạo sự kiện edit img
+    $("#add-avatar").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        //
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+            $("#add-avatar").html('<img style="width: 20%; height:20%" src="' + fileUrl + '" class="col-md-12 px-0 border-dekko imgs" alt="your image" />');
+            $('#avatar').val(value);
+        }
+        fider.popup();
+    });
+
+    $("#add-card-image-shiper").off('click').on('click', function (e) {
+        e.preventDefault();
+        var fider = new CKFinder(); // tạo kết nối với finder
+        //
+        fider.selectActionFunction = function (fileUrl) {
+            var value = fileUrl.replace(location.origin, '');
+
+            $("#div-add-card-image-shiper").append('<div class="col-md-6 col-12 mt-2 img"> <i class="fa fa-times-circle text-danger float-right" onclick="removeImg($(this))"></i><img class="rounded col-12 card-img-shiper"  data-value="' + value + '" src="' + fileUrl + '" alt="your image" /></div>');
+            $('.fa-times-circle').hide();
+            $('.img').hover(function () {
+                $(this).find(".fa-times-circle").show()
+            }, function () {
+                $(this).find(".fa-times-circle").hide();
+            })
+        }
+        fider.popup();
+    });
+
+    function removeImg(img) {
+        img.closest(".img").remove();
+    }
+
+    //$("#txtEditPoint").maskMoney({ precision: 0 });
+    function LoadShipperArea() {
+        var districID = $("#val-area").val();
+        var districtName = $("#val-area :selected").text();
+        if (districID == null) {
+            swal({
+                title: "Vui lòng chọn lại khu vực!",
+                icon: 'warning'
+            })
+            return;
+        }
+        var ckeckExistingArea = 0
+        $.each($('.val-district-id'), function () {
+            if ($(this).attr('data-id') == districID) {
+                ckeckExistingArea = 1;
+            }
+        })
+        if (ckeckExistingArea > 0) {
+            swal({
+                title: "Khu vực đã được chọn trước đó!",
+                icon: 'warning'
+            })
+            return;
+        }
+        var row =
+            '<tr class="val-district-id" data-id="' + districID + '">' +
+            '<td>' + districtName + '</td>' +
+            '<td>' +
+            '<a onclick="deleteRow(this)" style="color: red"><i class="fa fa-fw fa-trash"></i></a>' +
+            '</td>' +
+            '</tr >';
+        $("#shiper-area-table").append(row);
+    }
+
+    function deleteRow(del) {
+        $(del).closest('tr').remove();
+    }
+
+</script>
+

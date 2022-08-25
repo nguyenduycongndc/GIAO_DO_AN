@@ -1,0 +1,81 @@
+﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model IPagedList<ServiceComboModel>
+
+<table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+
+    <thead class="text-center text-white align-center bg-thead">
+
+    <thead class="text-center text-white bg-thead">
+
+        <tr>
+            <th>@Resources.No</th>
+            @*<th>
+                    Combo Code
+                </th>*@
+            <th class="wrap">Combo Name</th>
+            <th class="wrap">Package Service</th>
+            <th>Additional Service</th>
+            <th class="widthCreatedDate">Status</th>
+            <th class="wrap">Created Date</th>
+            <th>Function</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        @{
+            if (Model.Count() <= 0)
+            {
+                <tr>
+                    <td colspan="6">No data</td>
+                </tr>
+            }
+            else
+            {
+                int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                foreach (var dt in Model)
+                {
+                    <tr>
+                        <td>@stt</td>
+                        <td>@dt.Name</td>
+                        <td>@dt.Service</td>
+                        <td>@(dt.AdditionServiceName==null||dt.AdditionServiceName.Length==0?"None":dt.AdditionServiceName)</td>
+                        @{
+                            if (dt.IsActive == 1)
+                            {
+                                <td>Active</td>
+                            }
+                            else
+                            {
+                                <td>Inactive</td>
+                            }
+                        }
+                        <td>@dt.CreateDateStr</td>
+                        <td>
+                            <a href="javascript:void(0);"  title="@Resources.Edit." class="cursor-pointer">
+                                <i class="btnEdit glyphicon glyphicon-upload" onclick="getComboDetail(@dt.ID)"></i>
+                            </a>
+                            <a href="javascript:void(0);"  title="@Resources.Delete." class="cursor-pointer">
+                                <i class="btnDelete fa fa-fw fa-trash-o" onclick="DeleteCombo(@dt.ID);"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    stt++;
+                }
+            }
+        }
+    </tbody>
+
+</table>
+<div class="col-md-12">
+    <div class="row float-right">
+        @*phân trang*@
+        @Html.PagedListPager(
+        Model,
+        page => Url.Action("SearchCombo", "Combo", new { page = page, Searchkey = ViewBag.Searchkey, FromDate = ViewBag.FromDate, ToDate = ViewBag.ToDate }),
+        PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListCombo" })
+        )
+    </div>
+</div>
+

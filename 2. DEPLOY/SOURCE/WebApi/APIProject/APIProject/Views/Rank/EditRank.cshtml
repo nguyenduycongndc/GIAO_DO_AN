@@ -1,0 +1,418 @@
+﻿
+@{
+    ViewBag.Title = "EditRank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using APIProject.Resource
+@using Data.Model.APIWeb
+@model RankingDetailViewModel
+<div class="col-md-12">
+    <div class="breadcrumb-holder">
+        <div class="row mb-3 mt-3">
+            <div class="col-md-10 col-sm-9 col-8 text-dark px-0">
+                <h4 class="custom_title">Edit Rank</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<fieldset class="scheduler-border" style="background-color:#FFF;">
+    <legend class="scheduler-border">Information</legend>
+    <div class="row mt-2">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Name</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="nameRank" value="@Model.Name" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>To point</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control number " id="toPointRank" data-id="@(Model.MaxPoint.HasValue?1:0)" value="@Model.MaxPointStr" />
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Title</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control  " id="titleEn" value="@Model.TitleEn" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Other Gift</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" id="otherGiftRank" value="@Model.ortherGift" />
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Status</span>
+                </div>
+                <div class="col-md-9">
+                    <select class="form-control" id="statusRank" disabled>
+                        <option value="1">Active</option>
+                        <option value="0">Deactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Level</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control" value="@Model.Level" disabled />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <span>Tiêu đề</span>
+                </div>
+                <div class="col-md-9">
+                    <input type="text" class="form-control  " id="titleVi" value="@Model.TitleVi" />
+                </div>
+            </div>
+        </div>
+  
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Incentives</label>
+            <textarea name="editor" class="form-control mb-3" id="txtDescriptionEN">@Model.DescriptionEN</textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+        <div class="col-md-6 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Ưu đãi</label>
+            <textarea name="editor2" class="form-control mb-3" id="txtDescriptionVI">@Model.DescriptionVI</textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <span><b>Benefit</b></span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <span><b>Get point when pay by cash</b></span>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <input class="form-control" type="number" id="profitCash" value="@Model.profitCash" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <span><b>Rank up gift</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Get point</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" class="form-control number" id="pointBonus" value="@Model.PointBonusStr" />
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Free service</span>
+                </div>
+                <div class="col-md-7 position-relative">
+                    <select class="form-control" id="selectServiceBonus">
+                        @{
+
+                            foreach (var item in ViewBag.Service)
+                            {
+                                <option value="@item.ID">@item.NameEN</option>
+                            }
+                        }
+
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-2 col-md-10">
+                    <table class="text-center table-responsive-md" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th width="30%"><b>Service</b></th>
+                                <th width="30%"><b>Quantity</b></th>
+                                <th width="30%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lsServiceBonus">
+                            @{
+                                foreach (var item in Model.lsServiceBonus)
+                                {
+                                    <tr id="@item.ServiceID">
+                                        <td>@item.Name</td>
+                                        <td class="pb-2"><input type="number" style="width:50%;" value="@item.Qty" /></td>
+                                        <td onclick="DeleteServiceBN($(this));"><i class="fa fa-times font-20 color-red"></i></td>
+                                    </tr>
+                                }
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <span><b>Get point when pay by VNpay</b></span>
+                </div>
+                <div class="col-md-4 position-relative">
+                    <input class="form-control" type="number" id="profitVnpay" value="@Model.profitVnpay" />
+                    <span class="position-absolute font-15" style="right: 22px;top:8px;">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12 col-xs-12">
+                    <span><b>Birthday gift</b></span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span> Birthday Deal </span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" class="form-control number" id="birthdayProfit" value="@Model.BirthDayProfit" />
+                    <span class="inside_input">%</span>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-1 col-md-4">
+                    <span>Free service</span>
+                </div>
+                <div class="col-md-7 position-relative">
+                    <select class="form-control" id="selectServiceBirthday">
+                        @{
+
+                            foreach (var item in ViewBag.Service)
+                            {
+                              <option value="@item.ID">@item.NameEN</option>
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="offset-md-2 col-md-10">
+                    <table class="text-center table-responsive-md " style="width:100%">
+                        <thead>
+                            <tr>
+                                <th width="30%"><b>Service</b></th>
+                                <th width="30%"><b>Quantity</b></th>
+                                <th width="30%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="lsServiceBirthDay">
+                            @{
+                                foreach (var item in Model.lsServiceBirthDay)
+                                {
+                                    <tr id="@item.ServiceID">
+                                        <td>@item.Name</td>
+                                        <td class="pb-2"><input type="number" style="width:50%;" value="@item.Qty" /></td>
+                                        <td onclick="DeleteServiceBD($(this));"><i class="fa fa-times font-20 color-red"></i></td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-md-6 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Policy</label>
+            <textarea name="editor1" class="form-control mb-3" id="txtPolicyEN">@Model.PolicyEN</textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+        <div class="col-md-6 col-sm-12 col-12">
+            <label style="padding: 0 0 8px 0;">Chính sách</label>
+            <textarea name="editor3" class="form-control mb-3" id="txtPolicyVN">@Model.PolicyVN</textarea>
+            <p id="exContent" style="color:red"></p>
+        </div>
+    </div>
+</fieldset>
+<div class="d-flex justify-content-center mb-3">
+    <button class="btn btn-success plr-25 mr-3" onclick="SaveEditRank(@Model.ID)">Save</button>
+    <button class="btn btn-danger plr-25" onclick="window.location='/Rank/Index'">Back</button>
+</div>
+<script>
+    var listBD = [];
+    var listIdBirthday = [];
+    $(document).ready(function () {
+        //CKEDITOR.replace('editor', {
+        //    height: 300
+        //});
+        $("#statusRank").val(@Model.Status);
+        CKEDITOR.replace('editor', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('editor1', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('editor2', {
+            height: 300,
+            disableObjectResizing: true
+        });
+        CKEDITOR.replace('editor3', {
+            height: 300,
+            disableObjectResizing: true
+        });
+
+        CKEDITOR.on('dialogDefinition', function (ev) {
+            var dialogName = ev.data.name;
+            var dialogDefinition = ev.data.definition;
+            //var editorO = ev.data.definition.dialog.getParentEditor();
+
+            if (dialogName == 'image' || dialogName == 'image2') {
+                var infoTab = dialogDefinition.getContents('info');
+
+                if (dialogName == 'image') {
+                    infoTab.remove('txtHeight');
+                    infoTab.remove('txtWidth');
+                    infoTab.remove('ratioLock');
+                }
+                else {
+                    infoTab.remove('height');
+                    infoTab.remove('width');
+                    infoTab.remove('lock');
+                }
+            }
+        });
+
+        $.each($("#lsServiceBirthDay").children("tr"), function () {
+            listBD.push($(this).attr("id"));
+        });
+
+
+        $("#selectServiceBirthday").change(function () {
+            if (!listBD.includes($(this).val())) {
+                listBD.push($(this).val())
+                var Id = $(this).val();
+                console.log(listBD);
+                var name = $("#selectServiceBirthday option:selected").text();
+                $("#lsServiceBirthDay").append('<tr id="' + Id + '"><td>' + name +'</td><td class="pb-2"><input type="number" style="width:50%;" value="1"  /></td><td onclick="DeleteServiceBD($(this));"><i class="fa fa-times font-20 color-red"></i></td></tr>');
+            }
+        })
+        $("#selectServiceBonus").change(function () {
+            if (!listIdBirthday.includes($(this).val())) {
+                listIdBirthday.push($(this).val())
+                var Id = $(this).val();
+                var name = $("#selectServiceBonus option:selected").text();
+                $("#lsServiceBonus").append('<tr id="' + Id + '"><td>' + name + '</td><td class="pb-2"><input type="number" style="width:50%;" value="1" /></td><td onclick="DeleteServiceBN($(this));"><i class="fa fa-times font-20 color-red"></i></td></tr>');
+            }
+        })
+
+        $("#nameRank").keyup(function () {
+
+            if ($(this).val().trim().length <= 0) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        $("#toPointRank").keyup(function () {
+
+            if ($(this).val().trim().length <= 0 || $(this).val()<=0) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        $("#profitRank").keyup(function () {
+
+            if ($(this).val().trim().length <= 0||$(this).val() <= 0 || $(this).val() >100) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        $("#profitCash").keyup(function () {
+
+            if ($(this).val().trim().length <= 0 || $(this).val() <= 0 || $(this).val() > 100) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        $("#profitVnpay").keyup(function () {
+
+            if ($(this).val().trim().length <= 0 || $(this).val() <= 0 || $(this).val() > 100) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        $("#pointBonus").keyup(function () {
+
+            if ($(this).val().trim().length <= 0 ) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+        //$("#otherGiftRank").keyup(function () {
+
+        //    if ($(this).val().trim().length <= 0) {
+        //        $(this).addClass("errorboder");
+        //    }
+        //    else {
+        //        $(this).removeClass("errorboder");
+        //    }
+        //});
+        $("#birthdayProfit").keyup(function () {
+
+            if ($(this).val().trim().length <= 0 || $(this).val().replace(",", "") <= 100) {
+                $(this).addClass("errorboder");
+            }
+            else {
+                $(this).removeClass("errorboder");
+            }
+        });
+
+
+    });
+    function DeleteServiceBD($event) {
+        $event.parent("tr").remove();
+        var index = listBD.indexOf($event.parent("tr").attr("id"));
+        listBD.splice(index,1);
+    }
+    function DeleteServiceBN($event) {
+        $event.parent("tr").remove();
+        var index = listBD.indexOf($event.parent("tr").attr("id"));
+        listIdBirthday.splice(index, 1);
+    }
+
+
+</script>
+

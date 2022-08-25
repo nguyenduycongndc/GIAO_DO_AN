@@ -1,0 +1,140 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using PagedList.Mvc
+@using PagedList
+@model List<MemberTransactionViewModel>
+@*@model IPagedList<GetListHistoryMemberPointInputModel>*@
+
+<div class="col-md-12">
+    <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+        <thead class="text-center text-white bg-thead">
+            <tr>
+                <th class="width-stt">No.</th>
+                <th>Actual time</th>
+                <th>Booking Date</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Discount</th>
+                <th>Revenue</th>
+                <th>Rate</th>
+                <th>Point</th>
+            </tr>
+        </thead>
+        <tbody class="text-center">
+            @{
+                if (Model.Count() <= 0)
+                {
+                    <tr>
+                        <td colspan="9">No Data</td>
+                    </tr>
+                }
+                else
+                {
+                    int stt = 1;
+                    foreach (var dt in Model)
+                    {
+                        if (Model.IndexOf(dt) != 0)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@dt.Date.ToString("HH:mm dd/MM/yyyy")</td>
+                                <td>@dt.BookingDate.ToString("HH:mm dd/MM/yyyy")</td>
+                                <td>@dt.ServiceName</td>
+                                <td>@dt.StatusStr</td>
+                                <td>@dt.DiscountStr</td>
+                                <td>@dt.RevenueStr</td>
+                                @if (dt.Rate.HasValue)
+                                {
+                                    <td>@dt.Rate.Value</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                <td>@dt.PointStr</td>
+                            </tr>
+                            stt++;
+                        }
+                        else
+                        {
+
+                            <tr>
+                                <td><label class="text-success" style="font-size : 19px">Sum</label></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><label class="text-success" style="font-size : 19px">@dt.DiscountStr</label></td>
+                                <td><label class="text-success" style="font-size : 19px">@dt.RevenueStr</label></td>
+                                @if (dt.RateTB > 0)
+                                {
+                                    <td><label class="text-success" style="font-size : 19px">@Math.Round(dt.RateTB, 1)</label></td>
+                                }
+                                else
+                                {
+                                    <td><label class="text-success" style="font-size : 19px">Not yet rated</label></td>
+                                }
+                                <td><label class="text-success" style="font-size : 19px">@dt.PointStr</label></td>
+                            </tr>
+
+                        }
+                    }
+                }
+            }
+            @*@for (int i = 0; i < 6; i++)
+                {
+                <tr>
+                    <td>@(i + 1)</td>
+                    <td>+100.000 point</td>
+                    @{
+                        if (i < 4)
+                        {
+                            <td>Completed transaction</td>
+                        }
+                        else
+                        {
+                            <td>Bought Combo</td>
+                        }
+                    }
+                    <td>02/02/2020</td>
+                </tr>
+                }*@
+
+            @*@{
+                    if (Model.Count() <= 0)
+                    {
+                        <tr>
+                            <td colspan="10">Không có dữ liệu.</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        int stt = ((Model.PageNumber - 1) * Model.PageSize) + 1;
+                        foreach (var data in Model)
+                        {
+                            <tr>
+                                <td>@stt</td>
+                                <td>@data.AddPointCode</td>
+                                <td>Sản phẩm</td>
+                                <td>@String.Format("{0:n0}", data.Point)</td>
+                                <td>@data.CreateDate.Value.ToString("dd/MM/yyyy hh:mm")</td>
+                                <td>@data.Comment</td>
+                            </tr>
+                            stt++;
+                        }
+                    }
+                }*@
+        </tbody>
+    </table>
+</div>
+
+
+@*<div class="col-md-12">
+        <div class="row float-right mr-1">
+            @Html.PagedListPager(
+                Model,
+                page => Url.Action("SearchHistoryPoint", "Customer", new { Page = page, FromDateHis = ViewBag.FromDate, ToDateHis = ViewBag.ToDate, cusID = ViewBag.cusID }),
+                PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions() { HttpMethod = "GET", UpdateTargetId = "ListHistoryPoint" })
+                )
+        </div>
+    </div>*@

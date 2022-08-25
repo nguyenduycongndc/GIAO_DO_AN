@@ -1,0 +1,203 @@
+﻿@using Data.Model.APIWeb
+@using Data.Utils
+@using PagedList.Mvc
+@using APIProject.Resource
+@model UserDetailOutputModel
+@{
+
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12 col-xs-12">
+        <fieldset class="scheduler-border">
+            <legend class="scheduler-border"> Update account</legend>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <p class="text-dark"><strong>information</strong></p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Full name:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" id="txtNameUser" value="@Model.UserName" />
+                            <p id="exusername" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>BirthDay:</p>
+                        </div>
+                        <div class="col-md-8">
+                            @if (Model.Dob.HasValue)
+                            {
+                                <input class="form-control relative-icon-calendar date" id="txtDOB" value="@Model.Dob.Value.ToString(@SystemParam.CONVERT_DATETIME)" />
+                            }
+                            else
+                            {
+                                <input class="form-control relative-icon-calendar date" id="txtDOB" value="" />
+
+                            }
+                            <i class="fa fa-calendar absolute-icon-calendar"></i>
+                            <p id="exDOB" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-5 mt-2">
+                            <p>Identity number:</p>
+
+                        </div>
+                        <div class="col-md-7">
+                            <input class="form-control" id="txtIdentity" value="@Model.Identity" type="number" />
+                            <p id="exIdentity" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Sex:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" id="txtSex">
+                                @{
+                                    if (Model.sex == 1)
+                                    {
+                                        <option value="1">Male</option>
+                                        <option value="2">Female</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="2">Female</option>
+                                        <option value="1">Male</option>
+
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Phone:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control " type="number" id="txtPhone" value="@Model.Phone" />
+                            <p id="exPhone" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Email:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <input class="form-control" type="email" id="txtEmail" value="@Model.Email" />
+                            <p id="exEmail" style="color:red">  </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-4 mt-2">
+                            <p>Type account:</p>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-control" id="select-user-edit">
+                                <option value="@SystemParam.ROLE_ADMIN">Admin</option>
+                                <option value="@SystemParam.ROLL_ACCOUNTANT">@SystemParam.ROLL_ACCOUNTANT_STRING</option>
+                                <option value="@SystemParam.ROLL_MARKETING">@SystemParam.ROLL_MARKETING_STRING</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 m-t-25 m-l--10">
+
+                <strong>Password</strong>
+                <a style="cursor:pointer ;padding-left:25px;color:blue;text-decoration:underline" data-toggle="modal" data-target="#Restpassword" href="javascript:void(0)" onclick="resetPassword(@Model.UserID)">Reset password</a>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12 text-right">
+                    <a href="/User/Index" class="btn btn-danger mr-3">Cancel</a>
+                    <button type="button" class="btn btn-success px-3" onclick="EditUser(@Model.UserID);">Save</button>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+
+<script>
+    $("#select-user-edit").val(@Model.Role);
+    //check input
+    function checkinput() {
+        if ($('#txtNameUser').val() == "") {
+            $('#exusername').text("This field cannot be blank!");
+            $('#txtNameUser').focus();
+            return false;
+        }
+        else if ($('#txtNameUser').val().length > 100) {
+            $('#exusername').text("");
+            $('#exusername').text("User Name can only enter up to 100 characters!")
+            $('#txtNameUser').focus();
+            return false;
+        }
+        else if ($('#txtPhone').val() == "") {
+            $('#exusername').text("");
+            $('#exPhone').text("This field cannot be blank!");
+            $('#txtPhone').focus();
+            return false;
+        } else if ($('#txtPassword').val() == "") {
+            $('#exPhone').text("");
+            $('#expass').text("This field cannot be blank!");
+            $('#txtPassword').focus();
+            return false;
+        } else if ($('#txtEmail').val() == "") {
+            $('#expass').text("");
+            $('#exEmail').text("This field cannot be blank!");
+            $('#txtEmail').focus();
+            return false;
+        } else if ($('#txtIdentity').val() == "") {
+            $('#exEmail').text("");
+            $('#exIdentity').text("This field cannot be blank!");
+            $('#txtIdentity').focus();
+            return false;
+        }
+          else if ($('#txtDOB').val() == "")
+        {
+            $('#exIdentity').text("");
+            $('#exDOB').text("This field cannot be blank!");
+              return false;
+        }
+    
+        else if (!checkdatetime($('#txtDOB').val())) {
+            $('#exDOB').text("");
+            $('#exDOB').text("Birthday Invalid!");
+            return false;
+        }
+
+        else {
+            $('#exDOB').text("");
+               return true;
+        }
+
+        return true;
+    }
+</script>

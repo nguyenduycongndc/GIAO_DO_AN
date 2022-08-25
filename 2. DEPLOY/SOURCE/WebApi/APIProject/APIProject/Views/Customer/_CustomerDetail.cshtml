@@ -1,0 +1,569 @@
+﻿@using Data.DB
+@using Data.Model.APIWeb
+@using APIProject.Resource
+@using Data.Utils
+@using System.Linq
+@model CustomerDetailOutputModelWeb
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="getShipper" style="font-family:'Open Sans'; color: black">
+    <div class="row ml-1">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row mt-3">
+                    <div class="col-md-8 col-sm-6 col-xs-8 col-lg-8">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px">
+                            <a href="#" onclick="window.location='/Customer/Index'"><i class="fa fa-angle-left" style="font-size: 25px"></i></a>
+                            <span style="margin-left: 15px; font-weight: 600">Chi tiết khách hàng</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-6 col-xs-3 col-lg-4">
+                        <div class="customer-btn" style="padding-top: 12px">
+                            @if (Model.CustomerInfo.IsVip.GetValueOrDefault().Equals(SystemParam.CUSTOMER_VIP))
+                            {
+                                <button class="btn btn-primary" onclick="isVipCus(@Model.CustomerInfo.ID)" id="btnAddShip" alt="">Trở thành KH thường</button>
+                            }
+                            else
+                            {
+                                <a class="rainbow-button" onclick="isVipCus(@Model.CustomerInfo.ID)" id="btnAddShip" alt="Trở thành VIP"></a>
+                            }
+                            @if (Model.MemberInfo.IsActive == 2)
+                            {
+                                <button class="btn btn-primary ml-3" onclick="InActiveCus(@Model.CustomerInfo.ID)" id="btnAddShip">Hoạt động</button>
+                            }
+                            else if (Model.MemberInfo.IsActive == 1)
+                            {
+                                <button class="btn btn-danger ml-3" onclick="InActiveCus(@Model.CustomerInfo.ID)" id="btnAddShip">Ngừng hoạt động</button>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="float: left" class="col-md-12 col-sm-12 col-xs-12 col-lg-4">
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                            <div style=" margin-left: 20px">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Thông tin khách hàng</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-user" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (!String.IsNullOrEmpty(Model.CustomerInfo.Name))
+                                                    {
+
+                                                        if (Model.CustomerInfo.IsVip.GetValueOrDefault().Equals(SystemParam.CUSTOMER_VIP))
+                                                        {
+                                                            <div style="font-size:16px">
+                                                                @Model.CustomerInfo.Name - VIP
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="font-size:16px">
+                                                                @Model.CustomerInfo.Name
+                                                            </div>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-phone" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (!String.IsNullOrEmpty(Model.CustomerInfo.Phone))
+                                                    {
+                                                        <div style="font-size:16px">@Model.CustomerInfo.Phone</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-birthday-cake" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (Model.CustomerInfo.DOB.HasValue)
+                                                    {
+                                                        <div style="font-size:16px">@Model.CustomerInfo.DOB.Value.ToString("dd/MM/yyyy")</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-intersex" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (Model.CustomerInfo.Sex.HasValue)
+                                                    {
+                                                        if (Model.CustomerInfo.Sex.Value.Equals(SystemParam.MALE))
+                                                        {
+                                                            <div style="font-size:16px">Nam</div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div style="font-size:16px">Nữ</div>
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+                                                    <div style="font-size:16px">@Model.CustomerInfo.Sex</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-envelope" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (!String.IsNullOrEmpty(Model.CustomerInfo.Email))
+                                                    {
+                                                        <div style="font-size:16px">@Model.CustomerInfo.Email</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-map-marker" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @if (!String.IsNullOrEmpty(Model.CustomerInfo.Address))
+                                                    {
+                                                        <div style="font-size:16px">@Model.CustomerInfo.Address</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div style="font-size:16px">_ _ _</div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-certificate" style="font-size:22px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    @*@{
+                                                            if (Model.ship.IsActive == SystemParam.ACTIVE)
+                                                            {
+                                                                <div style="font-size:16px">Đang hoạt động</div>
+                                                            }
+                                                            if (Model.ship.IsActive == SystemParam.NO_ACTIVE_DELETE)
+                                                            {
+                                                                <div style="font-size:16px">Dừng hoạt động</div>
+                                                            }
+                                                        }*@
+                                                    <div style="font-size:16px">@string.Format("{0:#,0}", Convert.ToDecimal(@Model.CustomerInfo.RankingPoint))</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row" style="margin-bottom: 20px">
+                                                <div class="col-md-2">
+                                                    <i class="fa fa-star" style="font-size:20px;"></i>
+                                                </div>
+                                                <div class="col-md-10">
+                                                    <div style="font-size:16px">@Model.CustomerInfo.CustomerRank.Name</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (Model.CustomerInfo.IsVip.GetValueOrDefault().Equals(SystemParam.CUSTOMER_VIP))
+                                    {
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row" style="margin-bottom: 20px;align-items:center;">
+                                                    <div class="col-md-2">
+                                                        <i class="fa fa-ticket" style="font-size:20px;"></i>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="input-group">
+                                                            <input class="form-control" type="number" id="VipDiscount" value="@Model.CustomerInfo.VipDiscount.GetValueOrDefault()" placeholder="Ưu đãi VIP" />
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">%</span>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button class="btn btn-primary" style="width:100px;" onclick="updateDiscountCus(@Model.CustomerInfo.ID)">Lưu</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div style="margin-top: 20px; margin-bottom: 20px">
+                            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                                <div style=" margin-left: 20px">
+                                    <div>
+                                        <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Khu vực hoạt động</div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        @foreach (Data.DB.ShiperArea obj in Model.ship.ShiperAreas)
+                                        {
+                                            <div class="row mt-2">
+                                                <div class="col-md-10">
+                                                    <ul>
+                                                        <li style="font-size:16px; color:black">@obj.Area.Name</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+                </div>
+                <div style="float: right" class="col-md-12 col-sm-12 col-xs-12 col-lg-8">
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                            <div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Lịch sử giao dịch</div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row m-1" style="padding-bottom:5%">
+                                        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                            <thead class="text-center text-white align-center bg-thead">
+                                            <thead class="text-center text-white bg-thead">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Loại dịch vụ</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>TG hoàn thành</th>
+                                                    <th>TG tạo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                @{ if (Model.lstCustomerOrder.Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td colspan="6">Không có dữ liệu</td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        int stt = 1;
+                                                        foreach (var data in Model.lstCustomerOrder)
+                                                        {
+                                                            <tr>
+                                                                <td>@stt</td>
+                                                                @{ if (data.Type == SystemParam.SHIP_DRIVER)
+                                                                    {
+                                                                        <td style="color:red">Đặt xe</td>
+                                                                    }
+                                                                    if (data.Type == SystemParam.SHIP_PACKAGE)
+                                                                    {
+                                                                        <td style="color:blue">Giao hàng</td>
+                                                                    }
+
+                                                                    if (data.Type == SystemParam.SHIP_FOOD)
+                                                                    {
+                                                                        <td style="color:blue">Giao đồ ăn</td>
+                                                                    } }
+                                                                <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.TotalPrice))</td>
+                                                                @{ if (data.Status == 0)
+                                                                    {
+                                                                        <td style="color:red">Chưa hoàn thành</td>
+                                                                    }
+                                                                    if (data.Status == 1)
+                                                                    {
+                                                                        <td style="color:blue">Hoàn thành</td>
+                                                                    }
+                                                                    if (data.Status == -1)
+                                                                    {
+                                                                        <td style="color:blue">Đơn đã bị hủy</td>
+                                                                    }
+                                                                    if (data.Status == 3)
+                                                                    {
+                                                                        <td style="color:blue">Hoàn thành</td>
+                                                                    }
+                                                                    if (data.Status == SystemParam.ORDER_STATUS_PICK_UP)
+                                                                    {
+                                                                        if (data.Type == SystemParam.SHIP_DRIVER)
+                                                                        {
+                                                                            <td style="color:red">Shipper đã đón khách</td>
+                                                                        }
+                                                                        if (data.Type == SystemParam.SHIP_PACKAGE)
+                                                                        {
+                                                                            <td style="color:blue">Shipper đã lấy hàng</td>
+                                                                        }
+
+                                                                        if (data.Type == SystemParam.SHIP_FOOD)
+                                                                        {
+                                                                            <td style="color:blue">Shipper đã lấy đồ ăn</td>
+                                                                        }
+                                                                    } }
+                                                                <td>@data.EndDate</td>
+                                                                <td>@data.CreateDate</td>
+                                                            </tr>
+                                                            stt++;
+                                                        }
+                                                    } }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; margin-bottom: 20px">
+                        <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                            <div>
+                                <div>
+                                    <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Lịch sử dùng điểm</div>
+                                </div>
+
+                                @*<div class="row" style="padding-bottom:5%">
+                                        @{
+                                            Html.RenderAction("GetListBusiness", "Shipper", new { Page = 1, ShipperID = Model.ship.ID });
+                                        }
+                                    </div>*@
+                                <div class="col-md-12">
+                                    <div class="row m-1" style="padding-bottom:5%">
+                                        <table class="table table-light table-bordered table-hover table-responsive-sm table-responsive-md">
+                                            <thead class="text-center text-white align-center bg-thead">
+                                            <thead class="text-center text-white bg-thead">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Điểm sử dụng</th>
+                                                    <th>Mô tả</th>
+                                                    <th>Số dư</th>
+                                                    <th>TG tạo</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                @{ if (Model.lstCustomerPoint.Count() == 0)
+                                                    {
+                                                        <tr>
+                                                            <td colspan="6">Không có dữ liệu</td>
+                                                        </tr>
+                                                    }
+                                                    else
+                                                    {
+                                                        int stt = 1;
+                                                        foreach (var data in Model.lstCustomerPoint)
+                                                        {
+                                                            <tr>
+                                                                <td>@stt</td>
+                                                                <td>@string.Format("{0:#,0}", Convert.ToDecimal(@data.Point))</td>
+                                                                <td>@data.Content</td>
+                                                                <td>@data.AfterBalance</td>
+                                                                <td>@data.CreateDateStr</td>
+                                                            </tr>
+                                                            stt++;
+                                                        }
+                                                    } }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#tabWasher').addClass('active');
+            })
+
+            function updateDiscountCus($id) {
+                var id = $id;
+                var discount = $("#VipDiscount").val().trim().replace(/,/g, "");
+                if (discount == "") {
+                    swal({
+                        title: "Thông báo",
+                        text: "Vui lòng nhập thông tin ưu đãi!",
+                        icon: "warning"
+                    })
+                    return;
+                }
+                if (discount > 100 || discount < 0) {
+                    swal({
+                        title: "Thông báo",
+                        text: "Mức ưu đãi chỉ từ 0 đến 100 !",
+                        icon: "warning"
+                    })
+                    return;
+                }
+                $.ajax({
+                    url: '/Customer/UpdateDiscountCustomer',
+                    data: { ID: id, Discount: discount },
+                    beforeSend: function () {
+                        $("#modalLoad").modal("show");
+                    },
+                    success: function (response) {
+                        $("#modalLoad").modal("hide");
+                        if (response == SUCCESS) {
+                            swal({
+                                title: "Thành công !",
+                                text: "",
+                                icon: "success"
+                            }).then((sc) => {
+                                window.location.href = '/Customer/CusDetail?id=' + id;
+                            });
+                        }
+                        else {
+                            swal({
+                                title: "",
+                                text: "Có lỗi xảy ra!",
+                                icon: "warning"
+                            });
+                        }
+                    }
+                });
+            }
+            
+            function InActiveCus($id) {
+                var id = $id
+                swal({
+                    title: "Bạn chắc chắn muốn thực hiện thao tác này?",
+                    text: "",
+                    icon: "warning",
+                    buttons: ["Cancel", "OK"],
+                    dangerMode: true,
+                })
+                    .then((isConFirm) => {
+                        if (isConFirm) {
+                            $.ajax({
+                                url: '/Customer/InActiveCustomer',
+                                data: { ID: id },
+                                beforeSend: function () {
+                                    $("#modalLoad").modal("show");
+                                },
+                                success: function (response) {
+                                    $("#modalLoad").modal("hide");
+                                    if (response == SUCCESS) {
+                                        swal({
+                                            title: "Thành công !",
+                                            text: "",
+                                            icon: "success"
+                                        }).then((sc) => {
+                                            window.location.href = '/Customer/CusDetail?id=' + id;
+                                        });
+                                    }
+                                    else {
+                                        swal({
+                                            title: "",
+                                            text: "Có lỗi xảy ra!",
+                                            icon: "warning"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    })
+            }
+            function isVipCus($id) {
+                var id = $id
+                swal({
+                    title: "Bạn chắc chắn muốn thực hiện thao tác này?",
+                    text: "",
+                    icon: "warning",
+                    buttons: ["Cancel", "OK"],
+                    dangerMode: true,
+                })
+                    .then((isConFirm) => {
+                        if (isConFirm) {
+                            $.ajax({
+                                url: '/Customer/IsVipCustomer',
+                                data: { ID: id },
+                                beforeSend: function () {
+                                    $("#modalLoad").modal("show");
+                                },
+                                success: function (response) {
+                                    $("#modalLoad").modal("hide");
+                                    if (response == SUCCESS) {
+                                        swal({
+                                            title: "Thành công !",
+                                            text: "",
+                                            icon: "success"
+                                        }).then((sc) => {
+                                            window.location.href = '/Customer/CusDetail?id=' + id;
+                                        });
+                                    }
+                                    else {
+                                        swal({
+                                            title: "",
+                                            text: "Có lỗi xảy ra!",
+                                            icon: "warning"
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    })
+            }
+        </script>

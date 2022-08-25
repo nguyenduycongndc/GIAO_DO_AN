@@ -1,0 +1,245 @@
+﻿﻿@using APIProject.Resource
+@using Data.Model.APIWeb
+@using Data.DB
+@using PagedList.Mvc
+@using Data.Utils
+@model ComplainDetailOuputModel
+
+@{
+    ViewBag.Title = "ComplainDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="getComplain">
+    <div class="row ml-1 card-body" style="background-color:white; border-radius:10px">
+        <div class="col-md-8 col-sm-9 col-12 text-dark px-0 mt-3">
+            <h4><a href="#Ư" onclick="window.location='/Complain/Index'"><i class="fa fa-angle-left"></i></a>&nbsp;&nbsp; Chi tiết khiếu nại</h4>
+        </div>
+    </div>
+
+    <div class="tab-content bg-white mb-3">
+        <div class="row mt-4">
+            <div class="col col-6">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border"><h5>Thông tin khách hàng</h5></legend>
+                    <form>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Tên khách hàng:</span></div>
+                            <div class="col col-7"><p>@Model.cusName</p></div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Số điện thoại:</span></div>
+                            <div class="col col-7"><p>@Model.cusPhone</p></div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Địa chỉ:</span></div>
+                            <div class="col col-7"><p>@Model.cusAddress</p></div>
+                        </div>
+                    </form>
+
+                </fieldset>
+            </div>
+
+            <div class="col col-6">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler"><h5>Thông tin tài xế</h5></legend>
+                    <form>
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Tên tài xế:</span>
+
+                            </div>
+                            <div class="col col-7">
+                                <p>@Model.ShiperName</p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col col-5">
+                                <span>Số điện thoại:</span>
+                            </div>
+                            <div class="col col-7">
+                                <p>@Model.ShiperPhone</p>
+                            </div>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col col-6">
+                <form>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><h5>Thông tin giao dịch</h5></legend>
+
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Địa điểm:</span>
+                            </div>
+                            <div class="col col-7">
+                                <p>@Model.cusAddress</p>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Dịch vụ:</span>
+                            </div>
+                            <div class="col col-7">
+                                <p>@Model.BookingType</p>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Người hủy:</span>
+                            </div>
+                            <div class="col col-7">@Model.UserCancel</div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Lý do hủy</span>
+                            </div>
+                            <div class="col col-7">
+                                <p>@Model.ReasonCancel</p>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col col-6">
+                <form>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><h5>Thông tin giao dịch</h5></legend>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Hình thức thanh toán:</span></div>
+                            <div class="col col-7">
+                                @{
+                                    switch (@Model.PaymentType)
+                                    {
+                                        case 1: <p>Tiền mặt</p> break;
+                                        case 2: <p>VNPay</p> break;
+                                    }
+
+                                }
+
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Phí dịch vụ:</span></div>
+                            <div class="col col-7"><label>@Model.BasePrice</label></div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Điểm đã dùng:</span></div>
+                            <div class="col col-7"><label>@Model.UsePoint</label></div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Khuyến mãi</span></div>
+                            <div class="col col-7">
+                                <div class="row">
+                                    <div class="col col-2"><label>@Model.CommissionValue</label> </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">
+                                <span>Tổng tiền</span>
+                            </div>
+                            <div class="col col-7"><label style="color:red">@Model.TotalPrice</label></div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col col-6">
+                <form>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><h5>Trạng thái chuyến đi</h5></legend>
+                        <div class="row mt-1">
+                            <div class="col col-5"><span>Thời gian đặt:</span></div>
+                            <div class="col col-7"><p>@Model.BookingDate</p></div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">Thời gian xác nhận:</div>
+                            <div class="col col-7">@Model.ConfirmDate</div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">Đã đón khách:</div>
+                            <div class="col col-7">@Model.StartDate</div>
+                        </div>
+                        <div class="row mt-1">
+                            <div class="col col-5">Hoàn thành</div>
+                            <div class="col col-7">@Model.CompleteDate</div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="col col-6">
+                <div class="col col-12">
+                    <form>
+                        <fieldset class="scheduler-border">
+                            <legend class="scheduler-border"><h5>Thông tin giao dịch</h5></legend>
+                            <div class="row mt-1 text-center">
+                                <div class="col col-3"></div>
+                                <div class="col col-6 p-1">
+                                    @Model.Rateting
+                                </div>
+
+                            </div>
+                            <div class="row mt-1">
+
+                                <div class="col col-6 offset-3"> <span>@Model.AdminNote</span></div>
+                            </div>
+
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col col-12">
+                <form>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border"><h5>Thông tin khiếu nại</h5></legend>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col col-6">
+
+                                    <div class="row ml-3"><label>Ghi chú khiếu nại</label></div>
+                                    <div class="row">
+                                        <div class="col col-12">
+                                            <textarea class="form-control" placeholder="..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col col-6">
+                                    <div class="row">
+                                        <div class="col col-5"><span>Ngày tạo</span></div>
+                                        <div class="col col-7">
+                                            <p>@Model.CreatedDate</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col col-5"><span>Trạng thái xử lý</span></div>
+                                        <div class="col col-7">
+                                            @{
+                                                if (Model.Status == SystemParam.STATUS_WAITING)
+                                                {
+                                                    <a>Đang chờ xử lý</a>
+                                                }
+                                                else
+                                                {
+                                                    <a>Đã xử lý</a>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

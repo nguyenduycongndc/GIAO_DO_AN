@@ -1,0 +1,210 @@
+﻿
+@using Data.Model.APIWeb
+@using Data.Utils
+@using Data.DB
+@using Data.Model
+@using PagedList.Mvc
+@using PagedList
+@model Shop
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="getShipper" style="font-family:'Open Sans'; color: black">
+    <div class="row ml-1">
+        <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+            <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                <div class="row">
+                    <div class="col-md-8 col-sm-6 col-xs-8 col-lg-9">
+                        <div style="padding: 15px 25px 15px; font-weight: 600; font-size: 20px">
+                            <a href="#" onclick="window.location='/Shipper/Index'"><i class="fa fa-angle-left" style="font-size: 25px"></i></a>
+                            <span style="margin-left: 15px; font-weight: 600">Chi tiết cửa hàng</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="float: right" class="col-md-12 col-sm-12 col-xs-12 col-lg-4">
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div style=" margin-left: 20px">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div style="font-weight: 600; font-size: 17px; padding: 15px 0px"> Thông tin cửa hàng</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-user" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.Name</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-phone" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.Phone</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-envelope" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.Email</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-map-marker" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.Address</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-certificate" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            @{
+                                                    if (Model.Members.Any(c => c.IsActive == SystemParam.ACTIVE))
+                                                    {
+                                                        <div style="font-size:16px">Đang hoạt động</div>
+                                                    }
+                                                    if (Model.Members.Any(c=>c.IsActive == 2))
+                                                    {
+                                                        <div style="font-size:16px">Dừng hoạt động</div>
+                                                    }
+                                                }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row" style="margin-bottom: 20px">
+                                        <div class="col-md-2">
+                                            <i class="fa fa-star" style="font-size:22px;"></i>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div style="font-size:16px">@Model.Rate</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div style="float: left" class="col-md-12 col-sm-12 col-xs-12 col-lg-8">
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Lịch sử đơn hàng</div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row" style="padding-bottom:5%">
+                                <div class="col-md-12" id="TableShopBusiness">
+                                    @{ Html.RenderAction("searchHistoryBusiness", "Shop", new { Page = 1,ShopID =  Model.ID });}
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px">
+                <div style="background: #FFFFFF; border-radius: 10px; height: auto">
+                    <div>
+                        <div>
+                            <div style="font-weight: 600; font-size: 17px; padding: 15px 20px"> Thực đơn</div>
+                        </div>
+
+                        <div class="row" style="padding-bottom:5%">
+                            <div class="col-md-12" id="TableServicePrice">
+                                @{
+                                    Html.RenderAction("searchServicePrice", "Shop", new { Page = 1, ShopID = Model.ID });
+                                }
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function deleteShip(id) {
+        swal({
+            title: "Bạn chắc chắn xóa chứ?",
+            text: "",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: '/Shipper/DeleteShipper',
+                        data: { ID: id },
+                        type: 'POST',
+                        success: function (res) {
+                            if (res == SUCCESS) {
+                                swal({
+                                    title: "Xóa thành công",
+                                    text: "",
+                                    icon: "success"
+                                });
+                                searchShipper();
+                            }
+                            else {
+                                swal({
+                                    title: "Có lỗi xảy ra!",
+                                    text: "Vui lòng thực hiện lại",
+                                    icon: "warning"
+                                });
+                            }
+                        }
+                    });
+                }
+            })
+    }
+</script>
